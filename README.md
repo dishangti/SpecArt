@@ -1,2 +1,2 @@
 # SpecArt
-A game about speculation.
+A tactical game about transaction and speculation.
