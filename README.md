@@ -9,12 +9,12 @@ In this game, players are connected by the central server, and allocated **equal
 * A server with network.
 * Clients as players able to connect to the server.
 
-## Server Operation
+## Server Operations
 * Allow the 7733 port on the firewall.
 * Open the file `server/specart_ser.py` and wait for connections from clients (players).
 * After all the players in, type `b` and press `Enter` to begin the game.
 
-## Client Operation
+## Client Operations
 * Set a unique name for each player.
 * Type the address of the server.
 * Wait for the signal of beginning.
