@@ -21,6 +21,7 @@ In this game, players are connected by the central server, and allocated **equal
 * Follow the hints and enjoy it!
 
 ## Attention
+* **No Space** in user name.
 * Players **CANNOT** have the same name.
 * Players **CANNOT** quit the game while playing.
 * New player **CANNOT** join the game after game beginning.
