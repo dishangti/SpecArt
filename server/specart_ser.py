@@ -75,6 +75,7 @@ class NetHandler(sck.BaseRequestHandler):
     def winner(self, player):
         WIN_MONEY = len(list(NetHandler.players.values())) * SpecArt.INIT_MONEY * SpecArt.WIN_RATE
         if player.money >= WIN_MONEY:
+            print('winner', player.name)
             NetHandler.broadcast('winner', player.name)
 
     def buy_order(self, buy_order):
