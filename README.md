@@ -26,3 +26,4 @@ In this game, players are connected by the central server, and allocated **equal
 * Players **CANNOT** quit the game while playing.
 * New player **CANNOT** join the game after game beginning.
 * There are some problems quitting the game, so just **click ×** on the window to force to quit.
+* This version has potentional thread security problem.
