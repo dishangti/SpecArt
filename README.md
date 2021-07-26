@@ -18,7 +18,7 @@ In this game, players are connected by the central server, and allocated **equal
 * Set a unique name for each player.
 * Type the address of the server.
 * Wait for the signal of beginning.
-* Enjoy it!
+* Follow the hints and enjoy it!
 
 ## Attention
 * Players **CANNOT** have the same name.
