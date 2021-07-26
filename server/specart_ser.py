@@ -7,7 +7,18 @@ class TCPServer(sck.ThreadingTCPServer):
     allow_reuse_address = True
 
 class Player:
+    '''
+    Save the basic player infomation.
+    '''
+
     def __init__(self, addr, name, money, goods, sock):
+        '''
+        addr:(str) IP:port of a player.
+        name:(str) Username of a player.
+        money:(int) Total money of a player.
+        goods:(int) The number of goods of a player.
+        sock: Network socket of a player.
+        '''
         self.addr = addr
         self.name = name
         self.money = money
@@ -15,6 +26,9 @@ class Player:
         self.sock = sock
 
 class Order:
+    '''
+    Define a order's information.
+    '''
     BUY_ORDER = 0
     SELL_ORDER = 1
 
@@ -27,16 +41,26 @@ class Order:
     buy_queue = []
 
     def __init__(self, price, time, num, name, mode):
+        '''
+        price:(int) Price per good.
+        time:(float) Timestamp submitting the order.
+        num:(int) The number of goods.
+        name:(str) Username submitting the order.
+        mode:(BUY_ORDER/SELL_ORDER).
+        '''
         self.price = price
         self.time = time
         self.num = num
         self.name = name
         self.mode = mode
 
-    def __repr__(self):
-        return str(self.price) + ' ' + str(self.time) + ' ' + str(self.num)
-
     def __lt__(self, other):
+        '''
+        Define a method as an operator < for Order class.
+        For SELL_ORDER, it should be sorted in ascending order by price.
+        For BUY_ORDER, it should be sorted in descending order by price.
+        Both of them should be sorted in ascending order by time as the secondary keyword.
+        '''
         swth = 1
         if self.mode == Order.SELL_ORDER: swth = 0
         elif self.mode == Order.BUY_ORDER: swth = 1
@@ -47,13 +71,25 @@ class Order:
             else: return 0
 
 class NetHandler(sck.BaseRequestHandler):
+    '''
+    Inherited from socketserver.BaseRequestHandler.
+    Handle network request.
+    '''
+
     pause = False
     players = {}
 
     def time_str(self, string):
+        '''
+        string:(str) The string to process.
+        Return a new string by adding a time information on the string.
+        '''
         return tm.ctime() + " " + string
 
     def command(self, *strs):
+        '''
+        Wrap strs and encode it by UTF-8.
+        '''
         command = ''
         for string in strs:
             command = command + str(string) + ' '
@@ -63,6 +99,9 @@ class NetHandler(sck.BaseRequestHandler):
 
     @classmethod
     def broadcast(cls, *strs):
+        '''
+        Wrap strs and broadcast it to all the players by UTF-8.
+        '''
         command = ''
         for string in strs:
             command = command + str(string) + ' '
@@ -73,12 +112,20 @@ class NetHandler(sck.BaseRequestHandler):
             player.sock.sendall(command)
 
     def winner(self, player):
+        '''
+        player:(Player)
+        Check whether player is a winner.
+        '''
         WIN_MONEY = len(list(NetHandler.players.values())) * SpecArt.INIT_MONEY * SpecArt.WIN_RATE
         if player.money >= WIN_MONEY:
             print('winner', player.name)
             NetHandler.broadcast('winner', player.name)
 
     def buy_order(self, buy_order):
+        '''
+        buy_order:(Order)
+        Process a buying order.
+        '''
         buy_player = NetHandler.players[buy_order.name]
 
         while True:
@@ -112,6 +159,10 @@ class NetHandler(sck.BaseRequestHandler):
                 break
 
     def sell_order(self, sell_order):
+        '''
+        sell_order:(Order)
+        Process a selling order.
+        '''
         sell_player = NetHandler.players[sell_order.name]
         
         while True:
@@ -146,6 +197,10 @@ class NetHandler(sck.BaseRequestHandler):
             self.winner(sell_player)
 
     def command_handle(self, command):
+        '''
+        command:(list<str>) A single command stripped into a string list.
+        '''
+
         if command == []: return
         if self.named == False and SpecArt.begin_flag == False and command[0] == 'name':
             self.named = True
@@ -214,6 +269,9 @@ class NetHandler(sck.BaseRequestHandler):
             del SpecArt.ser_sock
 
     def setup(self):
+        '''
+        Initialize the new player.
+        '''
         self.named = False
         self.inuse = True
         self.addr = self.client_address[0] + ':' + str(self.client_address[1])
@@ -221,6 +279,9 @@ class NetHandler(sck.BaseRequestHandler):
         print(self.time_str(f'Connetion from: {self.addr}.'))
 
     def handle(self):
+        '''
+        Handle commands recieved from the player.
+        '''
         while self.inuse:
             buff = self.request.recv(1024).decode('utf8')
             print(buff)
@@ -229,6 +290,9 @@ class NetHandler(sck.BaseRequestHandler):
                 self.command_handle(command.split(' '))
 
 class SpecArt:
+    '''
+    Save some game settings.
+    '''
     INIT_MONEY = 100000
     INIT_GOODS = 100000
     WIN_RATE = 0.6
@@ -255,6 +319,9 @@ def init():
     SpecArt('0.0.0.0', 7733)
 
 def controller():
+    '''
+    Control the server.
+    '''
     while True:
         cmd = input()
         if cmd == 'b' and SpecArt.begin_flag == False:
