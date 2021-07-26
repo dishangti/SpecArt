@@ -21,7 +21,7 @@ In this game, players are connected by the central server, and allocated **equal
 * Enjoy it!
 
 ## Attention
-* Players CANNOT have the same name.
-* Players CANNOT quit the game while playing.
-* New player CANNOT join the game after game beginning.
-* There are some problems quitting the game, so just click × on the window to force to quit.
+* Players **CANNOT** have the same name.
+* Players **CANNOT** quit the game while playing.
+* New player **CANNOT** join the game after game beginning.
+* There are some problems quitting the game, so just **click ×** on the window to force to quit.
