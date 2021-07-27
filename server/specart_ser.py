@@ -3,6 +3,8 @@ import time as tm
 import heapq as hp
 import threading as thrd
 
+syn_lock = thrd.Lock()
+
 class TCPServer(sck.ThreadingTCPServer):
     allow_reuse_address = True
 
@@ -207,9 +209,10 @@ class NetHandler(sck.BaseRequestHandler):
             self.name = command[1]
             self.player = Player(self.addr, self.name, SpecArt.INIT_MONEY, SpecArt.INIT_GOODS, self.sock)
             NetHandler.players[self.name] = self.player
-            self.sock.sendall(self.command('nameok', self.name))
-            self.sock.sendall(self.command('money', SpecArt.INIT_MONEY))
-            self.sock.sendall(self.command('goods', SpecArt.INIT_GOODS))
+            with syn_lock:
+                self.sock.sendall(self.command('nameok', self.name))
+                self.sock.sendall(self.command('money', SpecArt.INIT_MONEY))
+                self.sock.sendall(self.command('goods', SpecArt.INIT_GOODS))
             print(self.time_str(f"{self.addr} set name as {self.name}."))
 
         if self.named == False and SpecArt.begin_flag == True:
@@ -222,22 +225,24 @@ class NetHandler(sck.BaseRequestHandler):
         if command[0] == 'sell':
             num = int(command[1])
             price = int(command[2])
-            if num > self.player.goods: return
-            self.player.goods -= num
-            sell_order = Order(price, tm.time(), num, self.name, Order.SELL_ORDER)
-            self.sock.sendall(self.command('sellok', num, price, sell_order.time))
-            NetHandler.broadcast('sell', num, price)
-            self.sell_order(sell_order)
+            with syn_lock:
+                if num > self.player.goods: return
+                self.player.goods -= num
+                sell_order = Order(price, tm.time(), num, self.name, Order.SELL_ORDER)
+                self.sock.sendall(self.command('sellok', num, price, sell_order.time))
+                NetHandler.broadcast('sell', num, price)
+                self.sell_order(sell_order)
 
         if command[0] == 'buy':
             num = int(command[1])
             price = int(command[2])
-            if price * num > self.player.money: return
-            self.player.money -= price * num
-            buy_order = Order(price, tm.time(), num, self.name, Order.BUY_ORDER)
-            self.sock.sendall(self.command('buyok', num, price, buy_order.time))
-            NetHandler.broadcast('buy', num, price)
-            self.buy_order(buy_order)
+            with syn_lock:
+                if price * num > self.player.money: return
+                self.player.money -= price * num
+                buy_order = Order(price, tm.time(), num, self.name, Order.BUY_ORDER)
+                self.sock.sendall(self.command('buyok', num, price, buy_order.time))
+                NetHandler.broadcast('buy', num, price)
+                self.buy_order(buy_order)
 
         if command[0] == 'backbuy':
             if Order.buy_queue == []: return
@@ -245,12 +250,14 @@ class NetHandler(sck.BaseRequestHandler):
             price = int(command[2])
             time = float(command[3])
             for i, order in enumerate(Order.buy_queue):
-                if order.name == self.name and order.num == num\
-                and order.price == -price and order.time == time:
-                    Order.buy_queue.pop(i)
-                    hp.heapify(Order.buy_queue)
-            self.sock.sendall(self.command('backbuyok', num, price, time))
-            NetHandler.broadcast('backbuy', num, price)
+                with syn_lock:
+                    if order.name == self.name and order.num == num\
+                    and order.price == -price and order.time == time:
+                        Order.buy_queue.pop(i)
+                        hp.heapify(Order.buy_queue)
+            with syn_lock:
+                self.sock.sendall(self.command('backbuyok', num, price, time))
+                NetHandler.broadcast('backbuy', num, price)
 
         if command[0] == 'backsell':
             if Order.sell_queue == []: return
@@ -258,12 +265,14 @@ class NetHandler(sck.BaseRequestHandler):
             price = float(command[2])
             time = float(command[3])
             for i, order in enumerate(Order.sell_queue):
-                if order.name == self.name and order.num == num\
-                and order.price == price and order.time == time:
-                    Order.sell_queue.pop(i)
-                    hp.heapify(Order.sell_queue)
-            self.sock.sendall(self.command('backsellok', num, price, time))
-            NetHandler.broadcast('backsell', num, price)
+                with syn_lock:
+                    if order.name == self.name and order.num == num\
+                    and order.price == price and order.time == time:
+                        Order.sell_queue.pop(i)
+                        hp.heapify(Order.sell_queue)
+            with syn_lock:
+                self.sock.sendall(self.command('backsellok', num, price, time))
+                NetHandler.broadcast('backsell', num, price)
 
         if SpecArt.win_flag and SpecArt.ser_sock:
             del SpecArt.ser_sock
@@ -329,10 +338,11 @@ def controller():
             time = tm.time()
             begin_info = 'SpecArt Begins at ' + tm.ctime(time)
             print(begin_info)
-            NetHandler.broadcast(begin_info)
-            NetHandler.broadcast('begin', time)
-            for player in NetHandler.players.values():
-                NetHandler.broadcast('name', player.addr, player.name)
+            with syn_lock:
+                NetHandler.broadcast(begin_info)
+                NetHandler.broadcast('begin', time)
+                for player in NetHandler.players.values():
+                    NetHandler.broadcast('name', player.addr, player.name)
 
 ser = thrd.Thread(target=init)
 ser.start()
