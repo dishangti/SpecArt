@@ -25,6 +25,9 @@ def command_handle(cmd):
     global beginTime
     global myself
 
+    global selling
+    global buying
+
     try:
         core_cmd = cmd[0]
         
@@ -98,12 +101,48 @@ def command_handle(cmd):
         
         
         #广播指令
-        elif core_cmd == 'dealsell':
+        elif core_cmd == 'sell':                                        #sell (num) (price)
+            if not (cmd[2] in selling):
+                selling[cmd[2]] = int(cmd[1])
+            else:
+                selling[cmd[2]] += int(cmd[1])
+        elif core_cmd == 'buy':                                         #buy (num) (price)
+            if not (cmd[2] in buying):
+                buying[cmd[2]] = int(cmd[1])
+            else:
+                buying[cmd[2]] += int(cmd[1])            
+        elif core_cmd == 'backsell':                                    #backsell (num) (price)
+            selling[cmd[2]] -= int(cmd[1])
+            if selling[cmd[2]] == 0:
+                del selling[cmd[2]]
+        elif core_cmd == 'backbuy':                                     #backbuy (num) (price)
+            buying[cmd[2]] -= int(cmd[1])
+            if buying [cmd[2]] == 0:
+                del buying[cmd[2]]
+        elif core_cmd == 'dealsell':                                    #dealsell (num) (price) (dealtime)
             print('News: '+' '.join(cmd))
-        elif core_cmd == 'dealbuy':
+            #处理买盘
+            buying[cmd[2]] -= int(cmd[1])
+            if buying[cmd[2]] == 0:
+                del buying[cmd[2]]
+            #处理卖盘
+            S_min_price = Ssort(selling)['S1'][0]
+            selling[S_min_price] -= int(cmd[1])
+            if selling[S_min_price] == 0:
+                del selling[S_min_price]
+        elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
             print('News: '+' '.join(cmd))
-        elif core_cmd == 'name':
-            print('Players: '+' '.join(cmd))
+            #处理卖盘
+            selling[cmd[2]] -= int(cmd[1])
+            if selling[cmd[2]] == 0:
+                del selling[cmd[2]]
+            #处理买盘
+            B_max_price = Bsort(buying)['B1'][0]
+            buying[B_max_price] -= int(cmd[1])
+            if buying[B_max_price] == 0:
+                del buying[B_max_price]
+        elif core_cmd == 'name':                                        #name (IP):(port) (name)
+            print(f'Players: {cmd[2]} {cmd[1]}')
         elif core_cmd == 'begin':                                       #begin (time)
             beginTime = cmd[1]
             print('GAME START!')
@@ -111,6 +150,48 @@ def command_handle(cmd):
             
     except IndexError:
         print('void cmd')
+
+def Bsort(B):
+    '''
+    将买盘按价格降序排列后返回
+    B:买盘字典
+    返回:字典，形如{'B1':(price, num), 'B2':(price, num)...}
+    '''
+
+    B_lst = list(B.items())
+    B_lst.sort(key=lambda tpl:int(tpl[0]), reverse=True)
+    
+    length = len(B_lst)
+    if length <= 5:
+        n = length + 1
+    else:
+        n = 6
+    ret = {}
+    for i in range(1, n):
+        ret[f'B{i}'] = B_lst[i-1]
+    
+    return ret
+
+def Ssort(S):
+    '''
+    将卖盘按价格升序排列后返回
+    S:卖盘字典
+    返回:字典，形如{'S1':(price, num), 'S2':(price, num)...}
+    '''
+
+    S_lst = list(S.items())
+    S_lst.sort(key=lambda tpl:int(tpl[0]), reverse=False)
+
+    length = len(S_lst)
+    if length <= 5:
+        n = length + 1
+    else:
+        n = 6
+    ret = {}
+    for i in range(1, n):
+        ret[f'S{i}'] = S_lst[i-1]
+    
+    return ret
 
 username = input('Hey! What\'s your name? ')
 host = input('host: ')
@@ -125,6 +206,9 @@ initMoney = None        #初始化
 beginTime = None        #初始化
 myself = Player(username, initGoods, initMoney, soc)
 
+buying = {}             #买盘，key为价格value为该价格挂单总数量
+selling = {}            #卖盘，key为价格value为该价格挂单总数量
+
 thread = threading.Thread(target=recv, name='recvThread')
 thread.start()
 
@@ -137,7 +221,9 @@ buy (num) (price)
 backsell (num) (price) (time)
 backbuy (num) (price) (time)
 transaction
-account\n''')       #提示操作指令
+account
+selling
+buying\n''')       #提示操作指令
 
 while True:
     try:
@@ -154,6 +240,10 @@ while True:
             myself.Mytransaction()
         elif cmd[0] == 'account':
             myself.Myaccount()
+        elif cmd[0] == 'selling':
+            print(Ssort(selling))
+        elif cmd[0] == 'buying':
+            print(Bsort(buying))
         else:
             print('invalid command')
     except Exception as e:

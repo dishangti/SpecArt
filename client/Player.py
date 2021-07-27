@@ -33,7 +33,7 @@ class Player(object):
         price:单价
         '''
         
-        if self.goods > num:
+        if self.goods >= num:
             command = f'sell {num} {price}#'
             self.soc.sendall(command.encode('utf8'))
         else:
@@ -45,7 +45,7 @@ class Player(object):
         price:单价
         '''
 
-        if self.money > num * price:
+        if self.money >= num * price:
             command = f'buy {num} {price}#'
             self.soc.sendall(command.encode('utf8'))
         else:
