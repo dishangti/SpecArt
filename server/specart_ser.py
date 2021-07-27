@@ -146,7 +146,7 @@ class NetHandler(sck.BaseRequestHandler):
             deal_num = min(top_sell.num, buy_order.num)
             deal_price = top_sell.price
             buy_order.num -= deal_num
-            buy_player.money += deal_num * (buy_order.num - deal_num)           # Return redundant money
+            buy_player.money += deal_price * (buy_order.num - deal_num)           # Return redundant money
             buy_player.goods += deal_num
             top_sell.num -= deal_num
             sell_player.money += deal_num * deal_price
@@ -185,7 +185,6 @@ class NetHandler(sck.BaseRequestHandler):
             sell_order.num -= deal_num
             sell_player.money += deal_num * deal_price
             top_buy.num -= deal_num
-            buy_player.money += deal_num * (top_buy.num - deal_num)             # Return redundant money
             buy_player.goods += deal_num
             sell_player.sock.sendall(self.command('selldealok', deal_num, deal_price, sell_order.time))     # Buy initiatively
             buy_player.sock.sendall(self.command('buydealok', deal_num, deal_price, top_buy.time))          # Sell initiatively
@@ -262,7 +261,7 @@ class NetHandler(sck.BaseRequestHandler):
         if command[0] == 'backsell':
             if Order.sell_queue == []: return
             num = int(command[1])
-            price = float(command[2])
+            price = int(command[2])
             time = float(command[3])
             for i, order in enumerate(Order.sell_queue):
                 with syn_lock:
@@ -294,7 +293,6 @@ class NetHandler(sck.BaseRequestHandler):
         '''
         while self.inuse:
             buff = self.request.recv(1024).decode('utf8')
-            print(buff)
             commands = buff.split('#')
             for command in commands:
                 self.command_handle(command.split(' '))
@@ -334,7 +332,7 @@ def controller():
     Control the server.
     '''
     while True:
-        cmd = input()
+        cmd = input('')
         if cmd == 'b' and SpecArt.begin_flag == False:
             SpecArt.begin_flag = True
             time = tm.time()
