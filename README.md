@@ -10,9 +10,9 @@ In this game, players are connected by the central server, and allocated **equal
 * Clients as players able to connect to the server.
 
 ## Server Operations
-* Allow the 7733 port on the firewall.
-* Open the file `server/specart_ser.py` and wait for connections from clients (players).
-* After all the players in, type `b` and press `Enter` to begin the game.
+* Allow the `7733` port on the firewall.
+* Run the file `server/specart_ser.py` and wait for connections from clients (players).
+* After all the players in, type `b` and press Enter to begin the game.
 
 ## Client Operations
 * Set a unique name for each player.
@@ -21,11 +21,12 @@ In this game, players are connected by the central server, and allocated **equal
 * Follow the hints and enjoy it!
 
 ## Attention
-* **No Space** in user name.
+* **No Space** in player's name.
 * Players **CANNOT** have the same name.
 * Players **CANNOT** quit the game while playing.
 * New player **CANNOT** join the game after game beginning.
 * There are some problems quitting the game, so just **click ×** on the window to force to quit.
+* Known thread security problems.
 
 # SpecArt
 这是一个关于交易和投机的策略性游戏。
@@ -37,3 +38,22 @@ In this game, players are connected by the central server, and allocated **equal
 * Python 3。
 * 带有TCP/IP网络的服务器。
 * 能连接到服务器的玩家客户端。
+
+## 服务器操作
+* 开放防火墙`7733`端口。
+* 运行文件`server/specart_ser.py`并等待客户端（玩家）连接。
+* 当所有玩家连接后，输入`b`并回车来开始游戏。
+
+## 客户端操作
+* 为玩家设置一个唯一的用户名。
+* 输入服务器地址。
+* 等待服务器的开始信号。
+* 根据提示游戏，玩得愉快！
+
+## 注意
+* 玩家的用户名**不应该有空格**。
+* 玩家**不能**有相同的用户名。
+* 在游戏中玩家**不能**退出游戏。
+* 新玩家在游戏开始后**不能**加入游戏。
+* 退出游戏时候会有一些问题，所以直接**点击窗口上的×**来强制退出游戏。
+* 有已知的线程安全问题。
