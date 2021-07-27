@@ -6,7 +6,7 @@ In this game, players are connected by the central server, and allocated **equal
 
 ## Requirements
 * Python 3.
-* A server with network.
+* A server with TCP/IP network.
 * Clients as players able to connect to the server.
 
 ## Server Operations
@@ -31,4 +31,9 @@ In this game, players are connected by the central server, and allocated **equal
 这是一个关于交易和投机的策略性游戏。
 
 ## 简介
-在这个游戏里，玩家们通过一个中心服务器相连，被分配以*等量的钱和物资*。和股票以及期货市场里的*连续竞价*交易规则一样，你可以在服务器上挂买卖单，然后服务器将会处理订单队列并且决定那一对订单成交。注意到此时你的钱和物资数量将会发生变化，而你的目的则是得到*所有玩家60 %的钱*来赢得这场游戏。
+在这个游戏里，玩家们通过一个中心服务器相连，被分配以**等量的钱和物资**。和股票以及期货市场里的**连续竞价**交易规则一样，你可以在服务器上挂买卖单，然后服务器将会处理订单队列并且决定那一对订单成交。注意到此时你的钱和物资数量将会发生变化，而你的目的则是得到**所有玩家60%的钱**来赢得这场游戏。
+
+## 配置要求
+* Python 3。
+* 带有TCP/IP网络的服务器。
+* 能连接到服务器的玩家客户端。
