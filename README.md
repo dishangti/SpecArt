@@ -26,7 +26,7 @@ In this game, players are connected by the central server, and allocated **equal
 * Players **CANNOT** quit the game while playing.
 * New player **CANNOT** join the game after game beginning.
 * There are some problems quitting the game, so just **click ×** on the window to force to quit.
-* Known thread security problems.
+* Known thread safety problems exist.
 
 # SpecArt(简体中文)
 这是一个关于交易和投机的策略性游戏。
