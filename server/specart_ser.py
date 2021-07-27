@@ -146,13 +146,13 @@ class NetHandler(sck.BaseRequestHandler):
             deal_num = min(top_sell.num, buy_order.num)
             deal_price = top_sell.price
             buy_order.num -= deal_num
-            buy_player.money += deal_num * (buy_order.num - deal_num)
+            buy_player.money += deal_num * (buy_order.num - deal_num)           # Return redundant money
             buy_player.goods += deal_num
             top_sell.num -= deal_num
             sell_player.money += deal_num * deal_price
-            buy_player.sock.sendall(self.command('buydealok', deal_num, deal_price, buy_order.time))
-            sell_player.sock.sendall(self.command('selldealok', deal_num, deal_price, top_sell.time))
-            NetHandler.broadcast('dealbuy', deal_num, deal_price, tm.time())
+            buy_player.sock.sendall(self.command('buydealok', deal_num, deal_price, buy_order.time))        # Buy initiatively
+            sell_player.sock.sendall(self.command('selldealok', deal_num, deal_price, top_sell.time))       # Sell initiatively
+            NetHandler.broadcast('dealbuy', deal_num, deal_price, tm.time())    # Have a deal
             self.winner(sell_player)
 
             if buy_order.num == 0:
@@ -185,11 +185,11 @@ class NetHandler(sck.BaseRequestHandler):
             sell_order.num -= deal_num
             sell_player.money += deal_num * deal_price
             top_buy.num -= deal_num
-            buy_player.money += deal_num * (top_buy.num - deal_num)
+            buy_player.money += deal_num * (top_buy.num - deal_num)             # Return redundant money
             buy_player.goods += deal_num
-            sell_player.sock.sendall(self.command('selldealok', deal_num, deal_price, sell_order.time))
-            buy_player.sock.sendall(self.command('buydealok', deal_num, deal_price, top_buy.time))
-            NetHandler.broadcast('dealsell', deal_num, deal_price, tm.time())
+            sell_player.sock.sendall(self.command('selldealok', deal_num, deal_price, sell_order.time))     # Buy initiatively
+            buy_player.sock.sendall(self.command('buydealok', deal_num, deal_price, top_buy.time))          # Sell initiatively
+            NetHandler.broadcast('dealsell', deal_num, deal_price, tm.time())      # Have a deal
 
             if sell_order.num == 0:
                 if top_buy.num != 0:
@@ -276,6 +276,7 @@ class NetHandler(sck.BaseRequestHandler):
 
         if SpecArt.win_flag and SpecArt.ser_sock:
             del SpecArt.ser_sock
+            exit(0)
 
     def setup(self):
         '''
@@ -314,15 +315,16 @@ class SpecArt:
     def __init__(self, host, port):
         self.host = host
         self.port = port
-        self.sock = TCPServer((host, port), NetHandler)
+        SpecArt.ser_sock = TCPServer((host, port), NetHandler)
         self.conn_pool = []
         self.players = {}
-        self.sock.serve_forever()
+        SpecArt.ser_sock.serve_forever()
 
     def __del__(self):
-        self.sock.shutdown()
-        self.sock.server_close()
-        exit(0)
+        for player in NetHandler.players:
+            player.sock.close()
+        SpecArt.ser_sock.shutdown()
+        SpecArt.ser_sock.server_close()
 
 def init():
     SpecArt('0.0.0.0', 7733)
@@ -343,6 +345,10 @@ def controller():
                 NetHandler.broadcast('begin', time)
                 for player in NetHandler.players.values():
                     NetHandler.broadcast('name', player.addr, player.name)
+        
+        if cmd == 'q':
+            del SpecArt.ser_sock
+            exit(0)
 
 ser = thrd.Thread(target=init)
 ser.start()
