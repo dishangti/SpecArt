@@ -29,9 +29,9 @@ def controller():
             del ser.SpecArt.ser_sock
             exit(0)
 
-print("SpecArt Server")
-print("Server starting...")
+print("Welcome to SpecArt Server!")
 server = thrd.Thread(target=init)
 server.start()
+print("Server is running...")
 controller()
 
