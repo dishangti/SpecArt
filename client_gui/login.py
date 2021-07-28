@@ -14,21 +14,21 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_login_Form(object):
     def setupUi(self, login_Form):
         login_Form.setObjectName("login_Form")
-        login_Form.resize(320, 153)
+        login_Form.resize(290, 147)
         self.label = QtWidgets.QLabel(login_Form)
-        self.label.setGeometry(QtCore.QRect(40, 30, 54, 12))
+        self.label.setGeometry(QtCore.QRect(30, 30, 54, 12))
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(login_Form)
-        self.label_2.setGeometry(QtCore.QRect(40, 60, 54, 12))
+        self.label_2.setGeometry(QtCore.QRect(30, 60, 54, 12))
         self.label_2.setObjectName("label_2")
         self.lineEdit = QtWidgets.QLineEdit(login_Form)
-        self.lineEdit.setGeometry(QtCore.QRect(88, 26, 181, 20))
+        self.lineEdit.setGeometry(QtCore.QRect(78, 26, 181, 20))
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit_2 = QtWidgets.QLineEdit(login_Form)
-        self.lineEdit_2.setGeometry(QtCore.QRect(88, 56, 181, 20))
+        self.lineEdit_2.setGeometry(QtCore.QRect(78, 56, 181, 20))
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.pushButton = QtWidgets.QPushButton(login_Form)
-        self.pushButton.setGeometry(QtCore.QRect(120, 100, 81, 31))
+        self.pushButton.setGeometry(QtCore.QRect(110, 100, 81, 31))
         self.pushButton.setObjectName("pushButton")
 
         self.retranslateUi(login_Form)
@@ -44,7 +44,6 @@ class Ui_login_Form(object):
 
 if __name__ == "__main__":
     import sys
-    QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     app = QtWidgets.QApplication(sys.argv)
     login_Form = QtWidgets.QWidget()
     ui = Ui_login_Form()
