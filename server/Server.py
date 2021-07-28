@@ -3,7 +3,7 @@ import time as tm
 import heapq as hp
 import threading as thrd
 
-syn_lock = thrd.Lock()
+syn_lock = thrd.Lock()          # Thread synchronization lock
 
 class TCPServer(sck.ThreadingTCPServer):
     allow_reuse_address = True
@@ -97,7 +97,7 @@ class NetHandler(sck.BaseRequestHandler):
             command = command + str(string) + ' '
         command = command.rstrip()
         command = command + '#'
-        return command.encode('utf8')
+        return command.encode(SpecArt.CODE)
 
     @classmethod
     def broadcast(cls, *strs):
@@ -109,7 +109,7 @@ class NetHandler(sck.BaseRequestHandler):
             command = command + str(string) + ' '
         command = command.rstrip()
         command = command + '#'
-        command = command.encode('utf8')
+        command = command.encode(SpecArt.CODE)
         for player in cls.players.values():
             player.sock.sendall(command)
 
@@ -126,7 +126,7 @@ class NetHandler(sck.BaseRequestHandler):
     def buy_order(self, buy_order):
         '''
         buy_order:(Order)
-        Process a buying order.
+        Process a buying order by always comparing it with the top of the sell heap queue.
         '''
         buy_player = NetHandler.players[buy_order.name]
 
@@ -163,7 +163,7 @@ class NetHandler(sck.BaseRequestHandler):
     def sell_order(self, sell_order):
         '''
         sell_order:(Order)
-        Process a selling order.
+        Process a selling order by always comparing it with the top of the buy heap queue.
         '''
         sell_player = NetHandler.players[sell_order.name]
         
@@ -210,8 +210,8 @@ class NetHandler(sck.BaseRequestHandler):
             NetHandler.players[self.name] = self.player
             with syn_lock:
                 self.sock.sendall(self.command('nameok', self.name))
-                self.sock.sendall(self.command('money', SpecArt.INIT_MONEY))
-                self.sock.sendall(self.command('goods', SpecArt.INIT_GOODS))
+                self.sock.sendall(self.command('money', SpecArt.INIT_MONEY))        # Set money for a player
+                self.sock.sendall(self.command('goods', SpecArt.INIT_GOODS))        # Set goods for a player
             print(self.time_str(f"{self.addr} set name as {self.name}."))
 
         if self.named == False and SpecArt.begin_flag == True:
@@ -290,7 +290,7 @@ class NetHandler(sck.BaseRequestHandler):
         Handle commands recieved from the player.
         '''
         while self.inuse:
-            buff = self.request.recv(1024).decode('utf8')
+            buff = self.request.recv(1024).decode(SpecArt.CODE)
             commands = buff.split('#')
             for command in commands:
                 self.command_handle(command.split(' '))
@@ -303,6 +303,7 @@ class SpecArt:
     INIT_GOODS = 100000
     WIN_RATE = 0.6
     WIN_MONEY = 0
+    CODE = 'utf8'
 
     win_flag = False
     begin_flag = False
