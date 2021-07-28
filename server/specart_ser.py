@@ -3,8 +3,6 @@ import time as tm
 import heapq as hp
 import threading as thrd
 
-VER = 'v0.1.1-beta'
-
 syn_lock = thrd.Lock()
 
 class TCPServer(sck.ThreadingTCPServer):
@@ -351,7 +349,7 @@ def controller():
             del SpecArt.ser_sock
             exit(0)
 
-print("SpecArt", VER)
+print("SpecArt Server")
 print("Server starting...")
 ser = thrd.Thread(target=init)
 ser.start()
