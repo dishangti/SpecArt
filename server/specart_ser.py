@@ -3,6 +3,8 @@ import time as tm
 import heapq as hp
 import threading as thrd
 
+VER = 'v0.1.1-beta'
+
 syn_lock = thrd.Lock()
 
 class TCPServer(sck.ThreadingTCPServer):
@@ -329,6 +331,9 @@ def controller():
     '''
     Control the server.
     '''
+    print('Input b and press enter to begin after all the players in.')
+    print('Input q and press enter to quit.')
+
     while True:
         cmd = input('')
         if cmd == 'b' and SpecArt.begin_flag == False:
@@ -341,11 +346,13 @@ def controller():
                 NetHandler.broadcast('begin', time)
                 for player in NetHandler.players.values():
                     NetHandler.broadcast('name', player.addr, player.name)
-        
+
         if cmd == 'q':
             del SpecArt.ser_sock
             exit(0)
 
+print("SpecArt", VER)
+print("Server starting...")
 ser = thrd.Thread(target=init)
 ser.start()
 controller()
