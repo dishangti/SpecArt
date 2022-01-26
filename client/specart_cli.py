@@ -4,6 +4,15 @@ import threading
 
 soc = socket.socket()
 
+class specart_IO:
+    def __init__(self):
+        self.useGUI = false
+
+    def input():
+        pass
+    def output():
+        pass
+
 def recv():
     while True:
         buff = soc.recv(1024).decode('utf8')

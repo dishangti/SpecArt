@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
         self.lineEdit.setGeometry(QtCore.QRect(68, 16, 181, 20))
         self.lineEdit.setObjectName("lineEdit")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(100, 90, 81, 31))
+        self.pushButton.setGeometry(QtCore.QRect(100, 80, 81, 31))
         self.pushButton.setObjectName("pushButton")
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -42,4 +42,4 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "SpecArt-Login"))
         self.label.setText(_translate("MainWindow", "用户名"))
         self.label_2.setText(_translate("MainWindow", "主机"))
-        self.pushButton.setText(_translate("MainWindow", "Login"))
+        self.pushButton.setText(_translate("MainWindow", "登录"))
