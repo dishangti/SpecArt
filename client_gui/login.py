@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\login.ui'
+# Form implementation generated from reading ui file 'login.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -11,42 +11,35 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_login_Form(object):
-    def setupUi(self, login_Form):
-        login_Form.setObjectName("login_Form")
-        login_Form.resize(290, 147)
-        self.label = QtWidgets.QLabel(login_Form)
-        self.label.setGeometry(QtCore.QRect(30, 30, 54, 12))
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(267, 129)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(20, 20, 54, 12))
         self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(login_Form)
-        self.label_2.setGeometry(QtCore.QRect(30, 60, 54, 12))
-        self.label_2.setObjectName("label_2")
-        self.lineEdit = QtWidgets.QLineEdit(login_Form)
-        self.lineEdit.setGeometry(QtCore.QRect(78, 26, 181, 20))
-        self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(login_Form)
-        self.lineEdit_2.setGeometry(QtCore.QRect(78, 56, 181, 20))
+        self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEdit_2.setGeometry(QtCore.QRect(68, 46, 181, 20))
         self.lineEdit_2.setObjectName("lineEdit_2")
-        self.pushButton = QtWidgets.QPushButton(login_Form)
-        self.pushButton.setGeometry(QtCore.QRect(110, 100, 81, 31))
+        self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_2.setGeometry(QtCore.QRect(20, 50, 54, 12))
+        self.label_2.setObjectName("label_2")
+        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEdit.setGeometry(QtCore.QRect(68, 16, 181, 20))
+        self.lineEdit.setObjectName("lineEdit")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(100, 90, 81, 31))
         self.pushButton.setObjectName("pushButton")
+        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(login_Form)
-        QtCore.QMetaObject.connectSlotsByName(login_Form)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, login_Form):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        login_Form.setWindowTitle(_translate("login_Form", "SpecArt-Login"))
-        self.label.setText(_translate("login_Form", "Name"))
-        self.label_2.setText(_translate("login_Form", "Host"))
-        self.pushButton.setText(_translate("login_Form", "Login"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    login_Form = QtWidgets.QWidget()
-    ui = Ui_login_Form()
-    ui.setupUi(login_Form)
-    login_Form.show()
-    sys.exit(app.exec_())
+        MainWindow.setWindowTitle(_translate("MainWindow", "SpecArt-Login"))
+        self.label.setText(_translate("MainWindow", "用户名"))
+        self.label_2.setText(_translate("MainWindow", "主机"))
+        self.pushButton.setText(_translate("MainWindow", "Login"))

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="lan_pushButton">
    <property name="geometry">
     <rect>
      <x>270</x>
@@ -26,7 +26,7 @@
     <string>局域网联机</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="teach_pushButton">
    <property name="geometry">
     <rect>
      <x>270</x>
@@ -39,7 +39,7 @@
     <string>单机教学</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="about_pushButton">
    <property name="geometry">
     <rect>
      <x>270</x>
@@ -57,7 +57,7 @@
     <rect>
      <x>30</x>
      <y>20</y>
-     <width>171</width>
+     <width>231</width>
      <height>61</height>
     </rect>
    </property>
@@ -120,9 +120,9 @@
    </property>
   </widget>
   <zorder>label_3</zorder>
-  <zorder>pushButton</zorder>
-  <zorder>pushButton_2</zorder>
-  <zorder>pushButton_3</zorder>
+  <zorder>lan_pushButton</zorder>
+  <zorder>teach_pushButton</zorder>
+  <zorder>about_pushButton</zorder>
   <zorder>label</zorder>
   <zorder>label_2</zorder>
  </widget>
