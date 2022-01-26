@@ -68,4 +68,5 @@ class Ui_Form(object):
         self.pushButton_3.setText(_translate("Form", "关于"))
         self.label.setText(_translate("Form", "SpecArt"))
         self.label_2.setText(_translate("Form", "\"Speculation is as old as the hills\""))
+
 import welcome_background_rc
