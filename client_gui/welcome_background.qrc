@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="background">
+    <file>specart封面图.jpg</file>
+  </qresource>
+</RCC>
