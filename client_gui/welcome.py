@@ -47,7 +47,7 @@ class Ui_Form(object):
         self.label_3 = QtWidgets.QLabel(Form)
         self.label_3.setGeometry(QtCore.QRect(0, 0, 401, 301))
         self.label_3.setText("")
-        self.label_3.setPixmap(QtGui.QPixmap(":/background/specart封面图.jpg"))
+        self.label_3.setPixmap(QtGui.QPixmap(":/background/specart_welcome_back.jpg"))
         self.label_3.setScaledContents(True)
         self.label_3.setObjectName("label_3")
         self.label_3.raise_()

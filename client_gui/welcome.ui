@@ -113,7 +113,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="welcome_background.qrc">:/background/specart封面图.jpg</pixmap>
+    <pixmap resource="welcome_background.qrc">:/background/specart_welcome_back.jpg</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
