@@ -28,7 +28,7 @@ class Ui_Form(object):
         self.label.setGeometry(QtCore.QRect(30, 20, 231, 61))
         font = QtGui.QFont()
         font.setFamily("Ink Free")
-        font.setPointSize(48)
+        font.setPointSize(45)
         font.setBold(False)
         font.setItalic(False)
         font.setWeight(50)
@@ -38,10 +38,10 @@ class Ui_Form(object):
         self.label.setOpenExternalLinks(False)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setGeometry(QtCore.QRect(90, 90, 281, 21))
+        self.label_2.setGeometry(QtCore.QRect(60, 100, 321, 21))
         font = QtGui.QFont()
         font.setFamily("Ink Free")
-        font.setPointSize(20)
+        font.setPointSize(15)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(Form)
@@ -62,7 +62,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Welcome"))
         self.lan_pushButton.setText(_translate("Form", "局域网联机"))
         self.teach_pushButton.setText(_translate("Form", "单机教学"))
         self.about_pushButton.setText(_translate("Form", "关于"))
