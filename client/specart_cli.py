@@ -4,6 +4,10 @@ import threading
 
 soc = socket.socket()
 
+class CON_Com(Com):
+    def CON_fresh(self, content):
+        command_handle(cmd)
+
 def command_handle(cmd):
     '''
     cmd:指令字符串按空格分割后的指令列表
@@ -24,7 +28,7 @@ def command_handle(cmd):
         if core_cmd == 'nameok':                                        #nameok (name)
             print('Server Instruction: '+' '.join(cmd))
 
-        elif core_cmd == 'money':                                       #money (initMoney)
+        elif core_cmd == 'money':                                 #money (initMoney)
             myself.money = initMoney = int(cmd[1])
             print('initial money: ', cmd[1], sep='')
 
@@ -182,6 +186,21 @@ def Ssort(S):
     
     return ret
 
+def Myaccount(player:Player):
+    '''
+    查看个人账户
+    '''
+
+    print(f'Current Money:{player.money}\nCurrent Goods:{player.goods}')
+
+def Mytransaction(player:Player):
+    '''
+    查看个人在途交易
+    self.transaction的values是指令按空格切分后的列表
+    '''
+    
+    print(tuple(map(' '.join, player.transaction.values())))
+
 if __name__ == '__main__':
     username = input('Hey! What\'s your name? ')
     host = input('host: ')
@@ -213,9 +232,9 @@ if __name__ == '__main__':
         try:
             cmd = input().split()
             if cmd[0] == 'transaction':
-                myself.Mytransaction()
+                Mytransaction()
             elif cmd[0] == 'account':
-                myself.Myaccount()
+                Myaccount()
             elif cmd[0] == 'selling':
                 print(Ssort(selling))
             elif cmd[0] == 'buying':
