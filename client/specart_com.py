@@ -1,6 +1,5 @@
 from ast import Pass
 import socket
-import specart_cli
 import threading
 
 class Player(object):
@@ -88,9 +87,12 @@ class Com:
     def output(self, content):
         if self.mode == 0:
             # Console mode
-            specart_cli.command_handle(content)
+            self.CON_fresh(content)
         elif self.mode == 1:
             self.GUI_display(content)
+
+    def CON_fresh(self, content):
+        pass
 
     def GUI_fresh(self, content):     # 于GUI中实现显示
         pass

@@ -4,6 +4,10 @@ import threading
 
 soc = socket.socket()
 
+class CON_Com(Com):
+    def CON_fresh(self, content):
+        command_handle(cmd)
+
 def command_handle(cmd):
     '''
     cmd:指令字符串按空格分割后的指令列表
