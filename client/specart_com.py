@@ -70,21 +70,6 @@ class Player(object):
         command = f'backbuy {num} {price} {time}#'
         self.soc.sendall(command.encode('utf8'))
 
-    def Myaccount(self):
-        '''
-        查看个人账户
-        '''
-
-        print(f'Current Money:{self.money}\nCurrent Goods:{self.goods}')
-
-    def Mytransaction(self):
-        '''
-        查看个人在途交易
-        self.transaction的values是指令按空格切分后的列表
-        '''
-        
-        print(tuple(map(' '.join, self.transaction.values())))
-
 class Com:
     def __init__(self, mode, player:Player):
         '''
@@ -100,15 +85,19 @@ class Com:
         thread.start()
         self.soc.sendall(f'name {self.player.username}#'.encode('utf8'))
       
-    def output(self , type, content):
+    def output(self, content):
         if self.mode == 0:
             # Console mode
             specart_cli.command_handle(content)
         elif self.mode == 1:
-            # GUI mode
-            pass
+            self.GUI_display(content)
+
+    def GUI_fresh(self, content):     # 于GUI中实现显示
+        pass
 
     def send_cmd(self, cmd):
+        if type(cmd) == str:
+            cmd = cmd.strip().split()
         if cmd[0] == 'sell':
             self.player.sell(int(cmd[1]), int(cmd[2]))
         elif cmd[0] == 'buy':
