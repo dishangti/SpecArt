@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+# import sys
 
 
 class Ui_SpecArt_MainWindow(object):
@@ -41,7 +42,7 @@ class Ui_SpecArt_MainWindow(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(140, 240, 41, 21))
+        self.label_2.setGeometry(QtCore.QRect(110, 230, 61, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_2.setFont(font)
@@ -53,7 +54,7 @@ class Ui_SpecArt_MainWindow(object):
         self.price_lineEdit.setFont(font)
         self.price_lineEdit.setObjectName("price_lineEdit")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(140, 300, 31, 16))
+        self.label_3.setGeometry(QtCore.QRect(110, 290, 61, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_3.setFont(font)
@@ -97,11 +98,15 @@ class Ui_SpecArt_MainWindow(object):
         self.sell_pushButton.setText(_translate("SpecArt_MainWindow", "委卖"))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    SpecArt_MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_SpecArt_MainWindow()
-    ui.setupUi(SpecArt_MainWindow)
-    SpecArt_MainWindow.show()
-    sys.exit(app.exec_())
+# class mainWin(QtWidgets.QMainWindow, Ui_SpecArt_MainWindow):
+#     def __init__(self,parent=None):
+#         super(mainWin, self).__init__()
+
+#         self.setupUi(self)
+
+# if __name__ == '__main__':
+#     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+#     app = QtWidgets.QApplication(sys.argv)
+#     ui = mainWin()
+#     ui.show()
+#     sys.exit(app.exec_())
