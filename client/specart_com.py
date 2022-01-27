@@ -3,7 +3,7 @@ import socket
 import threading
 
 class Player(object):
-    def __init__(self, username):
+    def __init__(self):
         '''
         username:用户名
         initGoods:初始物资
@@ -11,7 +11,7 @@ class Player(object):
         soc:使用的socket对象
         '''
 
-        self.username = username
+        self.username = ""
         self.goods = 0
         self.money = 0
         self.transaction = {}       #keys:挂单时间 values:指令按空格切分后的列表
@@ -29,13 +29,13 @@ class Player(object):
     #     soc.close()
 
 class Com:
-    def __init__(self, mode, username):
+    def __init__(self, mode):
         '''
         mode (integer): 0 (consle), 1 (GUI)
         '''
         self.mode = mode
         self.soc = socket.socket()
-        self.player = Player(username)
+        self.player = Player()
         self.initGoods = 0
         self.initMoney = 0
 
