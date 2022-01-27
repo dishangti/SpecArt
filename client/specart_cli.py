@@ -182,6 +182,21 @@ def Ssort(S):
     
     return ret
 
+def Myaccount(player:Player):
+    '''
+    查看个人账户
+    '''
+
+    print(f'Current Money:{player.money}\nCurrent Goods:{player.goods}')
+
+def Mytransaction(player:Player):
+    '''
+    查看个人在途交易
+    self.transaction的values是指令按空格切分后的列表
+    '''
+    
+    print(tuple(map(' '.join, player.transaction.values())))
+
 if __name__ == '__main__':
     username = input('Hey! What\'s your name? ')
     host = input('host: ')
@@ -213,9 +228,9 @@ if __name__ == '__main__':
         try:
             cmd = input().split()
             if cmd[0] == 'transaction':
-                myself.Mytransaction()
+                Mytransaction()
             elif cmd[0] == 'account':
-                myself.Myaccount()
+                Myaccount()
             elif cmd[0] == 'selling':
                 print(Ssort(selling))
             elif cmd[0] == 'buying':
