@@ -21,7 +21,7 @@ In this game, players are connected by the central server, and allocated **equal
 * Follow the hints and enjoy it!
 
 ## Client Operations (GUI)
-*~~Learn by "Local Teaching" method.~~
+* ~~Learn by "Local Teaching" method.~~
 * Choose "Online Play" to begin the game.
 * Set a unique name for each player, type the address of the server, click "Login" botton.
 * Wait for the signal of beginning from the server.
