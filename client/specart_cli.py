@@ -1,28 +1,8 @@
-from Player import Player
+from specart_com import Player, Com
 import socket
 import threading
 
 soc = socket.socket()
-
-class specart_IO:
-    def __init__(self):
-        self.useGUI = false
-
-    def input():
-        pass
-    def output():
-        pass
-
-def recv():
-    while True:
-        buff = soc.recv(1024).decode('utf8')
-        command = buff.split('#')
-        for i in command[:]:                    #去除空指令
-            if not i:
-                command.remove(i)
-        for item in command:
-            out = item.strip().split()
-            command_handle(out)
 
 def command_handle(cmd):
     '''
@@ -202,59 +182,46 @@ def Ssort(S):
     
     return ret
 
-username = input('Hey! What\'s your name? ')
-host = input('host: ')
-port = 7733#int(input('port: '))
+if __name__ == '__main__':
+    username = input('Hey! What\'s your name? ')
+    host = input('host: ')
 
-soc.connect((host, port))
+    initGoods = None        #初始化
+    initMoney = None        #初始化
+    beginTime = None        #初始化
+    myself = Player(username, initGoods, initMoney, soc)
+    com = Com(0, myself)
+    com.connect(host)
 
-soc.sendall(f'name {username}#'.encode('utf8'))
+    buying = {}             #买盘，key为价格value为该价格挂单总数量
+    selling = {}            #卖盘，key为价格value为该价格挂单总数量
 
-initGoods = None        #初始化
-initMoney = None        #初始化
-beginTime = None        #初始化
-myself = Player(username, initGoods, initMoney, soc)
+    while initGoods == None or initMoney == None or beginTime == None:  #等待从服务器读取数据再继续主线程
+        pass
 
-buying = {}             #买盘，key为价格value为该价格挂单总数量
-selling = {}            #卖盘，key为价格value为该价格挂单总数量
+    print('''\nrules:
+    sell (num) (price)
+    buy (num) (price)
+    backsell (num) (price) (time)
+    backbuy (num) (price) (time)
+    transaction
+    account
+    selling
+    buying\n''')       #提示操作指令
 
-thread = threading.Thread(target=recv, name='recvThread')
-thread.start()
-
-while initGoods == None or initMoney == None or beginTime == None:  #等待从服务器读取数据再继续主线程
-    pass
-
-print('''\nrules:
-sell (num) (price)
-buy (num) (price)
-backsell (num) (price) (time)
-backbuy (num) (price) (time)
-transaction
-account
-selling
-buying\n''')       #提示操作指令
-
-while True:
-    try:
-        cmd = input().split()
-        if cmd[0] == 'sell':
-            myself.sell(int(cmd[1]), int(cmd[2]))
-        elif cmd[0] == 'buy':
-            myself.buy(int(cmd[1]), int(cmd[2]))
-        elif cmd[0] == 'backsell':
-            myself.backsell(cmd[1], cmd[2], cmd[3])
-        elif cmd[0] == 'backbuy':
-            myself.backbuy(cmd[1], cmd[2], cmd[3])
-        elif cmd[0] == 'transaction':
-            myself.Mytransaction()
-        elif cmd[0] == 'account':
-            myself.Myaccount()
-        elif cmd[0] == 'selling':
-            print(Ssort(selling))
-        elif cmd[0] == 'buying':
-            print(Bsort(buying))
-        else:
-            print('invalid command')
-    except Exception as e:
-        print(e)
+    while True:
+        try:
+            cmd = input().split()
+            if cmd[0] == 'transaction':
+                myself.Mytransaction()
+            elif cmd[0] == 'account':
+                myself.Myaccount()
+            elif cmd[0] == 'selling':
+                print(Ssort(selling))
+            elif cmd[0] == 'buying':
+                print(Bsort(buying))
+            else:
+                print('invalid command')
+        except Exception as e:
+            print(e)
 
