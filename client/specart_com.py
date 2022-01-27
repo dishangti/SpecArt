@@ -16,18 +16,6 @@ class Player(object):
         self.money = 0
         self.transaction = {}       #keys:挂单时间 values:指令按空格切分后的列表
 
-    # def sendMessage(self, port):
-    #     '''
-    #     port:端口
-    #     '''
-
-    #     soc = socket.socket()
-    #     host = socket.gethostname()
-
-    #     soc.connect((host, port))
-    #     print(soc.recv(1024))
-    #     soc.close()
-
 class Com:
     def __init__(self, mode):
         '''

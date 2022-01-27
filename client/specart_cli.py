@@ -29,11 +29,11 @@ def command_handle(cmd):
             print('Server Instruction: '+' '.join(cmd))
 
         elif core_cmd == 'money':                                 #money (initMoney)
-            com.player.money = initMoney = int(cmd[1])
+            myself.money = initMoney = int(cmd[1])
             print('initial money: ', cmd[1], sep='')
 
         elif core_cmd == 'goods':                                       #goods (initGoods)
-            com.player.goods = initGoods = int(cmd[1])
+            myself.goods = initGoods = int(cmd[1])
             print('initial goods: ', cmd[1], sep='')
 
         elif core_cmd == 'sellok':                                      #sellok (num) (price) (time)
