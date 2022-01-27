@@ -28,12 +28,12 @@ def command_handle(cmd):
         if core_cmd == 'nameok':                                        #nameok (name)
             print('Server Instruction: '+' '.join(cmd))
 
-        elif core_cmd == 'money':                                       #money (initMoney)
-            myself.money = initMoney = int(cmd[1])
+        elif core_cmd == 'money':                                 #money (initMoney)
+            com.player.money = initMoney = int(cmd[1])
             print('initial money: ', cmd[1], sep='')
 
         elif core_cmd == 'goods':                                       #goods (initGoods)
-            myself.goods = initGoods = int(cmd[1])
+            com.player.goods = initGoods = int(cmd[1])
             print('initial goods: ', cmd[1], sep='')
 
         elif core_cmd == 'sellok':                                      #sellok (num) (price) (time)
