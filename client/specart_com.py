@@ -43,15 +43,27 @@ class Com:
             # Console mode
             self.CON_display(content)
         elif self.mode == 1:
+            # GUI mode
             self.GUI_fresh()
 
-    def CON_display(self, content):
+    def notice(self, content):  # Give a notice to the player
+        if self.mode == 0:
+            # Console mode
+            print(content)
+        elif self.mode == 1:    # Display by a messagebox
+            # GUI mode
+            self.GUI_msgbox(content)
+
+    def CON_display(self, content):     # Print on console
         pass
 
-    def GUI_fresh(self):     # 于GUI中实现显示
+    def GUI_msgbox(self, content):
         pass
 
-    def GUI_newDeal(self, dir, price, num):
+    def GUI_fresh(self):     # Fresh values in GUI
+        pass
+
+    def GUI_newDeal(self, dir, price, num):     # Called when new deal is finished
         """
         dir (int) The positive direction for the deal: 0 (buy), 1 (sell).
         price (int): Price of the deal.
