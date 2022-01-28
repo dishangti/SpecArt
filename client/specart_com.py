@@ -23,8 +23,9 @@ class Com:
         self.mode = mode
         self.soc = socket.socket()
         self.player = Player()
-        self.initGoods = 0
+        self.initGoods = 0              # Inited money and goods
         self.initMoney = 0
+        self.totalPlayerMoney = 0      # Total money of all the players
 
         # Here are varieties for GUI to display
         self.price = 0

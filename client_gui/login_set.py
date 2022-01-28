@@ -47,6 +47,7 @@ class mainWin(QMainWindow, Ui_MainWindow):
         self.window = mainwin_set.mainWin()
         self.window.com.player.username = self.username
         self.window.com.connect(self.host)
+        self.window.com.notice('登录成功！等待服务器开始游戏...')
         self.window.show()
         
 
