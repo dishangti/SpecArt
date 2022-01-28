@@ -51,6 +51,14 @@ class Com:
     def GUI_fresh(self):     # 于GUI中实现显示
         pass
 
+    def GUI_newDeal(self, dir, price, num):
+        """
+        dir (int) The positive direction for the deal: 0 (buy), 1 (sell).
+        price (int): Price of the deal.
+        num (int): Number of the deal.
+        """
+        pass
+
     def send_cmd(self, cmd):
         if type(cmd) == str:
             cmd = cmd.strip().split()
