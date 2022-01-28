@@ -9,7 +9,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-# import sys
 
 
 class Ui_SpecArt_MainWindow(object):
@@ -32,47 +31,47 @@ class Ui_SpecArt_MainWindow(object):
         self.buy_listView.setGeometry(QtCore.QRect(480, 50, 181, 151))
         self.buy_listView.setObjectName("buy_listView")
         self.win_progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.win_progressBar.setGeometry(QtCore.QRect(210, 350, 381, 21))
+        self.win_progressBar.setGeometry(QtCore.QRect(80, 360, 381, 21))
         self.win_progressBar.setProperty("value", 0)
         self.win_progressBar.setObjectName("win_progressBar")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(150, 350, 71, 21))
+        self.label.setGeometry(QtCore.QRect(20, 360, 71, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(110, 230, 61, 31))
+        self.label_2.setGeometry(QtCore.QRect(30, 240, 61, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.price_lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.price_lineEdit.setGeometry(QtCore.QRect(180, 230, 151, 31))
+        self.price_lineEdit.setGeometry(QtCore.QRect(100, 240, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.price_lineEdit.setFont(font)
         self.price_lineEdit.setObjectName("price_lineEdit")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(110, 290, 61, 31))
+        self.label_3.setGeometry(QtCore.QRect(30, 300, 61, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.num_lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.num_lineEdit.setGeometry(QtCore.QRect(180, 290, 151, 31))
+        self.num_lineEdit.setGeometry(QtCore.QRect(100, 300, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.num_lineEdit.setFont(font)
         self.num_lineEdit.setObjectName("num_lineEdit")
         self.buy_pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.buy_pushButton.setGeometry(QtCore.QRect(400, 220, 121, 51))
+        self.buy_pushButton.setGeometry(QtCore.QRect(320, 230, 121, 51))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.buy_pushButton.setFont(font)
         self.buy_pushButton.setObjectName("buy_pushButton")
         self.sell_pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.sell_pushButton.setGeometry(QtCore.QRect(400, 280, 121, 51))
+        self.sell_pushButton.setGeometry(QtCore.QRect(320, 290, 121, 51))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.sell_pushButton.setFont(font)
@@ -80,6 +79,9 @@ class Ui_SpecArt_MainWindow(object):
         self.openGLWidget_2 = QtWidgets.QOpenGLWidget(self.centralwidget)
         self.openGLWidget_2.setGeometry(QtCore.QRect(0, 140, 300, 61))
         self.openGLWidget_2.setObjectName("openGLWidget_2")
+        self.listView = QtWidgets.QListView(self.centralwidget)
+        self.listView.setGeometry(QtCore.QRect(480, 200, 181, 141))
+        self.listView.setObjectName("listView")
         SpecArt_MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(SpecArt_MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -96,17 +98,3 @@ class Ui_SpecArt_MainWindow(object):
         self.label_3.setText(_translate("SpecArt_MainWindow", "数量"))
         self.buy_pushButton.setText(_translate("SpecArt_MainWindow", "委买"))
         self.sell_pushButton.setText(_translate("SpecArt_MainWindow", "委卖"))
-
-
-# class mainWin(QtWidgets.QMainWindow, Ui_SpecArt_MainWindow):
-#     def __init__(self,parent=None):
-#         super(mainWin, self).__init__()
-
-#         self.setupUi(self)
-
-# if __name__ == '__main__':
-#     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
-#     app = QtWidgets.QApplication(sys.argv)
-#     ui = mainWin()
-#     ui.show()
-#     sys.exit(app.exec_())

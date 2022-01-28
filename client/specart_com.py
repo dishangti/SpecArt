@@ -1,4 +1,3 @@
-from ast import Pass
 import socket
 import threading
 
@@ -26,6 +25,12 @@ class Com:
         self.player = Player()
         self.initGoods = 0
         self.initMoney = 0
+
+        # Here are varieties for GUI to display
+        self.price = 0
+        self.buying = {}
+        self.selling = {}
+        self.deal = ""
 
     def connect(self, host, port = 7733):
         self.soc.connect((host, port))
@@ -60,7 +65,7 @@ class Com:
 
     def soc_recv(self):
         while True:
-            buff = self.player.soc.recv(1024).decode('utf8')
+            buff = self.soc.recv(1024).decode('utf8')
             command = buff.split('#')
             for i in command[:]:                    #去除空指令
                 if not i:
