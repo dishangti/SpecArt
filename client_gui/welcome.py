@@ -62,7 +62,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Welcome"))
+        Form.setWindowTitle(_translate("Form", "SpecArt-Welcome"))
         self.lan_pushButton.setText(_translate("Form", "局域网联机"))
         self.teach_pushButton.setText(_translate("Form", "单机教学"))
         self.about_pushButton.setText(_translate("Form", "关于"))

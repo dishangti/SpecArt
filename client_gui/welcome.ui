@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Welcome</string>
+   <string>SpecArt-Welcome</string>
   </property>
   <widget class="QPushButton" name="lan_pushButton">
    <property name="geometry">
