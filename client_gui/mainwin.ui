@@ -14,7 +14,7 @@
    <string>SpecArt</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLCDNumber" name="lcdNumber">
+   <widget class="QLCDNumber" name="price_lcdNumber">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -26,8 +26,17 @@
     <property name="frameShape">
      <enum>QFrame::Box</enum>
     </property>
+    <property name="digitCount">
+     <number>14</number>
+    </property>
+    <property name="value" stdset="0">
+     <double>0.000000000000000</double>
+    </property>
+    <property name="intValue" stdset="0">
+     <number>0</number>
+    </property>
    </widget>
-   <widget class="QOpenGLWidget" name="openGLWidget">
+   <widget class="QOpenGLWidget" name="timeChart_openGLWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -170,7 +179,7 @@
      <string>委卖</string>
     </property>
    </widget>
-   <widget class="QOpenGLWidget" name="openGLWidget_2">
+   <widget class="QOpenGLWidget" name="volumn_openGLWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -180,7 +189,17 @@
      </rect>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableView" name="deal_tableView">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>200</y>
+      <width>181</width>
+      <height>151</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableView" name="sell_tableView">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -189,22 +208,15 @@
       <height>151</height>
      </rect>
     </property>
+    <property name="lineWidth">
+     <number>0</number>
+    </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget_2">
+   <widget class="QTableView" name="buy_tableView">
     <property name="geometry">
      <rect>
       <x>480</x>
       <y>50</y>
-      <width>181</width>
-      <height>151</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTableView" name="tableView">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>200</y>
       <width>181</width>
       <height>151</height>
      </rect>

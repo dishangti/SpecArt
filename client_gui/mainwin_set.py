@@ -41,5 +41,10 @@ class mainCom(Com):
         # Fresh goods and money in status bar
         self.window.statusbar.showMessage(f'状态 | 金钱: {self.player.money} | 物资: {self.player.goods}')
 
+        # Fresh price in LCD
+        self.window.price_lcdNumber.intValue = self.price
+
     def GUI_newDeal(self, dir, price, num):
+        # Red for positive buy
+        # Green for positive sell
         pass
