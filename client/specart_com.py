@@ -35,10 +35,7 @@ class OrderList():
             else:
                 left = mid
         
-        ord_lst.append(None)
-        for i in reversed(range(left, len(ord_lst))):
-            ord_lst[i + 1] = ord_lst[i]
-        ord_lst[left] = order
+        ord_lst.insert(left, order)
 
     def del_order(self, order):
         """
@@ -52,11 +49,14 @@ class OrderList():
             mid = (left + right) >> 1
             if ord_lst[mid][0] == order[0]:
                 ord_lst[mid][1] -= order[1]
-                return
+                break
             elif self.compare(order, ord_lst[mid][0]):
                 right = mid
             else:
                 left = mid
+
+        ord_lst.pop(mid)
+
 
 class Player(object):
     def __init__(self):
