@@ -189,7 +189,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QTableView" name="deal_tableView">
+   <widget class="QTableWidget" name="deal_tableWidget">
     <property name="geometry">
      <rect>
       <x>480</x>
@@ -198,8 +198,18 @@
       <height>151</height>
      </rect>
     </property>
+    <column>
+     <property name="text">
+      <string>价格</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>数量</string>
+     </property>
+    </column>
    </widget>
-   <widget class="QTableView" name="sell_tableView">
+   <widget class="QTableWidget" name="sell_tableWidget">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -211,8 +221,18 @@
     <property name="lineWidth">
      <number>0</number>
     </property>
+    <column>
+     <property name="text">
+      <string>价格</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>数量</string>
+     </property>
+    </column>
    </widget>
-   <widget class="QTableView" name="buy_tableView">
+   <widget class="QTableWidget" name="buy_tableWidget">
     <property name="geometry">
      <rect>
       <x>480</x>
@@ -221,6 +241,16 @@
       <height>151</height>
      </rect>
     </property>
+    <column>
+     <property name="text">
+      <string>价格</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>数量</string>
+     </property>
+    </column>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
