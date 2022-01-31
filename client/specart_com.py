@@ -1,17 +1,62 @@
+from ast import Compare
 import socket
 import threading
-from rbtree import RBTree
 
-class OrderList(RBTree):
+class OrderList():
     """
     An order list is a list of orders ordered by price.
-    Powered by red-black tree. 
     """
 
-    def __init__(self, type):
+    def __init__(self, typ:int):
         """
-        type: 0 (selling list in descending order), 1 (buying list in ascending order)
+        typ (int): 0 (selling list in descending order), 1 (buying list in ascending order).
         """
+        self.ord_lst = []
+        self.typ = typ
+
+    def compare(self, order1, order2):
+        return bool((order1 < order2) ^ (not self.typ))
+
+    def add_order(self, order):
+        """
+        order: a tuple in (price, num)
+        """
+        ord_lst = self.ord_lst
+        left = 0
+        right = len(ord_lst) - 1
+
+        while left < right:
+            mid = (left + right) >> 1
+            if order[0] == ord_lst[mid][0]:
+                ord_lst[mid][1] += order[1]
+                return
+            elif self.compare(order, ord_lst[mid][0]):
+                right = mid
+            else:
+                left = mid
+        
+        ord_lst.append(None)
+        for i in reversed(range(left, len(ord_lst))):
+            ord_lst[i + 1] = ord_lst[i]
+        ord_lst[left] = order
+
+    def del_order(self, order):
+        """
+        order: a tuple in (price, num)
+        """
+        ord_lst = self.ord_lst
+        left = 0
+        right = len(ord_lst) - 1
+        
+        while left < right:
+            mid = (left + right) >> 1
+            if ord_lst[mid][0] == order[0]:
+                ord_lst[mid][1] -= order[1]
+                return
+            elif self.compare(order, ord_lst[mid][0]):
+                right = mid
+            else:
+                left = mid
 
 class Player(object):
     def __init__(self):
