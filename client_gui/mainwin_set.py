@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5.QtGui import QColor, QBrush
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5 import QtCore, QtWidgets
 from mainwin import Ui_SpecArt_MainWindow
 from specart_com import Com
 import sys

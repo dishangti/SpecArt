@@ -1,5 +1,17 @@
 import socket
 import threading
+from rbtree import RBTree
+
+class OrderList(RBTree):
+    """
+    An order list is a list of orders ordered by price.
+    Powered by red-black tree. 
+    """
+
+    def __init__(self, type):
+        """
+        type: 0 (selling list in descending order), 1 (buying list in ascending order)
+        """
 
 class Player(object):
     def __init__(self):
