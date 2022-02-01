@@ -199,7 +199,7 @@
      </rect>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>89</number>
+     <number>88</number>
     </attribute>
     <column>
      <property name="text">
@@ -225,7 +225,7 @@
      <number>0</number>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>89</number>
+     <number>88</number>
     </attribute>
     <column>
      <property name="text">
@@ -248,7 +248,7 @@
      </rect>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>89</number>
+     <number>88</number>
     </attribute>
     <column>
      <property name="text">
@@ -271,7 +271,7 @@
      </rect>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>73</number>
+     <number>72</number>
     </attribute>
     <column>
      <property name="text">
