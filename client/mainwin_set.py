@@ -16,7 +16,8 @@ class mainCom(Com):
 
     def GUI_fresh(self):
         # Fresh winning process
-        self.window.win_progressBar.value = int(self.player.money / self.totalPlayerMoney)
+        if self.totalPlayerMoney != 0:
+            self.window.win_progressBar.value = int(self.player.money / self.totalPlayerMoney)
         
         # Fresh waiting order list
         table = self.window.sell_tableWidget
