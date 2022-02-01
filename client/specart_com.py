@@ -10,6 +10,7 @@ class OrderQueue():
         """
         typ(int): 0(selling list in descending order), 1(buying list in ascending order).
         """
+
         self.ord_lst = []
         self.typ = typ
 
@@ -20,6 +21,7 @@ class OrderQueue():
         """
         order: a tuple in (price, num)
         """
+
         ord_lst = self.ord_lst
         left = 0
         right = len(ord_lst) - 1
@@ -40,6 +42,7 @@ class OrderQueue():
         """
         order: a tuple in (price, num)
         """
+
         ord_lst = self.ord_lst
         left = 0
         right = len(ord_lst) - 1
@@ -89,7 +92,8 @@ class Com:
         self.selling = OrderQueue(0)
         self.deal = ""
 
-    def connect(self, host, port = 7733):
+    def connect(self, username, host, port = 7733):
+        self.player.username = username
         self.soc.connect((host, port))
         thread = threading.Thread(target=self.soc_recv, name='socRecvThread')
         thread.start()
