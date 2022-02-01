@@ -49,9 +49,9 @@
    <widget class="QProgressBar" name="win_progressBar">
     <property name="geometry">
      <rect>
-      <x>80</x>
+      <x>90</x>
       <y>360</y>
-      <width>381</width>
+      <width>761</width>
       <height>21</height>
      </rect>
     </property>
@@ -198,6 +198,9 @@
       <height>151</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>89</number>
+    </attribute>
     <column>
      <property name="text">
       <string>价格</string>
@@ -221,6 +224,9 @@
     <property name="lineWidth">
      <number>0</number>
     </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>89</number>
+    </attribute>
     <column>
      <property name="text">
       <string>价格</string>
@@ -241,6 +247,9 @@
       <height>151</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>89</number>
+    </attribute>
     <column>
      <property name="text">
       <string>价格</string>
@@ -261,6 +270,9 @@
       <height>291</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>73</number>
+    </attribute>
     <column>
      <property name="text">
       <string>方向</string>
