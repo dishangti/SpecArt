@@ -56,7 +56,7 @@ class OrderQueue():
 
         ord_lst.pop(mid)
 
-class Player(object):
+class Player():
     def __init__(self):
         '''
         username:用户名
@@ -109,11 +109,11 @@ class Com:
 
             elif core_cmd == 'money':                                 #money (initMoney)
                 self.player.money = self.initMoney = int(cmd[1])
-                self.notice('Initial money: ', cmd[1])
+                self.notice('Initial money: ' + cmd[1])
 
             elif core_cmd == 'goods':                                       #goods (initGoods)
                 self.player.goods = self.initGoods = int(cmd[1])
-                self.notice('Initial goods: ', cmd[1])
+                self.notice('Initial goods: ' + cmd[1])
 
             elif core_cmd == 'sellok':                                      #sellok (num) (price) (time)
                 #print('Server Instruction: '+' '.join(cmd))

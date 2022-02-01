@@ -21,8 +21,8 @@ if __name__ == '__main__':
     host = input('host: ')
 
     beginTime = None        #初始化
-    myself = Player(username, 0, 0, soc)
-    com = Com(0, myself)
+    com = Com(0)
+    myself = com.player
     com.connect(host)
 
     while beginTime == None:  #等待从服务器读取数据再继续主线程

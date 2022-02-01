@@ -44,7 +44,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         # Set slots for signals
         self.newNotice.connect(self.display_notice)
         self.newData.connect(self.fresh_GUI)
-        self.newDeal.connect()
+        self.newDeal.connect(self.display_deal)
 
     # def currentPriceShow(self):
     #     self.price_lcdNumber.setDigitCount(len(self.price))
@@ -53,7 +53,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
     def display_notice(self):
         if not self.notice_que.empty():
             msg = self.notice_que.get()
-            QMessageBox.information(self.window, '提示', msg)
+            QMessageBox.information(self, '提示', msg)
     
     def add_deal_item(self, dir, price, num):
         # Red for positive buy (0)
@@ -88,7 +88,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         table = self.sell_tableWidget
         table.setRowCount(0)
         table.clearContents()
-        for item in self.com.buying.items:
+        for item in self.com.buying.ord_lst:
             row = table.rowCount()
             table.insertRow(row)
             table.setItem(row, 0, str(item[0]))     # Fill in price and number
@@ -99,7 +99,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         table = self.buy_tableWidget
         table.setRowCount(0)
         table.clearContents()
-        for item in self.com.selling.items:
+        for item in self.com.selling.ord_lst:
             row = table.rowCount()
             table.insertRow(row)
             table.setItem(row, 0, str(item[0]))     # Fill in price and number
@@ -108,10 +108,10 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
 
         # Fresh goods and money in status bar
-        self.statusbar.showMessage(f'状态 # 金钱: {self.player.money} | 物资: {self.player.goods}')
+        self.statusbar.showMessage(f'状态 # 金钱: {self.com.player.money} | 物资: {self.com.player.goods}')
 
         # Fresh price in LCD
-        self.price_lcdNumber.intValue = self.price
+        self.price_lcdNumber.intValue = self.com.player
 
     def new_notice(self, content):
         self.notice_que.put(content)
