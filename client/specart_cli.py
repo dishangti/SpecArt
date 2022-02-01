@@ -16,41 +16,47 @@ def Mytransaction(player:Player):
     '''
     print(tuple(map(' '.join, player.transaction.values())))
 
-if __name__ == '__main__':
-    username = input('Hey! What\'s your name? ')
-    host = input('host: ')
+username = input('Hey! What\'s your name? ')
+host = input('host: ')
 
-    beginTime = None        #初始化
-    com = Com(0)
-    myself = com.player
-    com.connect(host)
+com = Com(0)
+myself = com.player
+com.connect(username, host)
 
-    while beginTime == None:  #等待从服务器读取数据再继续主线程
-        pass
+while com.beginTime == None:  #等待从服务器读取数据再继续主线程
+    pass
 
-    print('''\nrules:
-    sell (num) (price)
-    buy (num) (price)
-    backsell (num) (price) (time)
-    backbuy (num) (price) (time)
-    transaction
-    account
-    selling
-    buying\n''')       #提示操作指令
+print('''\nrules:
+sell (num) (price)
+buy (num) (price)
+backsell (num) (price) (time)
+backbuy (num) (price) (time)
+transaction
+account
+selling
+buying\n''')       #提示操作指令
 
-    while True:
-        try:
-            cmd = input().split()
-            if cmd[0] == 'transaction':
-                Mytransaction()
-            elif cmd[0] == 'account':
-                Myaccount()
-            elif cmd[0] == 'selling':
-                print(com.selling)
-            elif cmd[0] == 'buying':
-                print(com.buying)
-            else:
-                print('invalid command')
-        except Exception as e:
-            print(e)
+while True:
+    try:
+        cmd = input().split()
+        if cmd[0] == 'sell':
+            com.sell(int(cmd[1]), int(cmd[2]))
+        elif cmd[0] == 'buy':
+            com.buy(int(cmd[1]), int(cmd[2]))
+        elif cmd[0] == 'backsell':
+            com.backsell(cmd[1], cmd[2], cmd[3])
+        elif cmd[0] == 'backbuy':
+            com.backbuy(cmd[1], cmd[2], cmd[3])
+        elif cmd[0] == 'transaction':
+            Mytransaction(myself)
+        elif cmd[0] == 'account':
+            Myaccount(myself)
+        elif cmd[0] == 'selling':
+            print(com.selling)
+        elif cmd[0] == 'buying':
+            print(com.buying)
+        else:
+            print('Invalid command!')
+    except Exception as e:
+        print(e)
 

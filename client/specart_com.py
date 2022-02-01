@@ -10,6 +10,7 @@ class OrderQueue():
         """
         typ(int): 0(selling list in descending order), 1(buying list in ascending order).
         """
+
         self.ord_lst = []
         self.typ = typ
 
@@ -20,12 +21,13 @@ class OrderQueue():
         """
         order: a tuple in (price, num)
         """
+
         ord_lst = self.ord_lst
         left = 0
         right = len(ord_lst) - 1
+        mid = (left + right) >> 1
 
         while left < right:
-            mid = (left + right) >> 1
             if order[0] == ord_lst[mid][0]:
                 ord_lst[mid][1] += order[1]
                 return
@@ -33,6 +35,7 @@ class OrderQueue():
                 right = mid
             else:
                 left = mid
+            mid = (left + right) >> 1
         
         ord_lst.insert(left, order)
 
@@ -40,12 +43,13 @@ class OrderQueue():
         """
         order: a tuple in (price, num)
         """
+
         ord_lst = self.ord_lst
         left = 0
         right = len(ord_lst) - 1
+        mid = (left + right) >> 1
         
         while left < right:
-            mid = (left + right) >> 1
             if ord_lst[mid][0] == order[0]:
                 ord_lst[mid][1] -= order[1]
                 break
@@ -53,6 +57,7 @@ class OrderQueue():
                 right = mid
             else:
                 left = mid
+            mid = (left + right) >> 1
 
         ord_lst.pop(mid)
 
@@ -89,13 +94,14 @@ class Com:
         self.selling = OrderQueue(0)
         self.deal = ""
 
-    def connect(self, host, port = 7733):
+    def connect(self, username, host, port = 7733):
+        self.player.username = username
         self.soc.connect((host, port))
         thread = threading.Thread(target=self.soc_recv, name='socRecvThread')
         thread.start()
         self.soc.sendall(f'name {self.player.username}#'.encode('utf8'))
 
-    def command_handle(self, cmd):
+    def recv_cmd_handle(self, cmd):
         '''
         cmd(list) :指令字符串按空格分割后的指令列表
         '''
@@ -191,7 +197,7 @@ class Com:
                 self.selling.del_order((price, num))
                 # Display on GUI
                 self.price = price
-                self.GUI_newDeal(1, price, num)
+                self.new_deal(0, price, num)
             elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
                 # print('News: '+' '.join(cmd))
                 price = int(cmd[2])
@@ -202,27 +208,18 @@ class Com:
                 self.buying.del_order((price, num))
                 # Display on GUI
                 self.price = price
-                self.GUI_newDeal(0, price, num)
+                self.new_deal(1, price, num)
             elif core_cmd == 'name':                                        #name (IP):(port) (name)
                 print(f'Players: {cmd[2]} {cmd[1]}')
             elif core_cmd == 'begin':                                       #begin (time)
                 self.beginTime = cmd[1]
                 print('GAME START!')
             
-            self.GUI_fresh()
+            if self.mode == 1:
+                self.GUI_fresh()
 
         except IndexError:
             print('void cmd')
-
-    def output(self, content):
-        if self.mode == 0:
-            # Console mode
-            self.CON_fresh(content)
-        elif self.mode == 1:
-            # GUI mode
-            # Handle commands from server and then fresh the GUI
-            self.command_handle(content)
-            self.GUI_fresh()
 
     def notice(self, content):  # Give a notice to the player
         if self.mode == 0:
@@ -231,6 +228,24 @@ class Com:
         elif self.mode == 1:    # Display by a messagebox
             # GUI mode
             self.GUI_msgbox(content)
+
+    def new_deal(self, dir, price, num):
+        """
+        dir(int) The positive direction for the deal: 0(buy), 1(sell).
+        price(int): Price of the deal.
+        num(int): Number of the deal.
+        """
+        if self.mode == 0:
+            # Console mode
+            if dir == 0:
+                print("Positive Buy: ")
+            elif dir == 1:
+                print("Positive Sell: ")
+            print(f"num {num}, price {price}.")
+        elif self.mode == 1:
+            # GUI mode
+            # Handle commands from server and then fresh the GUI
+            self.GUI_newDeal(dir, price ,num)
 
     def send_cmd(self, cmd):
         if type(cmd) == str:
@@ -252,8 +267,8 @@ class Com:
                 if not i:
                     command.remove(i)
             for item in command:
-                out = item.strip().split()
-                self.output(out)
+                cmd = item.strip().split()
+                self.recv_cmd_handle(cmd)
 
     def sell(self, num, price):
         '''
@@ -296,7 +311,7 @@ class Com:
         self.soc.sendall(command.encode('utf8'))
 
     def CON_fresh(self, content):
-        self.command_handle(content)
+        self.recv_cmd_handle(content)
 
     def GUI_msgbox(self, content):
         pass
