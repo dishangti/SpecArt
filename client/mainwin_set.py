@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt5.QtGui import QColor, QBrush
 from PyQt5.QtCore import pyqtSignal
 from PyQt5 import QtCore, QtWidgets
@@ -63,8 +63,8 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         table.insertRow(row)
 
         # Fill in price and number
-        table.setItem(row, 0, str(price))
-        table.setItem(row, 1, str(num))
+        table.setItem(row, 0, QTableWidgetItem(str(price)))
+        table.setItem(row, 1, QTableWidgetItem(str(num)))
 
         # Set color
         if dir == 0:
@@ -83,27 +83,27 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         # Fresh winning process
         if self.com.totalPlayerMoney != 0:
             self.win_progressBar.value = int(self.com.player.money / self.com.totalPlayerMoney)
-        
+
         # Fresh waiting order list
-        table = self.sell_tableWidget
+        table = self.buy_tableWidget
         table.setRowCount(0)
         table.clearContents()
         for item in self.com.buying.ord_lst:
             row = table.rowCount()
             table.insertRow(row)
-            table.setItem(row, 0, str(item[0]))     # Fill in price and number
-            table.setItem(row, 1, str(item[1]))
+            table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price and number
+            table.setItem(row, 1, QTableWidgetItem(str(item[1])))
             table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))     # Set green color
             table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
             
-        table = self.buy_tableWidget
+        table = self.sell_tableWidget
         table.setRowCount(0)
         table.clearContents()
         for item in self.com.selling.ord_lst:
             row = table.rowCount()
             table.insertRow(row)
-            table.setItem(row, 0, str(item[0]))     # Fill in price and number
-            table.setItem(row, 1, str(item[1]))
+            table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price and number
+            table.setItem(row, 1, QTableWidgetItem(str(item[1])))
             table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))     # Set red color
             table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
 

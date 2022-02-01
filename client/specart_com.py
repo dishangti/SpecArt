@@ -22,6 +22,8 @@ class OrderQueue():
         order: a tuple in (price, num)
         """
 
+        # Bugs here
+
         ord_lst = self.ord_lst
         left = 0
         right = len(ord_lst) - 1
@@ -161,6 +163,7 @@ class Com:
                 else:
                     self.player.transaction[cmd[3]][1] = str(num_ordered)
                 
+                self.price = int(cmd[2])
                 #print('Server Instruction: '+' '.join(cmd))
                 
             elif core_cmd == 'selldealok':                                  #selldealok (num) (price) (time)
@@ -175,6 +178,7 @@ class Com:
                 else:
                     self.player.transaction[cmd[3]][1] = str(num_ordered)
                 
+                self.price = int(cmd[2])
                 #print('Server Instruction: '+' '.join(cmd))
             
             
@@ -196,7 +200,6 @@ class Com:
                 #处理卖盘
                 self.selling.del_order((price, num))
                 # Display on GUI
-                self.price = price
                 self.new_deal(0, price, num)
             elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
                 # print('News: '+' '.join(cmd))
@@ -207,7 +210,6 @@ class Com:
                 #处理买盘
                 self.buying.del_order((price, num))
                 # Display on GUI
-                self.price = price
                 self.new_deal(1, price, num)
             elif core_cmd == 'name':                                        #name (IP):(port) (name)
                 print(f'Players: {cmd[2]} {cmd[1]}')
