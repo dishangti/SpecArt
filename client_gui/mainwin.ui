@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>666</width>
-    <height>412</height>
+    <width>881</width>
+    <height>410</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -251,6 +251,49 @@
       <string>数量</string>
      </property>
     </column>
+   </widget>
+   <widget class="QTableWidget" name="tans_tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>0</y>
+      <width>221</width>
+      <height>291</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>方向</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>价格</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>数量</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QPushButton" name="back_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>300</y>
+      <width>161</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>撤单</string>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

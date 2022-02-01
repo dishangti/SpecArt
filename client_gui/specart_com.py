@@ -204,7 +204,7 @@ class Com:
     def output(self, content):
         if self.mode == 0:
             # Console mode
-            self.CON_display(content)
+            self.CON_fresh(content)
         elif self.mode == 1:
             # GUI mode
             # Handle commands from server and then fresh the GUI
@@ -282,8 +282,8 @@ class Com:
         command = f'backbuy {num} {price} {time}#'
         self.soc.sendall(command.encode('utf8'))
 
-    def CON_display(self, content):     # Print on console
-        pass
+    def CON_fresh(self, content):
+        self.command_handle(content)
 
     def GUI_msgbox(self, content):
         pass

@@ -1,54 +1,7 @@
 from specart_com import Player, Com
 import socket
-import threading
 
 soc = socket.socket()
-
-class CON_Com(Com):
-    def CON_fresh(self, content):
-        self.command_handle(cmd)
-
-def Bsort(B):
-    '''
-    将买盘按价格降序排列后返回
-    B:买盘字典
-    返回:字典，形如{'B1':(price, num), 'B2':(price, num)...}
-    '''
-
-    B_lst = list(B.items())
-    B_lst.sort(key=lambda tpl:int(tpl[0]), reverse=True)
-    
-    length = len(B_lst)
-    if length <= 5:
-        n = length + 1
-    else:
-        n = 6
-    ret = {}
-    for i in range(1, n):
-        ret[f'B{i}'] = B_lst[i-1]
-    
-    return ret
-
-def Ssort(S):
-    '''
-    将卖盘按价格升序排列后返回
-    S:卖盘字典
-    返回:字典，形如{'S1':(price, num), 'S2':(price, num)...}
-    '''
-
-    S_lst = list(S.items())
-    S_lst.sort(key=lambda tpl:int(tpl[0]), reverse=False)
-
-    length = len(S_lst)
-    if length <= 5:
-        n = length + 1
-    else:
-        n = 6
-    ret = {}
-    for i in range(1, n):
-        ret[f'S{i}'] = S_lst[i-1]
-    
-    return ret
 
 def Myaccount(player:Player):
     '''
@@ -100,9 +53,9 @@ if __name__ == '__main__':
             elif cmd[0] == 'account':
                 Myaccount()
             elif cmd[0] == 'selling':
-                print(Ssort(selling))
+                print(com.selling)
             elif cmd[0] == 'buying':
-                print(Bsort(buying))
+                print(com.buying)
             else:
                 print('invalid command')
         except Exception as e:
