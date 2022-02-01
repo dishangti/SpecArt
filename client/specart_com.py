@@ -1,15 +1,14 @@
-from ast import Compare
 import socket
 import threading
 
-class OrderList():
+class OrderQueue():
     """
-    An order list is a list of orders ordered by price.
+    An order queue is a list of orders ordered by price.
     """
 
     def __init__(self, typ:int):
         """
-        typ (int): 0 (selling list in descending order), 1 (buying list in ascending order).
+        typ(int): 0(selling list in descending order), 1(buying list in ascending order).
         """
         self.ord_lst = []
         self.typ = typ
@@ -57,7 +56,6 @@ class OrderList():
 
         ord_lst.pop(mid)
 
-
 class Player(object):
     def __init__(self):
         '''
@@ -75,7 +73,7 @@ class Player(object):
 class Com:
     def __init__(self, mode):
         '''
-        mode (integer): 0 (consle), 1 (GUI)
+        mode(integer): 0(consle), 1(GUI)
         '''
         self.mode = mode
         self.soc = socket.socket()
@@ -86,8 +84,8 @@ class Com:
 
         # Here are varieties for GUI to display
         self.price = 0
-        self.buying = {}
-        self.selling = {}
+        self.buying = OrderQueue(1)
+        self.selling = OrderQueue(0)
         self.deal = ""
 
     def connect(self, host, port = 7733):
@@ -96,12 +94,121 @@ class Com:
         thread.start()
         self.soc.sendall(f'name {self.player.username}#'.encode('utf8'))
 
+    def command_handle(self, cmd):
+        '''
+        cmd(list) :指令字符串按空格分割后的指令列表
+        '''
+
+        try:
+            core_cmd = cmd[0]
+            
+            #私人指令
+            if core_cmd == 'nameok':                                        #nameok (name)
+                self.notice(f'Successfully set your name as {cmd[1]}.')
+
+            elif core_cmd == 'money':                                 #money (initMoney)
+                self.player.money = self.initMoney = int(cmd[1])
+                self.notice('Initial money: ', cmd[1], sep='')
+
+            elif core_cmd == 'goods':                                       #goods (initGoods)
+                self.player.goods = self.initGoods = int(cmd[1])
+                print('Initial goods: ', cmd[1], sep='')
+
+            elif core_cmd == 'sellok':                                      #sellok (num) (price) (time)
+                #print('Server Instruction: '+' '.join(cmd))
+                cmd[0] = 'sell'
+                self.player.transaction[cmd[3]] = cmd
+                self.player.goods -= int(cmd[1])
+
+            elif core_cmd == 'buyok':                                       #buyok (num) (price) (time)
+                #print('Server Instruction: '+' '.join(cmd))
+                cmd[0] = 'buy'
+                self.player.transaction[cmd[3]] = cmd
+                self.player.money -= int(cmd[1])*int(cmd[2])
+
+            elif core_cmd == 'backsellok':                                  #backsellok (num) (price) (time)
+                self.player.goods += int(self.player.transaction[cmd[3]][1])
+                del self.player.transaction[cmd[3]]
+                #print('Server Instruction: '+' '.join(cmd))
+
+            elif core_cmd == 'backbuyok':                                   #backbuyok (num) (price) (time)
+                self.player.money += int(self.player.transaction[cmd[3]][1])*int(self.player.transaction[cmd[3]][2])
+                del self.player.transaction[cmd[3]]
+                #print('Server Instruction: '+' '.join(cmd))
+
+            elif core_cmd == 'buydealok':                                   #buydealok (num) (price) (time)
+                #处理余额
+                if cmd[2] == self.player.transaction[cmd[3]][2]:
+                    pass
+                elif int(cmd[2]) < int(self.player.transaction[cmd[3]][2]):
+                    self.player.money += (int(self.player.transaction[cmd[3]][2]) - int(cmd[2])) * int(cmd[1])
+                else:
+                    self.player.money -= (int(cmd[2]) - int(self.player.transaction[cmd[3]][2])) * int(cmd[1])
+                
+                #处理物资
+                self.player.goods += int(cmd[1])
+                num_ordered = int(self.player.transaction[cmd[3]][1])
+                num_ordered -= int(cmd[1])
+                if num_ordered == 0:
+                    del self.player.transaction[cmd[3]]
+                else:
+                    self.player.transaction[cmd[3]][1] = str(num_ordered)
+                
+                #print('Server Instruction: '+' '.join(cmd))
+                
+            elif core_cmd == 'selldealok':                                  #selldealok (num) (price) (time)
+                #处理余额
+                self.player.money += int(cmd[2]) * int(cmd[1])
+                
+                #处理物资
+                num_ordered = int(self.player.transaction[cmd[3]][1])
+                num_ordered -= int(cmd[1])
+                if num_ordered == 0:
+                    del self.player.transaction[cmd[3]]
+                else:
+                    self.player.transaction[cmd[3]][1] = str(num_ordered)
+                
+                #print('Server Instruction: '+' '.join(cmd))
+            
+            
+            #广播指令
+            elif core_cmd == 'sell':                                        #sell (num) (price)
+                self.selling.add_order((int(cmd[2]), int(cmd[1])))
+            elif core_cmd == 'buy':                                         #buy (num) (price)
+                self.buying.add_order((int(cmd[2]), int(cmd[1])))      
+            elif core_cmd == 'backsell':                                    #backsell (num) (price)
+                self.selling.del_order((int(cmd[2]), int(cmd[1])))
+            elif core_cmd == 'backbuy':                                     #backbuy (num) (price)
+                self.buying.del_order((int(cmd[2]), int(cmd[1])))
+            elif core_cmd == 'dealsell':                                    #dealsell (num) (price) (dealtime)
+                # print('News: '+' '.join(cmd))
+                #处理买盘
+                self.buying.del_order((int(cmd[2]), int(cmd[1])))
+                #处理卖盘
+                self.selling.del_order((int(cmd[2]), int(cmd[1])))
+            elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
+                # print('News: '+' '.join(cmd))
+                #处理卖盘
+                self.selling.del_order((int(cmd[2]), int(cmd[1])))
+                #处理买盘
+                self.buying.del_order((int(cmd[2]), int(cmd[1])))
+            elif core_cmd == 'name':                                        #name (IP):(port) (name)
+                print(f'Players: {cmd[2]} {cmd[1]}')
+            elif core_cmd == 'begin':                                       #begin (time)
+                beginTime = cmd[1]
+                print('GAME START!')
+
+        except IndexError:
+            print('void cmd')
+
     def output(self, content):
         if self.mode == 0:
             # Console mode
             self.CON_display(content)
         elif self.mode == 1:
             # GUI mode
+            # Handle commands from server and then fresh the GUI
+            self.command_handle(content)
             self.GUI_fresh()
 
     def notice(self, content):  # Give a notice to the player
@@ -186,8 +293,8 @@ class Com:
 
     def GUI_newDeal(self, dir, price, num):     # Called when new deal is finished
         """
-        dir (int) The positive direction for the deal: 0 (buy), 1 (sell).
-        price (int): Price of the deal.
-        num (int): Number of the deal.
+        dir(int) The positive direction for the deal: 0(buy), 1(sell).
+        price(int): Price of the deal.
+        num(int): Number of the deal.
         """
         pass
