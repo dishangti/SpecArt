@@ -187,16 +187,11 @@ class Com:
                 #处理卖盘
                 self.selling.del_order((int(cmd[2]), int(cmd[1])))
             elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
-                print('News: '+' '.join(cmd))
+                # print('News: '+' '.join(cmd))
                 #处理卖盘
-                self.selling[cmd[2]] -= int(cmd[1])
-                if self.selling[cmd[2]] == 0:
-                    del self.selling[cmd[2]]
+                self.selling.del_order((int(cmd[2]), int(cmd[1])))
                 #处理买盘
-                B_max_price = Bsort(buying)['B1'][0]
-                self.buying[B_max_price] -= int(cmd[1])
-                if self.buying[B_max_price] == 0:
-                    del self.buying[B_max_price]
+                self.buying.del_order((int(cmd[2]), int(cmd[1])))
             elif core_cmd == 'name':                                        #name (IP):(port) (name)
                 print(f'Players: {cmd[2]} {cmd[1]}')
             elif core_cmd == 'begin':                                       #begin (time)
