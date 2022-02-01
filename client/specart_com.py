@@ -24,14 +24,15 @@ class OrderQueue():
 
         # Bugs here
 
+        price, num = order
         ord_lst = self.ord_lst
         left = 0
         right = len(ord_lst) - 1
         mid = (left + right) >> 1
 
         while left < right:
-            if order[0] == ord_lst[mid][0]:
-                ord_lst[mid][1] += order[1]
+            if price == ord_lst[mid][0]:
+                ord_lst[mid][1] += num
                 return
             elif self.compare(order, ord_lst[mid][0]):
                 right = mid
@@ -46,14 +47,15 @@ class OrderQueue():
         order: a tuple in (price, num)
         """
 
+        price, num = order
         ord_lst = self.ord_lst
         left = 0
         right = len(ord_lst) - 1
         mid = (left + right) >> 1
         
         while left < right:
-            if ord_lst[mid][0] == order[0]:
-                ord_lst[mid][1] -= order[1]
+            if ord_lst[mid][0] == price:
+                ord_lst[mid][1] -= num
                 break
             elif self.compare(order, ord_lst[mid][0]):
                 right = mid
@@ -61,7 +63,8 @@ class OrderQueue():
                 left = mid
             mid = (left + right) >> 1
 
-        ord_lst.pop(mid)
+        if ord_lst[mid] == 0:
+            ord_lst.pop(mid)
 
 class Player():
     def __init__(self):
@@ -163,7 +166,6 @@ class Com:
                 else:
                     self.player.transaction[cmd[3]][1] = str(num_ordered)
                 
-                self.price = int(cmd[2])
                 #print('Server Instruction: '+' '.join(cmd))
                 
             elif core_cmd == 'selldealok':                                  #selldealok (num) (price) (time)
@@ -178,7 +180,6 @@ class Com:
                 else:
                     self.player.transaction[cmd[3]][1] = str(num_ordered)
                 
-                self.price = int(cmd[2])
                 #print('Server Instruction: '+' '.join(cmd))
             
             
@@ -201,6 +202,7 @@ class Com:
                 self.selling.del_order((price, num))
                 # Display on GUI
                 self.new_deal(0, price, num)
+                self.price = price
             elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
                 # print('News: '+' '.join(cmd))
                 price = int(cmd[2])
@@ -211,6 +213,7 @@ class Com:
                 self.buying.del_order((price, num))
                 # Display on GUI
                 self.new_deal(1, price, num)
+                self.price = price
             elif core_cmd == 'name':                                        #name (IP):(port) (name)
                 print(f'Players: {cmd[2]} {cmd[1]}')
             elif core_cmd == 'begin':                                       #begin (time)

@@ -82,7 +82,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
     def fresh_GUI(self):
         # Fresh winning process
         if self.com.totalPlayerMoney != 0:
-            self.win_progressBar.value = int(self.com.player.money / self.com.totalPlayerMoney)
+            self.win_progressBar.value = int(self.com.player.money / (self.com.totalPlayerMoney * 0.6))
 
         # Fresh waiting order list
         table = self.buy_tableWidget
@@ -93,8 +93,9 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.insertRow(row)
             table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price and number
             table.setItem(row, 1, QTableWidgetItem(str(item[1])))
-            table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))     # Set green color
-            table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
+            table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))     # Set red color
+            table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
+
             
         table = self.sell_tableWidget
         table.setRowCount(0)
@@ -104,14 +105,14 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.insertRow(row)
             table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price and number
             table.setItem(row, 1, QTableWidgetItem(str(item[1])))
-            table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))     # Set red color
-            table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
+            table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))     # Set green color
+            table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
 
         # Fresh goods and money in status bar
         self.statusbar.showMessage(f'状态 # 金钱: {self.com.player.money} | 物资: {self.com.player.goods}')
 
         # Fresh price in LCD
-        self.price_lcdNumber.intValue = self.com.player
+        self.price_lcdNumber.display(self.com.price)
 
     def new_notice(self, content):
         self.notice_que.put(content)
