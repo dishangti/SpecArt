@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from login import Ui_MainWindow
 import mainwin_set
  
@@ -47,7 +47,7 @@ class mainWin(QMainWindow, Ui_MainWindow):
         self.window = mainwin_set.mainWin()
         self.window.com.player.username = self.username
         self.window.com.connect(self.host)
-        self.window.com.notice('登录成功！等待服务器开始游戏...')
+        self.window.new_notice('登录成功!')
         self.window.show()
         
 

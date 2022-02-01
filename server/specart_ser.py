@@ -1,4 +1,4 @@
-import Server as ser
+import server as ser
 import time as tm
 import threading as thrd
 

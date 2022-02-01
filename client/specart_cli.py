@@ -7,7 +7,6 @@ def Myaccount(player:Player):
     '''
     查看个人账户
     '''
-
     print(f'Current Money:{player.money}\nCurrent Goods:{player.goods}')
 
 def Mytransaction(player:Player):
@@ -15,7 +14,6 @@ def Mytransaction(player:Player):
     查看个人在途交易
     self.transaction的values是指令按空格切分后的列表
     '''
-    
     print(tuple(map(' '.join, player.transaction.values())))
 
 if __name__ == '__main__':

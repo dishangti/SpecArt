@@ -80,6 +80,7 @@ class Com:
         self.player = Player()
         self.initGoods = 0              # Inited money and goods
         self.initMoney = 0
+        self.beginTime = ""
         self.totalPlayerMoney = 0      # Total money of all the players
 
         # Here are varieties for GUI to display
@@ -108,11 +109,11 @@ class Com:
 
             elif core_cmd == 'money':                                 #money (initMoney)
                 self.player.money = self.initMoney = int(cmd[1])
-                self.notice('Initial money: ', cmd[1], sep='')
+                self.notice('Initial money: ', cmd[1])
 
             elif core_cmd == 'goods':                                       #goods (initGoods)
                 self.player.goods = self.initGoods = int(cmd[1])
-                print('Initial goods: ', cmd[1], sep='')
+                self.notice('Initial goods: ', cmd[1])
 
             elif core_cmd == 'sellok':                                      #sellok (num) (price) (time)
                 #print('Server Instruction: '+' '.join(cmd))
@@ -195,7 +196,7 @@ class Com:
             elif core_cmd == 'name':                                        #name (IP):(port) (name)
                 print(f'Players: {cmd[2]} {cmd[1]}')
             elif core_cmd == 'begin':                                       #begin (time)
-                beginTime = cmd[1]
+                self.beginTime = cmd[1]
                 print('GAME START!')
 
         except IndexError:
@@ -214,7 +215,7 @@ class Com:
     def notice(self, content):  # Give a notice to the player
         if self.mode == 0:
             # Console mode
-            print(content)
+            print(content, sep='')
         elif self.mode == 1:    # Display by a messagebox
             # GUI mode
             self.GUI_msgbox(content)
@@ -223,13 +224,13 @@ class Com:
         if type(cmd) == str:
             cmd = cmd.strip().split()
         if cmd[0] == 'sell':
-            self.player.sell(int(cmd[1]), int(cmd[2]))
+            self.sell(int(cmd[1]), int(cmd[2]))
         elif cmd[0] == 'buy':
-            self.player.buy(int(cmd[1]), int(cmd[2]))
+            self.buy(int(cmd[1]), int(cmd[2]))
         elif cmd[0] == 'backsell':
-            self.player.backsell(cmd[1], cmd[2], cmd[3])
+            self.backsell(cmd[1], cmd[2], cmd[3])
         elif cmd[0] == 'backbuy':
-            self.player.backbuy(cmd[1], cmd[2], cmd[3])
+            self.backbuy(cmd[1], cmd[2], cmd[3])
 
     def soc_recv(self):     # Recieve data from the server
         while True:
@@ -248,7 +249,7 @@ class Com:
         price:单价
         '''
         
-        if self.goods >= num:
+        if self.player.goods >= num:
             command = f'sell {num} {price}#'
             self.soc.sendall(command.encode('utf8'))
         else:
@@ -260,7 +261,7 @@ class Com:
         price:单价
         '''
 
-        if self.money >= num * price:
+        if self.player.money >= num * price:
             command = f'buy {num} {price}#'
             self.soc.sendall(command.encode('utf8'))
         else:
