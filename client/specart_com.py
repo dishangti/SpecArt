@@ -183,21 +183,33 @@ class Com:
                 self.buying.del_order((int(cmd[2]), int(cmd[1])))
             elif core_cmd == 'dealsell':                                    #dealsell (num) (price) (dealtime)
                 # print('News: '+' '.join(cmd))
+                price = int(cmd[2])
+                num = int(cmd[1])
                 #处理买盘
-                self.buying.del_order((int(cmd[2]), int(cmd[1])))
+                self.buying.del_order((price, num))
                 #处理卖盘
-                self.selling.del_order((int(cmd[2]), int(cmd[1])))
+                self.selling.del_order((price, num))
+                # Display on GUI
+                self.price = price
+                self.GUI_newDeal(1, price, num)
             elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
                 # print('News: '+' '.join(cmd))
+                price = int(cmd[2])
+                num = int(cmd[1])
                 #处理卖盘
-                self.selling.del_order((int(cmd[2]), int(cmd[1])))
+                self.selling.del_order((price, num))
                 #处理买盘
-                self.buying.del_order((int(cmd[2]), int(cmd[1])))
+                self.buying.del_order((price, num))
+                # Display on GUI
+                self.price = price
+                self.GUI_newDeal(0, price, num)
             elif core_cmd == 'name':                                        #name (IP):(port) (name)
                 print(f'Players: {cmd[2]} {cmd[1]}')
             elif core_cmd == 'begin':                                       #begin (time)
                 self.beginTime = cmd[1]
                 print('GAME START!')
+            
+            self.GUI_fresh()
 
         except IndexError:
             print('void cmd')

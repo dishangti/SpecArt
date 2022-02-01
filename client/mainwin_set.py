@@ -58,7 +58,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
     def add_deal_item(self, dir, price, num):
         # Red for positive buy (0)
         # Green for positive sell (1)
-        table = self.window.deal_tableWidget
+        table = self.deal_tableWidget
         row = table.rowCount()
         table.insertRow(row)
 
