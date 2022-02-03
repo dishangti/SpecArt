@@ -28,7 +28,8 @@ class OrderQueue():
             ord_lst.append(order)
             return
 
-        pos = bisect.bisect_left(ord_lst, order)
+        ord_price_lst = list(map(lambda x: x[0], self.ord_lst))
+        pos = bisect.bisect_left(ord_price_lst, order[0])
         if pos >= len(ord_lst):
             ord_lst.insert(pos, order)
         else:
@@ -46,7 +47,8 @@ class OrderQueue():
         ord_lst = self.ord_lst
         if len(ord_lst) == 0: return
 
-        pos = bisect.bisect_left(ord_lst, order)
+        ord_price_lst = list(map(lambda x: x[0], self.ord_lst))
+        pos = bisect.bisect_left(ord_price_lst, order[0])
         if order[0] == ord_lst[pos][0]:
             num = ord_lst[pos][1] - num
             ord_lst[pos] = (price, num)
@@ -54,9 +56,11 @@ class OrderQueue():
             ord_lst.pop(pos)
 
     def get_order(self):
-        if self.typ == 0:       # Selling list
-            return self.ord_lst.copy().reverse()
-        elif self.typ == 1:     # Buying list
+        if self.type == 0:       # Selling list
+            rev = self.ord_lst.copy()
+            rev.reverse()
+            return rev
+        elif self.type == 1:     # Buying list
             return self.ord_lst.copy()
 
 class Player():
@@ -259,7 +263,10 @@ class Com:
 
     def soc_recv(self):     # Recieve data from the server
         while True:
-            buff = self.soc.recv(1024).decode('utf8')
+            try:
+                buff = self.soc.recv(1024).decode('utf8')
+            except Exception as e:
+                self.notice(str(e))
             command = buff.split('#')
             for i in command[:]:                    #去除空指令
                 if not i:

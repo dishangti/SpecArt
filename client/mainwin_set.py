@@ -88,7 +88,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         table = self.buy_tableWidget
         table.setRowCount(0)
         table.clearContents()
-        for item in self.com.buying.ord_lst:
+        for item in self.com.buying.get_order():
             row = table.rowCount()
             table.insertRow(row)
             table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price and number
@@ -100,7 +100,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         table = self.sell_tableWidget
         table.setRowCount(0)
         table.clearContents()
-        for item in self.com.selling.ord_lst:
+        for item in self.com.selling.get_order():
             row = table.rowCount()
             table.insertRow(row)
             table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price and number
