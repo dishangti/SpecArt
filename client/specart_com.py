@@ -1,21 +1,19 @@
 import socket
 import threading
+import bisect
 
 class OrderQueue():
     """
     An order queue is a list of orders ordered by price.
     """
 
-    def __init__(self, typ:int):
+    def __init__(self, type:int):
         """
         typ(int): 0(selling list in descending order), 1(buying list in ascending order).
         """
 
         self.ord_lst = []
-        self.typ = typ
-
-    def compare(self, order1, order2):
-        return bool((order1 < order2) ^ (not self.typ))
+        self.type = type
 
     def add_order(self, order):
         """
@@ -26,21 +24,18 @@ class OrderQueue():
 
         price, num = order
         ord_lst = self.ord_lst
-        left = 0
-        right = len(ord_lst) - 1
-        mid = (left + right) >> 1
+        if len(ord_lst) == 0:
+            ord_lst.append(order)
+            return
 
-        while left < right:
-            if price == ord_lst[mid][0]:
-                ord_lst[mid][1] += num
-                return
-            elif self.compare(order, ord_lst[mid][0]):
-                right = mid
-            else:
-                left = mid
-            mid = (left + right) >> 1
-        
-        ord_lst.insert(left, order)
+        pos = bisect.bisect_left(ord_lst, order)
+        if pos >= len(ord_lst):
+            ord_lst.insert(pos, order)
+        else:
+            if order[0] == ord_lst[pos][0]:
+                num += ord_lst[pos][1]
+                ord_lst[pos] = (price, num)
+            else: ord_lst.insert(pos, order)
 
     def del_order(self, order):
         """
@@ -49,22 +44,20 @@ class OrderQueue():
 
         price, num = order
         ord_lst = self.ord_lst
-        left = 0
-        right = len(ord_lst) - 1
-        mid = (left + right) >> 1
-        
-        while left < right:
-            if ord_lst[mid][0] == price:
-                ord_lst[mid][1] -= num
-                break
-            elif self.compare(order, ord_lst[mid][0]):
-                right = mid
-            else:
-                left = mid
-            mid = (left + right) >> 1
+        if len(ord_lst) == 0: return
 
-        if ord_lst[mid] == 0:
-            ord_lst.pop(mid)
+        pos = bisect.bisect_left(ord_lst, order)
+        if order[0] == ord_lst[pos][0]:
+            num = ord_lst[pos][1] - num
+            ord_lst[pos] = (price, num)
+        if ord_lst[pos][1] <= 0:
+            ord_lst.pop(pos)
+
+    def get_order(self):
+        if self.typ == 0:       # Selling list
+            return self.ord_lst.copy().reverse()
+        elif self.typ == 1:     # Buying list
+            return self.ord_lst.copy()
 
 class Player():
     def __init__(self):
