@@ -7,13 +7,12 @@ class OrderQueue():
     An order queue is a list of orders ordered by price.
     """
 
-    def __init__(self, type:int):
+    def __init__(self):
         """
         typ(int): 0(selling list in descending order), 1(buying list in ascending order).
         """
 
         self.ord_lst = []
-        self.type = type
 
     def add_order(self, order):
         """
@@ -56,12 +55,9 @@ class OrderQueue():
             ord_lst.pop(pos)
 
     def get_order(self):
-        if self.type == 0:       # Selling list
-            rev = self.ord_lst.copy()
-            rev.reverse()
-            return rev
-        elif self.type == 1:     # Buying list
-            return self.ord_lst.copy()
+        rev = self.ord_lst.copy()
+        rev.reverse()
+        return rev
 
 class Player():
     def __init__(self):
@@ -92,8 +88,8 @@ class Com:
 
         # Here are varieties for GUI to display
         self.price = 0
-        self.buying = OrderQueue(1)
-        self.selling = OrderQueue(0)
+        self.buying = OrderQueue()
+        self.selling = OrderQueue()
         self.deal = ""
 
     def connect(self, username, host, port = 7733):
@@ -266,7 +262,8 @@ class Com:
             try:
                 buff = self.soc.recv(1024).decode('utf8')
             except Exception as e:
-                self.notice(str(e))
+                self.notice("Network error!")
+                exit()
             command = buff.split('#')
             for i in command[:]:                    #去除空指令
                 if not i:
