@@ -11,16 +11,18 @@ In this game, players are connected by the central server, and allocated **equal
 
 ## Server Operations
 * Allow the `7733` port on the firewall.
-* Run the file `server/specart_ser.py` and wait for connections from clients(players).
+* Run file `server/run_server.cmd`(Windows) or `server/run_server.sh`(Linux) and wait for connections from clients(players).
 * After all the players in, type `b` and press Enter to begin the game.
 
 ## Client Operations (Console)
+* Run file `client/run_cli.cmd`(Windows) or `client/run_cli.sh`(Linux).
 * Set a unique name for each player.
 * Type the address of the server.
 * Wait for the signal of beginning from the server.
 * Follow the hints and enjoy it!
 
 ## Client Operations (GUI)
+* Run file `client/run_gui.cmd`(Windows) or `client/run_gui.sh`(Linux).
 * ~~Learn by "Local Teaching" method.~~
 * Choose "Online Play" to begin the game.
 * Set a unique name for each player, type the address of the server, click "Login" botton.
