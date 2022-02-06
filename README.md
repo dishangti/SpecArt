@@ -11,16 +11,18 @@ In this game, players are connected by the central server, and allocated **equal
 
 ## Server Operations
 * Allow the `7733` port on the firewall.
-* Run the file `server/specart_ser.py` and wait for connections from clients(players).
+* Run file `server/run_server.cmd`(Windows) or `server/run_server.sh`(Linux) and wait for connections from clients(players).
 * After all the players in, type `b` and press Enter to begin the game.
 
 ## Client Operations (Console)
+* Run file `client/run_cli.cmd`(Windows) or `client/run_cli.sh`(Linux).
 * Set a unique name for each player.
 * Type the address of the server.
 * Wait for the signal of beginning from the server.
 * Follow the hints and enjoy it!
 
 ## Client Operations (GUI)
+* Run file `client/run_gui.cmd`(Windows) or `client/run_gui.sh`(Linux).
 * ~~Learn by "Local Teaching" method.~~
 * Choose "Online Play" to begin the game.
 * Set a unique name for each player, type the address of the server, click "Login" botton.
@@ -52,12 +54,14 @@ In this game, players are connected by the central server, and allocated **equal
 * 当所有玩家连接后，输入`b`并回车来开始游戏。
 
 ## 客户端操作（命令行）
+* 运行文件 `client/run_cli.cmd`(Windows) 或者 `client/run_cli.sh`(Linux).
 * 为玩家设置一个唯一的用户名。
 * 输入服务器地址。
 * 等待服务器的开始信号。
 * 根据提示游戏，玩得愉快！
 
 ## 客户端操作（图形界面）
+* 运行文件 `client/run_gui.cmd`(Windows) 或者 `client/run_gui.sh`(Linux).
 * ~~通过“单机教学”模式进行学习。~~
 * 选择“局域网联机”模式开始游戏。
 * 为玩家设置一个唯一的用户名，输入服务器的地址，点击“登录”。
