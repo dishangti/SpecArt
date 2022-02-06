@@ -35,7 +35,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.notice_que = Queue()
         self.deal_que = Queue()
 
-        # Set price and num lineEdit for price only
+        # Set price and num lineEdit for integer only
         self.price_lineEdit.setValidator(QtGui.QIntValidator())
         self.num_lineEdit.setValidator(QtGui.QIntValidator())
 
@@ -92,6 +92,13 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             self.add_deal_item(dir, price, num)
 
     def fresh_GUI(self):
+        # Judge whether game has begun
+        if self.com.beginTime != "":
+            self.buy_pushButton.setEnabled(True)
+            self.sell_pushButton.setEnabled(True)
+            self.back_pushButton.setEnabled(True)
+            self.players_pushButton.setEnabled(True)
+
         # Fresh winning process
         if self.com.totalPlayerMoney != 0:
             self.win_progressBar.value = int(self.com.player.money / (self.com.totalPlayerMoney * 0.6))

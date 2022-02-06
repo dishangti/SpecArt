@@ -86,11 +86,12 @@ class Com:
         self.beginTime = ""
         self.totalPlayerMoney = 0      # Total money of all the players
 
-        # Here are varieties for GUI to display
+        # Here are varieties for GUI to fresh
         self.price = 0
         self.buying = OrderQueue()
         self.selling = OrderQueue()
         self.deal = ""
+        self.players = []
 
     def connect(self, username, host, port = 7733):
         self.player.username = username
@@ -209,6 +210,7 @@ class Com:
                 self.price = price
             elif core_cmd == 'name':                                        #name (IP):(port) (name)
                 print(f'Players: {cmd[2]} {cmd[1]}')
+                self.players.append((cmd[1], cmd[2]))
             elif core_cmd == 'begin':                                       #begin (time)
                 self.beginTime = cmd[1]
                 print('GAME START!')

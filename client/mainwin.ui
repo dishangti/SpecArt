@@ -144,6 +144,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="buy_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -162,6 +165,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="sell_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -290,6 +296,9 @@
     </column>
    </widget>
    <widget class="QPushButton" name="back_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>690</x>
@@ -308,6 +317,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="players_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>690</x>
