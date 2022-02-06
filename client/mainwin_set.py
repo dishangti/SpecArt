@@ -6,6 +6,7 @@ from mainwin import Ui_SpecArt_MainWindow
 from specart_com import Com
 from queue import Queue
 import sys
+import playerlist_set
 
 class mainCom(Com):
     def __init__(self, mode, window):
@@ -48,6 +49,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         # Set slots for signals
         self.buy_pushButton.clicked.connect(self.buy_pushButton_clicked)
         self.sell_pushButton.clicked.connect(self.sell_pushButton_clicked)
+        self.players_pushButton.clicked.connect(self.players_pushButton_clicked)
         self.newNotice.connect(self.display_notice)
         self.newData.connect(self.fresh_GUI)
         self.newDeal.connect(self.display_deal)
@@ -61,6 +63,10 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         price = int(self.price_lineEdit.text())
         num = int(self.num_lineEdit.text())
         self.com.sell(num, price)
+
+    def players_pushButton_clicked(self):
+        self.window = playerlist_set.mianWidget(self.com.players)
+        self.window.show()
 
     def display_notice(self):
         if not self.notice_que.empty():
