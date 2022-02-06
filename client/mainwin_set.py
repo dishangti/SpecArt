@@ -50,6 +50,8 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.buy_pushButton.clicked.connect(self.buy_pushButton_clicked)
         self.sell_pushButton.clicked.connect(self.sell_pushButton_clicked)
         self.players_pushButton.clicked.connect(self.players_pushButton_clicked)
+        self.buy_tableWidget.doubleClicked.connect(self.buy_tableWidget_doubleClicked)      # Set price automatically when clicking
+        self.buy_tableWidget.doubleClicked.connect(self.sell_tableWidget_doubleClicked)
         self.newNotice.connect(self.display_notice)
         self.newData.connect(self.fresh_GUI)
         self.newDeal.connect(self.display_deal)
@@ -65,8 +67,18 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.com.sell(num, price)
 
     def players_pushButton_clicked(self):
-        self.window = playerlist_set.mianWidget(self.com.players)
+        self.window = playerlist_set.mianWidget(self.com.playerList)
         self.window.show()
+
+    def buy_tableWidget_doubleClicked(self):
+        col = self.buy_tableWidget.selectedItems()[0].column()
+        if col == 0:
+            self.price_lineEdit.setText(self.buy_tableWidget.selectedItems()[0].text())
+
+    def sell_tableWidget_doubleClicked(self):
+        col = self.buy_tableWidget.selectedItems()[0].column()
+        if col == 0:
+            self.price_lineEdit.setText(self.buy_tableWidget.selectedItems()[0].text())
 
     def display_notice(self):
         if not self.notice_que.empty():
@@ -104,6 +116,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             self.sell_pushButton.setEnabled(True)
             self.back_pushButton.setEnabled(True)
             self.players_pushButton.setEnabled(True)
+            self.com.totalPlayerMoney = len(self.com.playerList) * self.com.initMoney
 
         # Fresh winning process
         if self.com.totalPlayerMoney != 0:

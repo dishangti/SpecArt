@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import QWidget, QTableWidgetItem
-from PyQt5.QtGui import QColor, QBrush
 from playerlist import Ui_PlayerList_Dialog
  
 class mianWidget(QWidget, Ui_PlayerList_Dialog):
