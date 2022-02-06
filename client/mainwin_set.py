@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt5.QtGui import QColor, QBrush
 from PyQt5.QtCore import pyqtSignal
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 from mainwin import Ui_SpecArt_MainWindow
 from specart_com import Com
 from queue import Queue
@@ -35,6 +35,10 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.notice_que = Queue()
         self.deal_que = Queue()
 
+        # Set price and num lineEdit for price only
+        self.price_lineEdit.setValidator(QtGui.QIntValidator())
+        self.num_lineEdit.setValidator(QtGui.QIntValidator())
+
         # Set QTableWidget uneditable
         self.sell_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.buy_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
@@ -42,13 +46,21 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.com.notice('登录成功！等待服务器开始游戏...')
 
         # Set slots for signals
+        self.buy_pushButton.clicked.connect(self.buy_pushButton_clicked)
+        self.sell_pushButton.clicked.connect(self.sell_pushButton_clicked)
         self.newNotice.connect(self.display_notice)
         self.newData.connect(self.fresh_GUI)
         self.newDeal.connect(self.display_deal)
 
-    # def currentPriceShow(self):
-    #     self.price_lcdNumber.setDigitCount(len(self.price))
-    #     self.price_lcdNumber.display(self.price)
+    def buy_pushButton_clicked(self):
+        price = int(self.price_lineEdit.text())
+        num = int(self.num_lineEdit.text())
+        self.com.buy(num, price)
+
+    def sell_pushButton_clicked(self):
+        price = int(self.price_lineEdit.text())
+        num = int(self.num_lineEdit.text())
+        self.com.sell(num, price)
 
     def display_notice(self):
         if not self.notice_que.empty():
