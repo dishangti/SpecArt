@@ -46,7 +46,6 @@ class mainWin(QMainWindow, Ui_MainWindow):
 
         self.window = mainwin_set.mainWin()
         self.window.com.connect(self.username, self.host)
-        self.window.new_notice('登录成功!')
         self.window.show()
         self.close()
 

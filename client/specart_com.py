@@ -74,9 +74,9 @@ class OrderQueue():
                     num -= sell_num
                     self.del_order((sell_price, sell_num))
                 else:
-                    sell_num -= num
-                    self.del_order((sell_price, sell_num))
+                    self.del_order((sell_price, num))
                     num = 0
+
         elif dir == 1:
             ord_lst.reverse()
             for buy in ord_lst:
@@ -88,8 +88,7 @@ class OrderQueue():
                     num -= buy_num
                     self.del_order((buy_price, buy_num))
                 else:
-                    buy_num -= num
-                    self.del_order((buy_price, buy_num))
+                    self.del_order((buy_price, num))
                     num = 0
 
     def get_order(self):
@@ -241,7 +240,6 @@ class Com:
                     self.window.freshStatusBar.emit()
                     self.window.freshWinProcessBar.emit()
             
-            
             #广播指令
             elif core_cmd == 'sell':                                        #sell (num) (price)
                 self.selling.add_order((int(cmd[2]), int(cmd[1])))
@@ -265,12 +263,12 @@ class Com:
                 num = int(cmd[1])
                 deal_time = localtime(float(cmd[3]))[3:6]
                 #处理买盘
-                self.buying.del_order((price, num))
+                self.buying.match_del((price, num), 1)
                 #处理卖盘
-                self.selling.match_del((price, num), 0)
+                self.selling.del_order((price, num))
                 # Display on GUI
                 self.price = price
-                self.new_deal(0, price, num, deal_time)
+                self.new_deal(1, price, num, deal_time)
                 if self.mode == 1:
                     self.window.freshBuyTableWidget.emit()
                     self.window.freshSellTableWidget.emit()
@@ -281,12 +279,12 @@ class Com:
                 num = int(cmd[1])
                 deal_time = localtime(float(cmd[3]))[3:6]
                 #处理卖盘
-                self.selling.del_order((price, num))
+                self.selling.match_del((price, num), 0)
                 #处理买盘
-                self.buying.match_del((price, num), 1)
+                self.buying.del_order((price, num))
                 # Display on GUI
                 self.price = price
-                self.new_deal(1, price, num, deal_time)
+                self.new_deal(0, price, num, deal_time)
                 if self.mode == 1:
                     self.window.freshBuyTableWidget.emit()
                     self.window.freshSellTableWidget.emit()
