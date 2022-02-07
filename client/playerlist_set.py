@@ -12,8 +12,8 @@ class mianWidget(QWidget, Ui_PlayerList_Dialog):
         for player in playerList:
             row = table.rowCount()
             table.insertRow(row)
-            table.setItem(row, 0, QTableWidgetItem(str(player[1])))     # Fill in price and number
-            table.setItem(row, 1, QTableWidgetItem(str(player[0])))
+            table.setItem(row, 0, QTableWidgetItem(str(player[0])))     # Fill in price and number
+            table.setItem(row, 1, QTableWidgetItem(str(player[1])))
 
     def close_pushButton_clicked(self):
         self.close()

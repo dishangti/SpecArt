@@ -248,7 +248,7 @@ class Com:
         elif self.mode == 1:
             # GUI mode
             # Handle commands from server and then fresh the GUI
-            self.GUI_newDeal(dir, price ,num)
+            self.GUI_newDeal(dir, price ,num, deal_time)
 
     def send_cmd(self, cmd):
         if type(cmd) == str:
