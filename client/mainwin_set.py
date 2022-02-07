@@ -1,3 +1,4 @@
+from select import select
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt5.QtGui import QColor, QBrush
 from PyQt5.QtCore import pyqtSignal
@@ -17,8 +18,8 @@ class mainCom(Com):
     def GUI_fresh(self):
         self.window.fresh_GUI()
 
-    def GUI_newDeal(self, dir, price, num):
-        self.window.new_deal(dir, price, num)
+    def GUI_newDeal(self, dir, price, num, deal_time):
+        self.window.new_deal(dir, price, num, deal_time)
 
     def GUI_msgbox(self, content):
         self.window.new_notice(content)
@@ -50,8 +51,8 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.buy_pushButton.clicked.connect(self.buy_pushButton_clicked)
         self.sell_pushButton.clicked.connect(self.sell_pushButton_clicked)
         self.players_pushButton.clicked.connect(self.players_pushButton_clicked)
-        self.buy_tableWidget.doubleClicked.connect(self.buy_tableWidget_doubleClicked)      # Set price automatically when clicking
-        self.buy_tableWidget.doubleClicked.connect(self.sell_tableWidget_doubleClicked)
+        self.buy_tableWidget.doubleClicked.connect(self.buy_tableWidget_doubleClicked)      # Set price automatically when double clicking
+        self.sell_tableWidget.doubleClicked.connect(self.sell_tableWidget_doubleClicked)
         self.newNotice.connect(self.display_notice)
         self.newData.connect(self.fresh_GUI)
         self.newDeal.connect(self.display_deal)
@@ -71,14 +72,19 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.window.show()
 
     def buy_tableWidget_doubleClicked(self):
+        
+        select_items = self.buy_tableWidget.selectedItems()
+        if len(select_items) == 0: return
         col = self.buy_tableWidget.selectedItems()[0].column()
         if col == 0:
-            self.price_lineEdit.setText(self.buy_tableWidget.selectedItems()[0].text())
+            self.price_lineEdit.setText(select_items[0].text())
 
     def sell_tableWidget_doubleClicked(self):
-        col = self.buy_tableWidget.selectedItems()[0].column()
+        select_items = self.sell_tableWidget.selectedItems()
+        if len(select_items) == 0: return
+        col = self.sell_tableWidget.selectedItems()[0].column()
         if col == 0:
-            self.price_lineEdit.setText(self.buy_tableWidget.selectedItems()[0].text())
+            self.price_lineEdit.setText(select_items[0].text())
 
     def display_notice(self):
         if not self.notice_que.empty():
@@ -107,6 +113,8 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))
             table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
             table.item(row, 2).setForeground(QBrush(QColor(0, 255, 0)))
+
+        table.scrollToBottom()
 
     def display_deal(self):
         if not self.deal_que.empty():
@@ -137,7 +145,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.setItem(row, 1, QTableWidgetItem(str(item[1])))
             table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))     # Set red color
             table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
-
+        table.scrollToBottom()
             
         table = self.sell_tableWidget
         table.setRowCount(0)
@@ -149,6 +157,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.setItem(row, 1, QTableWidgetItem(str(item[1])))
             table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))     # Set green color
             table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
+        table.scrollToTop()
 
         # Fresh goods and money in status bar
         self.statusbar.showMessage(f'状态 # 金钱: {self.com.player.money} | 物资: {self.com.player.goods}')
