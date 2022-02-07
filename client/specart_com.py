@@ -1,6 +1,7 @@
 import socket
 import threading
 import bisect
+from abc import abstractmethod
 from time import localtime
 
 class OrderQueue():
@@ -117,6 +118,7 @@ class Com:
         mode(integer): 0(consle), 1(GUI)
         '''
         self.mode = mode
+        self.window = None
         self.soc = socket.socket()
         self.player = Player()
         self.initGoods = 0              # Inited money and goods
@@ -153,31 +155,50 @@ class Com:
             elif core_cmd == 'money':                                 #money (initMoney)
                 self.player.money = self.initMoney = int(cmd[1])
                 self.notice('Initial money: ' + cmd[1])
+                if self.mode == 1:
+                    self.window.freshStatusBar.emit()
+                    self.window.freshWinProcessBar.emit()
 
             elif core_cmd == 'goods':                                       #goods (initGoods)
                 self.player.goods = self.initGoods = int(cmd[1])
                 self.notice('Initial goods: ' + cmd[1])
+                if self.mode == 1:
+                    self.window.freshStatusBar.emit()
 
             elif core_cmd == 'sellok':                                      #sellok (num) (price) (time)
                 #print('Server Instruction: '+' '.join(cmd))
                 cmd[0] = 'sell'
                 self.player.transaction[cmd[3]] = cmd
                 self.player.goods -= int(cmd[1])
+                if self.mode == 1:
+                    self.window.freshTransTableWidget.emit()
+                    self.window.freshStatusBar.emit()
 
             elif core_cmd == 'buyok':                                       #buyok (num) (price) (time)
                 #print('Server Instruction: '+' '.join(cmd))
                 cmd[0] = 'buy'
                 self.player.transaction[cmd[3]] = cmd
                 self.player.money -= int(cmd[1])*int(cmd[2])
+                if self.mode == 1:
+                    self.window.freshTransTableWidget.emit()
+                    self.window.freshStatusBar.emit()
+                    self.window.freshWinProcessBar.emit()
 
             elif core_cmd == 'backsellok':                                  #backsellok (num) (price) (time)
                 self.player.goods += int(self.player.transaction[cmd[3]][1])
                 del self.player.transaction[cmd[3]]
+                if self.mode == 1:
+                    self.window.freshTransTableWidget.emit()
+                    self.window.freshStatusBar.emit()
                 #print('Server Instruction: '+' '.join(cmd))
 
             elif core_cmd == 'backbuyok':                                   #backbuyok (num) (price) (time)
                 self.player.money += int(self.player.transaction[cmd[3]][1])*int(self.player.transaction[cmd[3]][2])
                 del self.player.transaction[cmd[3]]
+                if self.mode == 1:
+                    self.window.freshTransTableWidget.emit()
+                    self.window.freshStatusBar.emit()
+                    self.window.freshWinProcessBar.emit()
                 #print('Server Instruction: '+' '.join(cmd))
 
             elif core_cmd == 'buydealok':                                   #buydealok (num) (price) (time)
@@ -198,7 +219,10 @@ class Com:
                 else:
                     self.player.transaction[cmd[3]][1] = str(num_ordered)
                 
-                #print('Server Instruction: '+' '.join(cmd))
+                if self.mode == 1:
+                    self.window.freshTransTableWidget.emit()
+                    self.window.freshStatusBar.emit()
+                    self.window.freshWinProcessBar.emit()
                 
             elif core_cmd == 'selldealok':                                  #selldealok (num) (price) (time)
                 #处理余额
@@ -212,18 +236,29 @@ class Com:
                 else:
                     self.player.transaction[cmd[3]][1] = str(num_ordered)
                 
-                #print('Server Instruction: '+' '.join(cmd))
+                if self.mode == 1:
+                    self.window.freshTransTableWidget.emit()
+                    self.window.freshStatusBar.emit()
+                    self.window.freshWinProcessBar.emit()
             
             
             #广播指令
             elif core_cmd == 'sell':                                        #sell (num) (price)
                 self.selling.add_order((int(cmd[2]), int(cmd[1])))
+                if self.mode == 1:
+                    self.window.freshSellTableWidget.emit()
             elif core_cmd == 'buy':                                         #buy (num) (price)
-                self.buying.add_order((int(cmd[2]), int(cmd[1])))      
+                self.buying.add_order((int(cmd[2]), int(cmd[1])))
+                if self.mode == 1:
+                    self.window.freshBuyTableWidget.emit()   
             elif core_cmd == 'backsell':                                    #backsell (num) (price)
                 self.selling.del_order((int(cmd[2]), int(cmd[1])))
+                if self.mode == 1:
+                    self.window.freshSellTableWidget.emit()
             elif core_cmd == 'backbuy':                                     #backbuy (num) (price)
                 self.buying.del_order((int(cmd[2]), int(cmd[1])))
+                if self.mode == 1:
+                    self.window.freshBuyTableWidget.emit()
             elif core_cmd == 'dealsell':                                    #dealsell (num) (price) (dealtime)
                 # print('News: '+' '.join(cmd))
                 price = int(cmd[2])
@@ -234,8 +269,12 @@ class Com:
                 #处理卖盘
                 self.selling.match_del((price, num), 0)
                 # Display on GUI
-                self.new_deal(0, price, num, deal_time)
                 self.price = price
+                self.new_deal(0, price, num, deal_time)
+                if self.mode == 1:
+                    self.window.freshBuyTableWidget.emit()
+                    self.window.freshSellTableWidget.emit()
+                    self.window.freshLCD.emit()
             elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
                 # print('News: '+' '.join(cmd))
                 price = int(cmd[2])
@@ -246,17 +285,23 @@ class Com:
                 #处理买盘
                 self.buying.match_del((price, num), 1)
                 # Display on GUI
-                self.new_deal(1, price, num, deal_time)
                 self.price = price
+                self.new_deal(1, price, num, deal_time)
+                if self.mode == 1:
+                    self.window.freshBuyTableWidget.emit()
+                    self.window.freshSellTableWidget.emit()
+                    self.window.freshLCD.emit()
             elif core_cmd == 'name':                                        #name (IP):(port) (name)
                 print(f'Players: {cmd[2]} {cmd[1]}')
                 self.playerList.append((cmd[1], cmd[2]))
+                if self.mode == 1:
+                    self.window.updatePlayer.emit()
+                    self.window.freshWinProcessBar.emit()
             elif core_cmd == 'begin':                                       #begin (time)
                 self.beginTime = cmd[1]
                 print('GAME START!')
-            
-            if self.mode == 1:
-                self.GUI_fresh()
+                if self.mode == 1:
+                    self.window.beginGame.emit()
 
         except IndexError:
             print('void cmd')
@@ -358,12 +403,11 @@ class Com:
     def CON_fresh(self, content):
         self.recv_cmd_handle(content)
 
+    @abstractmethod
     def GUI_msgbox(self, content):
         pass
 
-    def GUI_fresh(self):     # Fresh values in GUI
-        pass
-
+    @abstractmethod
     def GUI_newDeal(self, dir, price, num, deal_time):     # Called when new deal is finished
         """
         dir(int) The positive direction for the deal: 0(buy), 1(sell).

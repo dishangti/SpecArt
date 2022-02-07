@@ -9,14 +9,10 @@ from queue import Queue
 import sys
 import playerlist_set
 
-class mainCom(Com):
+class GUICom(Com):
     def __init__(self, mode, window):
+        super().__init__(mode)
         self.window = window
-
-        return super().__init__(mode)
-
-    def GUI_fresh(self):
-        self.window.fresh_GUI()
 
     def GUI_newDeal(self, dir, price, num, deal_time):
         self.window.new_deal(dir, price, num, deal_time)
@@ -26,13 +22,19 @@ class mainCom(Com):
 
 class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
     newNotice = pyqtSignal()
-    newData = pyqtSignal()
     newDeal = pyqtSignal()
-    freshWin = pyqtSignal()
+    beginGame = pyqtSignal()
+    freshWinProcessBar = pyqtSignal()
+    freshBuyTableWidget = pyqtSignal()
+    freshSellTableWidget = pyqtSignal()
+    freshTransTableWidget = pyqtSignal()
+    freshStatusBar = pyqtSignal()
+    freshLCD = pyqtSignal()
+    updatePlayer = pyqtSignal()
 
     def __init__(self):
         super(Ui_SpecArt_MainWindow, self).__init__()
-        self.com = mainCom(1, self)
+        self.com = GUICom(1, self)
         self.setupUi(self)
 
         self.notice_que = Queue()
@@ -46,7 +48,6 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.sell_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.buy_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.deal_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-        self.com.notice('登录成功！等待服务器开始游戏...')
 
         # Set slots for signals
         self.buy_pushButton.clicked.connect(self.buy_pushButton_clicked)
@@ -54,10 +55,18 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.players_pushButton.clicked.connect(self.players_pushButton_clicked)
         self.buy_tableWidget.doubleClicked.connect(self.buy_tableWidget_doubleClicked)      # Set price automatically when double clicking
         self.sell_tableWidget.doubleClicked.connect(self.sell_tableWidget_doubleClicked)
+
         self.newNotice.connect(self.display_notice)
-        self.newData.connect(self.fresh_GUI)
         self.newDeal.connect(self.display_deal)
-        self.freshWin.connect(self.fresh_win_process)
+        self.beginGame.connect(self.begin_game)
+        self.freshWinProcessBar.connect(self.fresh_winProcessBar)
+        self.freshBuyTableWidget.connect(self.fresh_buyTableWidget)
+        self.freshSellTableWidget.connect(self.fresh_sellTableWidget)
+        self.freshStatusBar.connect(self.fresh_StatusBar)
+        self.freshLCD.connect(self.fresh_LCD)
+        self.updatePlayer.connect(self.update_player)
+
+        self.com.notice('登录成功！等待服务器开始游戏...')
 
     def buy_pushButton_clicked(self):
         if self.price_lineEdit.text() == "" or self.num_lineEdit.text() == "":
@@ -92,8 +101,54 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         if col == 0:
             self.price_lineEdit.setText(select_items[0].text())
 
-    def fresh_win_process(self):
-        self.win_progressBar.setValue(min(int(self.com.player.money / (self.com.totalPlayerMoney * 0.6) * 100), 100))
+    def begin_game(self):
+        # Judge whether game has begun
+        if self.com.beginTime != "":
+            self.buy_pushButton.setEnabled(True)
+            self.sell_pushButton.setEnabled(True)
+            self.back_pushButton.setEnabled(True)
+            self.players_pushButton.setEnabled(True)
+
+    def update_player(self):
+        self.com.totalPlayerMoney = len(self.com.playerList) * self.com.initMoney
+
+    def fresh_winProcessBar(self):
+        if self.com.totalPlayerMoney != 0:
+            self.win_progressBar.setValue(min(int(self.com.player.money / (self.com.totalPlayerMoney * 0.6) * 100), 100))
+
+    def fresh_buyTableWidget(self):
+        table = self.buy_tableWidget
+        table.setRowCount(0)
+        table.clearContents()
+        for item in self.com.buying.get_order():
+            row = table.rowCount()
+            table.insertRow(row)
+            table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price, number
+            table.setItem(row, 1, QTableWidgetItem(str(item[1])))
+            table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))     # Set red color
+            table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
+        table.scrollToBottom()
+
+    def fresh_sellTableWidget(self):
+        table = self.sell_tableWidget
+        table.setRowCount(0)
+        table.clearContents()
+        for item in self.com.selling.get_order():
+            row = table.rowCount()
+            table.insertRow(row)
+            table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price and number
+            table.setItem(row, 1, QTableWidgetItem(str(item[1])))
+            table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))     # Set green color
+            table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
+        table.scrollToTop()
+
+    def fresh_StatusBar(self):
+        # Fresh goods and money in status bar
+        self.statusbar.showMessage(f'状态 # 金钱: {self.com.player.money} | 物资: {self.com.player.goods}')
+
+    def fresh_LCD(self):
+        # Fresh price in LCD
+        self.price_lcdNumber.display(self.com.price)
 
     def display_notice(self):
         if not self.notice_que.empty():
@@ -129,50 +184,6 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         if not self.deal_que.empty():
             dir, price, num, deal_time = self.deal_que.get()
             self.add_deal_item(dir, price, num, deal_time)
-
-    def fresh_GUI(self):
-        # Judge whether game has begun
-        if self.com.beginTime != "":
-            self.buy_pushButton.setEnabled(True)
-            self.sell_pushButton.setEnabled(True)
-            self.back_pushButton.setEnabled(True)
-            self.players_pushButton.setEnabled(True)
-            self.com.totalPlayerMoney = len(self.com.playerList) * self.com.initMoney
-
-        # Fresh winning process
-        if self.com.totalPlayerMoney != 0:
-            self.freshWin.emit()
-
-        # Fresh waiting order list
-        table = self.buy_tableWidget
-        table.setRowCount(0)
-        table.clearContents()
-        for item in self.com.buying.get_order():
-            row = table.rowCount()
-            table.insertRow(row)
-            table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price, number
-            table.setItem(row, 1, QTableWidgetItem(str(item[1])))
-            table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))     # Set red color
-            table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
-        table.scrollToBottom()
-            
-        table = self.sell_tableWidget
-        table.setRowCount(0)
-        table.clearContents()
-        for item in self.com.selling.get_order():
-            row = table.rowCount()
-            table.insertRow(row)
-            table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price and number
-            table.setItem(row, 1, QTableWidgetItem(str(item[1])))
-            table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))     # Set green color
-            table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
-        table.scrollToTop()
-
-        # Fresh goods and money in status bar
-        self.statusbar.showMessage(f'状态 # 金钱: {self.com.player.money} | 物资: {self.com.player.goods}')
-
-        # Fresh price in LCD
-        self.price_lcdNumber.display(self.com.price)
 
     def new_notice(self, content):
         self.notice_que.put(content)
