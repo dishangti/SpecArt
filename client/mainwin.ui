@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>881</width>
-    <height>544</height>
+    <width>911</width>
+    <height>563</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,8 +50,8 @@
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>490</y>
-      <width>761</width>
+      <y>500</y>
+      <width>771</width>
       <height>21</height>
      </rect>
     </property>
@@ -63,7 +63,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>490</y>
+      <y>500</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -198,14 +198,14 @@
    <widget class="QTableWidget" name="deal_tableWidget">
     <property name="geometry">
      <rect>
-      <x>376</x>
-      <y>290</y>
-      <width>271</width>
-      <height>181</height>
+      <x>370</x>
+      <y>260</y>
+      <width>291</width>
+      <height>221</height>
      </rect>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>88</number>
+     <number>84</number>
     </attribute>
     <column>
      <property name="text">
@@ -236,7 +236,7 @@
      <number>0</number>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>88</number>
+     <number>75</number>
     </attribute>
     <column>
      <property name="text">
@@ -259,7 +259,7 @@
      </rect>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>88</number>
+     <number>75</number>
     </attribute>
     <column>
      <property name="text">
@@ -277,12 +277,12 @@
      <rect>
       <x>660</x>
       <y>30</y>
-      <width>221</width>
+      <width>241</width>
       <height>341</height>
      </rect>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>72</number>
+     <number>70</number>
     </attribute>
     <column>
      <property name="text">
@@ -306,7 +306,7 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>710</x>
       <y>380</y>
       <width>161</width>
       <height>41</height>
@@ -327,8 +327,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>430</y>
+      <x>710</x>
+      <y>440</y>
       <width>161</width>
       <height>41</height>
      </rect>
@@ -381,9 +381,9 @@
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>268</y>
-      <width>61</width>
+      <x>320</x>
+      <y>280</y>
+      <width>41</width>
       <height>20</height>
      </rect>
     </property>
