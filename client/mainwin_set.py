@@ -85,29 +85,33 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             msg = self.notice_que.get()
             QMessageBox.information(self, '提示', msg)
     
-    def add_deal_item(self, dir, price, num):
+    def add_deal_item(self, dir, price, num, deal_time):
         # Red for positive buy (0)
         # Green for positive sell (1)
         table = self.deal_tableWidget
         row = table.rowCount()
         table.insertRow(row)
 
-        # Fill in price and number
+        # Fill in price, number and time
         table.setItem(row, 0, QTableWidgetItem(str(price)))
         table.setItem(row, 1, QTableWidgetItem(str(num)))
+        time_str = str(deal_time[0]).zfill(2) + ":" + str(deal_time[1]).zfill(2) + ":" + str(deal_time[2]).zfill(2)
+        table.setItem(row, 2, QTableWidgetItem(time_str))
 
         # Set color
         if dir == 0:
             table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))
             table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
+            table.item(row, 2).setForeground(QBrush(QColor(255, 0, 0)))
         elif dir == 1:
             table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))
             table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
+            table.item(row, 2).setForeground(QBrush(QColor(0, 255, 0)))
 
     def display_deal(self):
         if not self.deal_que.empty():
-            dir, price, num = self.deal_que.get()
-            self.add_deal_item(dir, price, num)
+            dir, price, num, deal_time = self.deal_que.get()
+            self.add_deal_item(dir, price, num, deal_time)
 
     def fresh_GUI(self):
         # Judge whether game has begun
@@ -129,7 +133,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         for item in self.com.buying.get_order():
             row = table.rowCount()
             table.insertRow(row)
-            table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price and number
+            table.setItem(row, 0, QTableWidgetItem(str(item[0])))     # Fill in price, number
             table.setItem(row, 1, QTableWidgetItem(str(item[1])))
             table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))     # Set red color
             table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
@@ -156,8 +160,8 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.notice_que.put(content)
         self.newNotice.emit()
 
-    def new_deal(self, dir, price, num):
-        self.deal_que.put((dir, price, num))
+    def new_deal(self, dir, price, num, deal_time):
+        self.deal_que.put((dir, price, num, deal_time))
         self.newDeal.emit()    
 
     def new_data(self):

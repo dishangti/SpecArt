@@ -1,6 +1,7 @@
 import socket
 import threading
 import bisect
+from time import localtime
 
 class OrderQueue():
     """
@@ -190,23 +191,25 @@ class Com:
                 # print('News: '+' '.join(cmd))
                 price = int(cmd[2])
                 num = int(cmd[1])
+                deal_time = localtime(float(cmd[3]))[3:6]
                 #处理买盘
                 self.buying.del_order((price, num))
                 #处理卖盘
                 self.selling.del_order((price, num))
                 # Display on GUI
-                self.new_deal(0, price, num)
+                self.new_deal(0, price, num, deal_time)
                 self.price = price
             elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
                 # print('News: '+' '.join(cmd))
                 price = int(cmd[2])
                 num = int(cmd[1])
+                deal_time = localtime(float(cmd[3]))[3:6]
                 #处理卖盘
                 self.selling.del_order((price, num))
                 #处理买盘
                 self.buying.del_order((price, num))
                 # Display on GUI
-                self.new_deal(1, price, num)
+                self.new_deal(1, price, num, deal_time)
                 self.price = price
             elif core_cmd == 'name':                                        #name (IP):(port) (name)
                 print(f'Players: {cmd[2]} {cmd[1]}')
@@ -229,7 +232,7 @@ class Com:
             # GUI mode
             self.GUI_msgbox(content)
 
-    def new_deal(self, dir, price, num):
+    def new_deal(self, dir, price, num, deal_time):
         """
         dir(int) The positive direction for the deal: 0(buy), 1(sell).
         price(int): Price of the deal.
@@ -323,7 +326,7 @@ class Com:
     def GUI_fresh(self):     # Fresh values in GUI
         pass
 
-    def GUI_newDeal(self, dir, price, num):     # Called when new deal is finished
+    def GUI_newDeal(self, dir, price, num, deal_time):     # Called when new deal is finished
         """
         dir(int) The positive direction for the deal: 0(buy), 1(sell).
         price(int): Price of the deal.
