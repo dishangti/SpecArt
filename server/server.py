@@ -192,7 +192,7 @@ class NetHandler(sck.BaseRequestHandler):
 
             if sell_order.num == 0:
                 if top_buy.num != 0:
-                    hp.heappush(Order.sell_queue, top_buy)
+                    hp.heappush(Order.buy_queue, top_buy)
                 break
 
             self.winner(sell_player)
