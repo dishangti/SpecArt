@@ -305,6 +305,7 @@ class Com:
                 buff = self.soc.recv(1024).decode('utf8')
             except Exception as e:
                 self.notice("Network error!")
+                self.soc.close()
                 exit()
             command = buff.split('#')
             for i in command[:]:                    #去除空指令

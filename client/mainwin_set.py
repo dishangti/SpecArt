@@ -28,6 +28,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
     newNotice = pyqtSignal()
     newData = pyqtSignal()
     newDeal = pyqtSignal()
+    freshWin = pyqtSignal()
 
     def __init__(self):
         super(Ui_SpecArt_MainWindow, self).__init__()
@@ -56,6 +57,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.newNotice.connect(self.display_notice)
         self.newData.connect(self.fresh_GUI)
         self.newDeal.connect(self.display_deal)
+        self.freshWin.connect(self.fresh_win_process)
 
     def buy_pushButton_clicked(self):
         if self.price_lineEdit.text() == "" or self.num_lineEdit.text() == "":
@@ -89,6 +91,9 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         col = self.sell_tableWidget.selectedItems()[0].column()
         if col == 0:
             self.price_lineEdit.setText(select_items[0].text())
+
+    def fresh_win_process(self):
+        self.win_progressBar.setValue(max(int(self.com.player.money / (self.com.totalPlayerMoney * 0.6) * 100), 100))
 
     def display_notice(self):
         if not self.notice_que.empty():
@@ -136,7 +141,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
 
         # Fresh winning process
         if self.com.totalPlayerMoney != 0:
-            self.win_progressBar.value = int(self.com.player.money / (self.com.totalPlayerMoney * 0.6))
+            self.freshWin.emit()
 
         # Fresh waiting order list
         table = self.buy_tableWidget
