@@ -198,14 +198,20 @@
    <widget class="QTableWidget" name="deal_tableWidget">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>260</y>
-      <width>291</width>
+      <x>380</x>
+      <y>270</y>
+      <width>271</width>
       <height>221</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>true</bool>
+    </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>84</number>
+     <number>89</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
     </attribute>
     <column>
      <property name="text">
@@ -282,7 +288,10 @@
      </rect>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>70</number>
+     <number>79</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
     </attribute>
     <column>
      <property name="text">
