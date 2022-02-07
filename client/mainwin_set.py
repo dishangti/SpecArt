@@ -58,11 +58,15 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.newDeal.connect(self.display_deal)
 
     def buy_pushButton_clicked(self):
+        if self.price_lineEdit.text() == "" or self.num_lineEdit.text() == "":
+            return
         price = int(self.price_lineEdit.text())
         num = int(self.num_lineEdit.text())
         self.com.buy(num, price)
 
     def sell_pushButton_clicked(self):
+        if self.price_lineEdit.text() == "" or self.num_lineEdit.text() == "":
+            return
         price = int(self.price_lineEdit.text())
         num = int(self.num_lineEdit.text())
         self.com.sell(num, price)

@@ -55,10 +55,47 @@ class OrderQueue():
         if ord_lst[pos][1] <= 0:
             ord_lst.pop(pos)
 
+    def match_del(self, order, dir):
+        """
+        Match and delete all the orders in the queue.
+        dir(int): 0(sell queue), 1(buy queue).
+        """
+        ord_lst = self.ord_lst.copy()
+        price = order[0]
+        num = order[1]
+        if dir == 0:
+            for sell in ord_lst:
+                if num == 0: break
+                sell_price = sell[0]
+                sell_num = sell[1]
+                if sell_price > price: break
+                if sell_num <= num:
+                    num -= sell_num
+                    self.del_order((sell_price, sell_num))
+                else:
+                    sell_num -= num
+                    self.del_order((sell_price, sell_num))
+                    num = 0
+        elif dir == 1:
+            ord_lst.reverse()
+            for buy in ord_lst:
+                if num == 0: break
+                buy_price = buy[0]
+                buy_num = buy[1]
+                if buy_price < price: break
+                if buy_num <= num:
+                    num -= buy_num
+                    self.del_order((buy_price, buy_num))
+                else:
+                    buy_num -= num
+                    self.del_order((buy_price, buy_num))
+                    num = 0
+
     def get_order(self):
         rev = self.ord_lst.copy()
         rev.reverse()
         return rev
+
 
 class Player():
     def __init__(self):
@@ -195,7 +232,7 @@ class Com:
                 #处理买盘
                 self.buying.del_order((price, num))
                 #处理卖盘
-                self.selling.del_order((price, num))
+                self.selling.match_del((price, num), 0)
                 # Display on GUI
                 self.new_deal(0, price, num, deal_time)
                 self.price = price
@@ -207,7 +244,7 @@ class Com:
                 #处理卖盘
                 self.selling.del_order((price, num))
                 #处理买盘
-                self.buying.del_order((price, num))
+                self.buying.match_del((price, num), 1)
                 # Display on GUI
                 self.new_deal(1, price, num, deal_time)
                 self.price = price
@@ -241,9 +278,9 @@ class Com:
         if self.mode == 0:
             # Console mode
             if dir == 0:
-                print("Positive Buy: ")
+                print("Positive Buy: ", end='')
             elif dir == 1:
-                print("Positive Sell: ")
+                print("Positive Sell: ", end='')
             print(f"num {num}, price {price}.")
         elif self.mode == 1:
             # GUI mode

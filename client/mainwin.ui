@@ -357,7 +357,7 @@
      </font>
     </property>
     <property name="text">
-     <string>卖单队列</string>
+     <string>卖盘</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
@@ -375,7 +375,7 @@
      </font>
     </property>
     <property name="text">
-     <string>买单队列</string>
+     <string>买盘</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_6">
