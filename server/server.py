@@ -247,7 +247,7 @@ class NetHandler(sck.BaseRequestHandler):
             if Order.buy_queue == []: return
             num = int(command[1])
             price = int(command[2])
-            time = float(command[3])
+            time = command[3]
             with syn_lock:
                 for i, order in enumerate(Order.buy_queue):
                     if order.name == self.name and order.num == num\
@@ -261,7 +261,7 @@ class NetHandler(sck.BaseRequestHandler):
             if Order.sell_queue == []: return
             num = int(command[1])
             price = int(command[2])
-            time = float(command[3])
+            time = command[3]
             with syn_lock:
                 for i, order in enumerate(Order.sell_queue):
                     if order.name == self.name and order.num == num\
