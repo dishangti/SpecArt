@@ -10,6 +10,7 @@ class mainWin(QMainWindow, Ui_MainWindow):
 
         self.lineEdit_init()
         self.pushButton_init()
+        self.lineEdit.setFocus()
 
     def lineEdit_init(self):
         '''
@@ -17,6 +18,8 @@ class mainWin(QMainWindow, Ui_MainWindow):
         '''
         self.lineEdit.textChanged.connect(self.check_input)
         self.lineEdit_2.textChanged.connect(self.check_input)
+        self.lineEdit.returnPressed.connect(self.waitForServer)
+        self.lineEdit_2.returnPressed.connect(self.waitForServer)
 
     def check_input(self):
         '''
@@ -38,6 +41,7 @@ class mainWin(QMainWindow, Ui_MainWindow):
         '''
         点击“登录”按钮后改变按钮状态，并创建mainwin类与服务器沟通
         '''
+        if not self.pushButton.isEnabled(): return
         self.username = self.lineEdit.text()
         self.host = self.lineEdit_2.text()
 
