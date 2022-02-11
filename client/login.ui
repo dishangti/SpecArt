@@ -17,14 +17,14 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>20</y>
       <width>54</width>
       <height>12</height>
      </rect>
     </property>
     <property name="text">
-     <string>用户名</string>
+     <string>Username</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_2">
@@ -40,14 +40,14 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>50</y>
       <width>54</width>
       <height>12</height>
      </rect>
     </property>
     <property name="text">
-     <string>主机</string>
+     <string>Host</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
@@ -70,7 +70,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>登录</string>
+     <string>Login</string>
     </property>
    </widget>
   </widget>

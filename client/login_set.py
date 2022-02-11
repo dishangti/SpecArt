@@ -41,7 +41,7 @@ class mainWin(QMainWindow, Ui_MainWindow):
         self.username = self.lineEdit.text()
         self.host = self.lineEdit_2.text()
 
-        self.pushButton.setText('登录中...')
+        self.pushButton.setText('Loging in...')
         self.pushButton.setEnabled(False)
 
         self.window = mainwin_set.mainWin()

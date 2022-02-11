@@ -27,12 +27,12 @@
    </attribute>
    <column>
     <property name="text">
-     <string>地址</string>
+     <string>Address</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>用户名</string>
+     <string>Username</string>
     </property>
    </column>
   </widget>
@@ -51,7 +51,7 @@
     </font>
    </property>
    <property name="text">
-    <string>返回</string>
+    <string>Back</string>
    </property>
   </widget>
  </widget>

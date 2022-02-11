@@ -84,7 +84,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.freshLCD.connect(self.fresh_LCD)
         self.updatePlayer.connect(self.update_player)
 
-        self.com.notice('登录成功！等待服务器开始游戏...')
+        self.com.notice('Success! Wait for the game beginning...')
 
     def buy_pushButton_clicked(self):
         if self.price_lineEdit.text() == "" or self.num_lineEdit.text() == "":
@@ -108,9 +108,9 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         trans = self.com.player.transaction
         select_items = self.trans_tableWidget.selectedItems()
         if len(select_items) == 0: return
-        if select_items[0].text() == "卖":
+        if select_items[0].text() == "Sell":
             dir = 'sell'
-        elif select_items[0].text() == "买":
+        elif select_items[0].text() == "Buy":
             dir = 'buy'
         num = int(select_items[1].text())
         price = int(select_items[2].text())
@@ -198,13 +198,13 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.setItem(row, 2, QTableWidgetItem(str(num)))
             table.setItem(row, 3, QTableWidgetItem(time_str))
             if dir == 'sell':
-                table.setItem(row, 0, QTableWidgetItem('卖'))
+                table.setItem(row, 0, QTableWidgetItem('Sell'))
                 table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))     # Set green color
                 table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
                 table.item(row, 2).setForeground(QBrush(QColor(0, 255, 0)))
                 table.item(row, 3).setForeground(QBrush(QColor(0, 255, 0)))
             elif dir == 'buy':
-                table.setItem(row, 0, QTableWidgetItem('买'))
+                table.setItem(row, 0, QTableWidgetItem('Buy'))
                 table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))     # Set red color
                 table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
                 table.item(row, 2).setForeground(QBrush(QColor(255, 0, 0)))
@@ -212,7 +212,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
 
     def fresh_StatusBar(self):
         # Fresh goods and money in status bar
-        self.statusbar.showMessage(f'状态 # 金钱: {self.com.player.money} | 物资: {self.com.player.goods}')
+        self.statusbar.showMessage(f'Status # Money: {self.com.player.money} | Goods: {self.com.player.goods}')
 
     def fresh_LCD(self):
         # Fresh price in LCD
@@ -221,7 +221,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
     def display_notice(self):
         if not self.notice_que.empty():
             msg = self.notice_que.get()
-            QMessageBox.information(self, '提示', msg)
+            QMessageBox.information(self, 'Notice', msg)
     
     def add_deal_item(self, dir, price, num, deal_time):
         # Red for positive buy (0)

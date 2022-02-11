@@ -39,7 +39,7 @@ class Ui_PlayerList_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         PlayerList_Dialog.setWindowTitle(_translate("PlayerList_Dialog", "SpecArt-PlayerList"))
         item = self.playerList_tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("PlayerList_Dialog", "地址"))
+        item.setText(_translate("PlayerList_Dialog", "Address"))
         item = self.playerList_tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("PlayerList_Dialog", "用户名"))
-        self.close_pushButton.setText(_translate("PlayerList_Dialog", "返回"))
+        item.setText(_translate("PlayerList_Dialog", "Username"))
+        self.close_pushButton.setText(_translate("PlayerList_Dialog", "Back"))
