@@ -28,23 +28,21 @@ class Ui_SpecArt_MainWindow(object):
         self.timeChart_openGLWidget.setGeometry(QtCore.QRect(0, 0, 300, 191))
         self.timeChart_openGLWidget.setObjectName("timeChart_openGLWidget")
         self.win_progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.win_progressBar.setGeometry(QtCore.QRect(120, 500, 771, 21))
+        self.win_progressBar.setGeometry(QtCore.QRect(120, 504, 771, 16))
         self.win_progressBar.setStyleSheet("QProgressBar {\n"
-"    border: 2px solid grey;\n"
-"    border-radius: 5px;\n"
-"    background-color: #FFFFFF;\n"
-"}\n"
-"QProgressBar::chunk {\n"
-"    background-color: #0CDE31;\n"
-"    width: 10px;\n"
-"    margin:0.5px\n"
-"}\n"
-"QProgressBar {\n"
 "    border: 2px solid grey;\n"
 "    border-radius: 5px;\n"
 "    text-align: center;\n"
 "}\n"
-"")
+"QProgressBar {\n"
+"    min-height: 12px;\n"
+"    max-height: 12px;\n"
+"    border-radius: 6px;\n"
+"}\n"
+"QProgressBar::chunk {\n"
+"    border-radius: 6px;\n"
+"    background-color: #00B4A0;\n"
+"}")
         self.win_progressBar.setProperty("value", 0)
         self.win_progressBar.setObjectName("win_progressBar")
         self.label = QtWidgets.QLabel(self.centralwidget)
