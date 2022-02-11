@@ -174,7 +174,7 @@ class Com:
             cmd[0] = 'sell'
             self.player.transaction[cmd[3]] = cmd
             self.player.goods -= int(cmd[1])
-            self.notice(f'Successfully sold {cmd[1]} goods at the price {cmd[2]}.')
+            self.notice(f'Successfully sold {cmd[1]} goods at the price {cmd[2]}.', False)
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
@@ -185,7 +185,7 @@ class Com:
             cmd[0] = 'buy'
             self.player.transaction[cmd[3]] = cmd
             self.player.money -= int(cmd[1])*int(cmd[2])
-            self.notice(f'Successfully bought {cmd[1]} goods at the price {cmd[2]}.')
+            self.notice(f'Successfully bought {cmd[1]} goods at the price {cmd[2]}.', False)
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()

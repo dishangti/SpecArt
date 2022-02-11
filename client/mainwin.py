@@ -45,7 +45,7 @@ class Ui_SpecArt_MainWindow(object):
 "    text-align: center;\n"
 "}\n"
 "")
-        self.win_progressBar.setProperty("value", 10)
+        self.win_progressBar.setProperty("value", 0)
         self.win_progressBar.setObjectName("win_progressBar")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(20, 500, 101, 21))
