@@ -158,14 +158,14 @@ class Com:
 
         elif core_cmd == 'money':                                 #money (initMoney)
             self.player.money = self.initMoney = int(cmd[1])
-            self.notice('Initial money: ' + cmd[1])
+            self.notice('Initial money: ' + cmd[1], False)
             if self.mode == 1:
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
 
         elif core_cmd == 'goods':                                       #goods (initGoods)
             self.player.goods = self.initGoods = int(cmd[1])
-            self.notice('Initial goods: ' + cmd[1])
+            self.notice('Initial goods: ' + cmd[1], False)
             if self.mode == 1:
                 self.window.freshStatusBar.emit()
 
@@ -174,6 +174,7 @@ class Com:
             cmd[0] = 'sell'
             self.player.transaction[cmd[3]] = cmd
             self.player.goods -= int(cmd[1])
+            self.notice(f'Successfully sold {cmd[1]} goods at the price {cmd[2]}.')
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
@@ -184,6 +185,7 @@ class Com:
             cmd[0] = 'buy'
             self.player.transaction[cmd[3]] = cmd
             self.player.money -= int(cmd[1])*int(cmd[2])
+            self.notice(f'Successfully bought {cmd[1]} goods at the price {cmd[2]}.')
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
@@ -193,6 +195,7 @@ class Com:
         elif core_cmd == 'backsellok':                                  #backsellok (num) (price) (time)
             self.player.goods += int(self.player.transaction[cmd[3]][1])
             del self.player.transaction[cmd[3]]
+            self.notice("Managed to withdraw the selling order.", False)
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
@@ -202,6 +205,7 @@ class Com:
         elif core_cmd == 'backbuyok':                                   #backbuyok (num) (price) (time)
             self.player.money += int(self.player.transaction[cmd[3]][1])*int(self.player.transaction[cmd[3]][2])
             del self.player.transaction[cmd[3]]
+            self.notice("Managed to withdraw the buying order.", False)
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
@@ -227,6 +231,7 @@ class Com:
             else:
                 self.player.transaction[cmd[3]][1] = str(num_ordered)
             
+            self.notice(f"Made a buying deal of {cmd[1]} goods at the price {cmd[2]}.", False)
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
@@ -245,6 +250,7 @@ class Com:
             else:
                 self.player.transaction[cmd[3]][1] = str(num_ordered)
             
+            self.notice(f"Made a selling deal of {cmd[1]} goods at the price {cmd[2]}.", False)
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
@@ -280,6 +286,7 @@ class Com:
             # Display on GUI
             self.price = price
             self.new_deal(1, price, num, deal_time)
+            self.notice(f"A new selling deal of {cmd[1]} goods at the price {cmd[2]}.", False)
             if self.mode == 1:
                 self.window.freshBuyTableWidget.emit()
                 self.window.freshSellTableWidget.emit()
@@ -296,29 +303,31 @@ class Com:
             # Display on GUI
             self.price = price
             self.new_deal(0, price, num, deal_time)
+            self.notice(f"A new buying deal of {cmd[1]} goods at the price {cmd[2]}.", False)
             if self.mode == 1:
                 self.window.freshBuyTableWidget.emit()
                 self.window.freshSellTableWidget.emit()
                 self.window.freshLCD.emit()
         elif core_cmd == 'name':                                        #name (IP):(port) (name)
-            print(f'Players: {cmd[2]} {cmd[1]}')
+            self.notice(f'Players: {cmd[2]} {cmd[1]}', False)
             self.playerList.append((cmd[1], cmd[2]))
             if self.mode == 1:
                 self.window.updatePlayer.emit()
                 self.window.freshWinProcessBar.emit()
         elif core_cmd == 'begin':                                       #begin (time)
             self.beginTime = cmd[1]
-            print('GAME START!')
+            self.notice('GAME START!')
             if self.mode == 1:
                 self.window.beginGame.emit()
 
-    def notice(self, content):  # Give a notice to the player
+    def notice(self, content, on_GUI=True):  # Give a notice to the player
         if self.mode == 0:
             # Console mode
             print(content, sep='')
         elif self.mode == 1:    # Display by a messagebox
             # GUI mode
-            self.GUI_msgbox(content)
+            if on_GUI:
+                self.GUI_msgbox(content)
 
     def new_deal(self, dir, price, num, deal_time):
         """
