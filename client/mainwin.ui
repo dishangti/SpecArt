@@ -278,7 +278,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="tans_tableWidget">
+   <widget class="QTableWidget" name="trans_tableWidget">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -288,7 +288,7 @@
      </rect>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>79</number>
+     <number>58</number>
     </attribute>
     <attribute name="verticalHeaderVisible">
      <bool>false</bool>
@@ -306,6 +306,11 @@
     <column>
      <property name="text">
       <string>数量</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>时间</string>
      </property>
     </column>
    </widget>
