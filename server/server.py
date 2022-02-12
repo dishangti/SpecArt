@@ -197,8 +197,8 @@ class NetHandler(sck.BaseRequestHandler):
                     hp.heappush(Order.buy_queue, top_buy)
                 break
             
-    def player_info(self):
-        print(self.time_str(f"Player {self.player.name} with money {self.player.money} and goods {self.player.goods}."))
+    def player_info(self, opt):
+        print(self.time_str(f"Player {self.player.name} do {opt} and remains money {self.player.money} and goods {self.player.goods}."))
 
     def command_handle(self, command):
         '''
@@ -237,7 +237,7 @@ class NetHandler(sck.BaseRequestHandler):
                 self.sock.sendall(self.command('sellok', num, price, sell_order.time))
                 NetHandler.broadcast('sell', num, price)
                 self.sell_order(sell_order)
-            self.player_info()
+            self.player_info(" ".join(command))
 
         if command[0] == 'buy':
             num = int(command[1])
@@ -249,7 +249,7 @@ class NetHandler(sck.BaseRequestHandler):
                 self.sock.sendall(self.command('buyok', num, price, buy_order.time))
                 NetHandler.broadcast('buy', num, price)
                 self.buy_order(buy_order)
-            self.player_info()
+            self.player_info(" ".join(command))
 
         if command[0] == 'backbuy':
             if Order.buy_queue == []: return
@@ -265,7 +265,7 @@ class NetHandler(sck.BaseRequestHandler):
                         self.player.money += num * price
                 self.sock.sendall(self.command('backbuyok', num, price, time))
                 NetHandler.broadcast('backbuy', num, price)
-            self.player_info()
+            self.player_info(" ".join(command))
 
         if command[0] == 'backsell':
             if Order.sell_queue == []: return
@@ -281,7 +281,7 @@ class NetHandler(sck.BaseRequestHandler):
                         self.player.goods += num
                 self.sock.sendall(self.command('backsellok', num, price, time))
                 NetHandler.broadcast('backsell', num, price)
-            self.player_info()
+            self.player_info(" ".join(command))
 
     def setup(self):
         '''
