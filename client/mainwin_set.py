@@ -88,8 +88,6 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         # Fix the window size
         self.setFixedSize(self.width(), self.height())
 
-        self.com.notice('Success! Wait for the game beginning...')
-
     def buy_pushButton_clicked(self):
         if self.price_lineEdit.text() == "" or self.num_lineEdit.text() == "":
             return
@@ -122,11 +120,13 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         for tran in trans.values():
             precise_tran_time = localtime(float(tran[3]))[3:6]
             precise_time_str = str(precise_tran_time[0]).zfill(2) + ":" + str(precise_tran_time[1]).zfill(2) + ":" + str(precise_tran_time[2]).zfill(2)
+            # Find and delete a order with the same hour, min and sec
             if tran[0] == dir and int(tran[1]) == num and int(tran[2]) == price and precise_time_str == tran_time:
                 if dir == 'sell':
                     self.com.backsell(int(num), int(price), tran[3])
                 elif dir == 'buy':
                     self.com.backbuy(int(num), int(price), tran[3])
+                break
 
     def buy_tableWidget_doubleClicked(self):
         select_items = self.buy_tableWidget.selectedItems()

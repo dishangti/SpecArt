@@ -14,6 +14,8 @@ def controller():
 
     while True:
         cmd = input('')
+        if ser.SpecArt.stop_flag:
+            break
         if cmd == 'b' and ser.SpecArt.begin_flag == False:
             ser.SpecArt.begin_flag = True
             time = tm.time()
@@ -26,8 +28,10 @@ def controller():
                     ser.NetHandler.broadcast('name', player.addr, player.name)
 
         if cmd == 'q':
-            del ser.SpecArt.ser_sock
-            exit(0)
+            break
+
+    del ser.SpecArt.ser_sock
+    exit(0)
 
 print('SpecArt ' + ser.SpecArt.VERSION + '.' + '\n' + 'See https://github.com/dishangti/SpecArt' + '\n')
 print("Welcome to SpecArt Server!")

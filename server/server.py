@@ -290,7 +290,12 @@ class NetHandler(sck.BaseRequestHandler):
         Handle commands recieved from the player.
         '''
         while self.inuse:
-            buff = self.request.recv(1024).decode(SpecArt.CODE)
+            try:
+                buff = self.request.recv(1024).decode(SpecArt.CODE)
+            except Exception:
+                print('Network error, game forcely stopped...')
+                SpecArt.stop_flag = True
+                break
             commands = buff.split('#')
             for command in commands:
                 self.command_handle(command.split(' '))
@@ -308,6 +313,7 @@ class SpecArt:
 
     win_flag = False
     begin_flag = False
+    stop_flag = False
     ser_sock = None
 
     def __init__(self, host, port):

@@ -22,7 +22,13 @@ host = input('host: ')
 
 com = Com(0)
 myself = com.player
-com.connect(username, host)
+while True:
+    try:
+        com.connect(username, host)
+    except Exception:
+        com.notice("Connection failed! Check your network and address please.")
+    else:
+        break
 
 while com.beginTime == None:  #等待从服务器读取数据再继续主线程
     pass

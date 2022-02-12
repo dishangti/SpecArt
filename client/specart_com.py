@@ -182,6 +182,7 @@ class Com:
             self.player.goods -= int(cmd[1])
             self.notice(f'Successfully sold {cmd[1]} goods at the price {cmd[2]}.', False)
             if self.mode == 1:
+                self.window.freshSellTableWidget.emit()
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
 
@@ -363,10 +364,9 @@ class Com:
         while True:
             try:
                 buff = self.soc.recv(1024).decode('utf8')
-            except Exception as e:
-                self.notice("Network error!")
-                self.soc.close()
-                exit()
+            except Exception:
+                self.notice("Network error! Game stopped...")
+                break
             command = buff.split('#')
             for i in command[:]:                    #去除空指令
                 if not i:

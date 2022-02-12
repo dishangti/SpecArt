@@ -47,11 +47,17 @@ class mainWin(QMainWindow, Ui_MainWindow):
         self.username = self.lineEdit.text()
         self.host = self.lineEdit_2.text()
 
-        self.pushButton.setText('Loging in...')
-        self.pushButton.setEnabled(False)
-
         self.window = mainwin_set.mainWin()
-        self.window.com.connect(self.username, self.host)
-        self.window.show()
-        self.close()
+        try:
+            self.pushButton.setText('Loging in...')
+            self.pushButton.setEnabled(False)
+            self.window.com.connect(self.username, self.host)
+        except Exception:
+            self.window.com.notice("Connection failed! Check your network and address please.")
+            self.pushButton.setText('Login')
+            self.pushButton.setEnabled(True)
+        else:
+            self.window.com.notice('Success! Wait for the game beginning...')
+            self.window.show()
+            self.close()
 
