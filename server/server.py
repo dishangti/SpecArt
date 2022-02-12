@@ -198,7 +198,7 @@ class NetHandler(sck.BaseRequestHandler):
                 break
             
     def player_info(self, opt):
-        print(self.time_str(f"Player {self.player.name} do {opt} and remains money {self.player.money} and goods {self.player.goods}."))
+        print(self.time_str(f"Player {self.player.name} does {opt} and remains money {self.player.money} and goods {self.player.goods}."))
 
     def command_handle(self, command):
         '''
