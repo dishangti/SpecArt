@@ -146,7 +146,7 @@ class NetHandler(sck.BaseRequestHandler):
 
             deal_num = min(top_sell.num, buy_order.num)
             deal_price = top_sell.price
-            buy_player.money += deal_price * (buy_order.num - deal_num)           # Return redundant money
+            buy_player.money += deal_num * (buy_order.price - deal_price)           # Return redundant money
             buy_player.goods += deal_num
             top_sell.num -= deal_num
             buy_order.num -= deal_num
@@ -197,6 +197,8 @@ class NetHandler(sck.BaseRequestHandler):
                     hp.heappush(Order.buy_queue, top_buy)
                 break
             
+    def player_info(self):
+        print(self.time_str(f"Player {self.player.name} with money {self.player.money} and goods {self.player.goods}."))
 
     def command_handle(self, command):
         '''
@@ -235,6 +237,7 @@ class NetHandler(sck.BaseRequestHandler):
                 self.sock.sendall(self.command('sellok', num, price, sell_order.time))
                 NetHandler.broadcast('sell', num, price)
                 self.sell_order(sell_order)
+            self.player_info()
 
         if command[0] == 'buy':
             num = int(command[1])
@@ -246,6 +249,7 @@ class NetHandler(sck.BaseRequestHandler):
                 self.sock.sendall(self.command('buyok', num, price, buy_order.time))
                 NetHandler.broadcast('buy', num, price)
                 self.buy_order(buy_order)
+            self.player_info()
 
         if command[0] == 'backbuy':
             if Order.buy_queue == []: return
@@ -261,6 +265,7 @@ class NetHandler(sck.BaseRequestHandler):
                         self.player.money += num * price
                 self.sock.sendall(self.command('backbuyok', num, price, time))
                 NetHandler.broadcast('backbuy', num, price)
+            self.player_info()
 
         if command[0] == 'backsell':
             if Order.sell_queue == []: return
@@ -276,6 +281,7 @@ class NetHandler(sck.BaseRequestHandler):
                         self.player.goods += num
                 self.sock.sendall(self.command('backsellok', num, price, time))
                 NetHandler.broadcast('backsell', num, price)
+            self.player_info()
 
     def setup(self):
         '''

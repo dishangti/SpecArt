@@ -176,7 +176,7 @@ class Com:
         elif core_cmd == 'goods':                                       #goods (initGoods)
             initGoods = int(cmd[1])
             self.player.goods = self.initGoods = initGoods
-            self.notice('Initial goods: {initGoods}', False)
+            self.notice(f'Initial goods: {initGoods}', False)
             if self.mode == 1:
                 self.window.freshStatusBar.emit()
 
