@@ -23,8 +23,8 @@ class GUICom(Com):
         self.window.new_notice(content)
 
 class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
-    newNotice = pyqtSignal()
-    newDeal = pyqtSignal()
+    newNotice = pyqtSignal()                # Display notices in queue
+    newDeal = pyqtSignal()                  # Display deals in queue
     beginGame = pyqtSignal()
     freshWinProcessBar = pyqtSignal()
     freshBuyTableWidget = pyqtSignal()
@@ -32,7 +32,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
     freshTransTableWidget = pyqtSignal()
     freshStatusBar = pyqtSignal()
     freshLCD = pyqtSignal()
-    updatePlayer = pyqtSignal()
+    updatePlayer = pyqtSignal()             # Fresh the total num of players
 
     def __init__(self):
         super(Ui_SpecArt_MainWindow, self).__init__()
@@ -67,46 +67,46 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.trans_tableWidget.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
 
         # Set slots for signals
-        self.buy_pushButton.clicked.connect(self.buy_pushButton_clicked)
-        self.sell_pushButton.clicked.connect(self.sell_pushButton_clicked)
-        self.players_pushButton.clicked.connect(self.players_pushButton_clicked)
-        self.back_pushButton.clicked.connect(self.back_pushButton_clicked)
-        self.buy_tableWidget.doubleClicked.connect(self.buy_tableWidget_doubleClicked)      # Set price automatically when double clicking
-        self.sell_tableWidget.doubleClicked.connect(self.sell_tableWidget_doubleClicked)
+        self.buy_pushButton.clicked.connect(self.__buy_pushButton_clicked)
+        self.sell_pushButton.clicked.connect(self.__sell_pushButton_clicked)
+        self.players_pushButton.clicked.connect(self.__players_pushButton_clicked)
+        self.back_pushButton.clicked.connect(self.__back_pushButton_clicked)
+        self.buy_tableWidget.doubleClicked.connect(self.__buy_tableWidget_doubleClicked)      # Set price automatically when double clicking
+        self.sell_tableWidget.doubleClicked.connect(self.__sell_tableWidget_doubleClicked)
 
-        self.newNotice.connect(self.display_notice)
-        self.newDeal.connect(self.display_deal)
-        self.beginGame.connect(self.begin_game)
-        self.freshWinProcessBar.connect(self.fresh_winProcessBar)
-        self.freshBuyTableWidget.connect(self.fresh_buyTableWidget)
-        self.freshSellTableWidget.connect(self.fresh_sellTableWidget)
-        self.freshTransTableWidget.connect(self.fresh_transTableWidget)
-        self.freshStatusBar.connect(self.fresh_StatusBar)
-        self.freshLCD.connect(self.fresh_LCD)
-        self.updatePlayer.connect(self.update_player)
+        self.newNotice.connect(self.__display_notice)
+        self.newDeal.connect(self.__display_deal)
+        self.beginGame.connect(self.__begin_game)
+        self.freshWinProcessBar.connect(self.__fresh_winProcessBar)
+        self.freshBuyTableWidget.connect(self.__fresh_buyTableWidget)
+        self.freshSellTableWidget.connect(self.__fresh_sellTableWidget)
+        self.freshTransTableWidget.connect(self.__fresh_transTableWidget)
+        self.freshStatusBar.connect(self.__fresh_StatusBar)
+        self.freshLCD.connect(self.__fresh_LCD)
+        self.updatePlayer.connect(self.__update_player)
 
         # Fix the window size
         self.setFixedSize(self.width(), self.height())
 
-    def buy_pushButton_clicked(self):
+    def __buy_pushButton_clicked(self):
         if self.price_lineEdit.text() == "" or self.num_lineEdit.text() == "":
             return
         price = int(self.price_lineEdit.text())
         num = int(self.num_lineEdit.text())
         self.com.buy(num, price)
 
-    def sell_pushButton_clicked(self):
+    def __sell_pushButton_clicked(self):
         if self.price_lineEdit.text() == "" or self.num_lineEdit.text() == "":
             return
         price = int(self.price_lineEdit.text())
         num = int(self.num_lineEdit.text())
         self.com.sell(num, price)
 
-    def players_pushButton_clicked(self):
+    def __players_pushButton_clicked(self):
         self.window = playerlist_set.mianWidget(self.com.playerList)
         self.window.show()
 
-    def back_pushButton_clicked(self):
+    def __back_pushButton_clicked(self):
         trans = self.com.player.transaction
         select_items = self.trans_tableWidget.selectedItems()
         if len(select_items) == 0: return
@@ -128,21 +128,21 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
                     self.com.backbuy(int(num), int(price), tran[3])
                 break
 
-    def buy_tableWidget_doubleClicked(self):
+    def __buy_tableWidget_doubleClicked(self):
         select_items = self.buy_tableWidget.selectedItems()
         if len(select_items) == 0: return
         col = select_items[0].column()
         if col == 0:
             self.price_lineEdit.setText(select_items[0].text())
 
-    def sell_tableWidget_doubleClicked(self):
+    def __sell_tableWidget_doubleClicked(self):
         select_items = self.sell_tableWidget.selectedItems()
         if len(select_items) == 0: return
         col = select_items[0].column()
         if col == 0:
             self.price_lineEdit.setText(select_items[0].text())
 
-    def begin_game(self):
+    def __begin_game(self):
         # Judge whether game has begun
         if self.com.beginTime != "":
             self.buy_pushButton.setEnabled(True)
@@ -150,14 +150,14 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             self.back_pushButton.setEnabled(True)
             self.players_pushButton.setEnabled(True)
 
-    def update_player(self):
+    def __update_player(self):
         self.com.totalPlayerMoney = len(self.com.playerList) * self.com.initMoney
 
-    def fresh_winProcessBar(self):
+    def __fresh_winProcessBar(self):
         if self.com.totalPlayerMoney != 0:
             self.win_progressBar.setValue(min(int(self.com.player.money / (self.com.totalPlayerMoney * 0.6) * 100), 100))
 
-    def fresh_buyTableWidget(self):
+    def __fresh_buyTableWidget(self):
         table = self.buy_tableWidget
         table.setRowCount(0)
         table.clearContents()
@@ -170,7 +170,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
         table.scrollToBottom()
 
-    def fresh_sellTableWidget(self):
+    def __fresh_sellTableWidget(self):
         table = self.sell_tableWidget
         table.setRowCount(0)
         table.clearContents()
@@ -183,7 +183,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
         table.scrollToTop()
 
-    def fresh_transTableWidget(self):
+    def __fresh_transTableWidget(self):
         trans = list(self.com.player.transaction.values())
         trans.sort(key=lambda x: x[2])
         trans.reverse()
@@ -215,20 +215,20 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
                 table.item(row, 2).setForeground(QBrush(QColor(255, 0, 0)))
                 table.item(row, 3).setForeground(QBrush(QColor(255, 0, 0)))
 
-    def fresh_StatusBar(self):
+    def __fresh_StatusBar(self):
         # Fresh goods and money in status bar
         self.statusbar.showMessage(f'Status # Money: {self.com.player.money} | Goods: {self.com.player.goods}')
 
-    def fresh_LCD(self):
+    def __fresh_LCD(self):
         # Fresh price in LCD
         self.price_lcdNumber.display(self.com.price)
 
-    def display_notice(self):
+    def __display_notice(self):
         if not self.notice_que.empty():
             msg = self.notice_que.get()
             QMessageBox.information(self, 'Notice', msg)
     
-    def add_deal_item(self, dir, price, num, deal_time):
+    def __add_deal_item(self, dir, price, num, deal_time):
         # Red for positive buy (0)
         # Green for positive sell (1)
         table = self.deal_tableWidget
@@ -253,10 +253,10 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
 
         table.scrollToBottom()
 
-    def display_deal(self):
+    def __display_deal(self):
         if not self.deal_que.empty():
             dir, price, num, deal_time = self.deal_que.get()
-            self.add_deal_item(dir, price, num, deal_time)
+            self.__add_deal_item(dir, price, num, deal_time)
 
     def new_notice(self, content):
         self.notice_que.put(content)

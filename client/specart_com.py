@@ -158,25 +158,27 @@ class Com:
 
         core_cmd = cmd[0]
         
-        #私人指令
+        # Private commands
         if core_cmd == 'nameok':                                        #nameok (name)
-            self.notice(f'Successfully set your name as {cmd[1]}.')
+            name = cmd[1]
+            self.notice(f'Successfully set your name as {name}.')
 
-        elif core_cmd == 'money':                                 #money (initMoney)
-            self.player.money = self.initMoney = int(cmd[1])
-            self.notice('Initial money: ' + cmd[1], False)
+        elif core_cmd == 'money':                                       #money (initMoney)
+            initMoney = int(cmd[1])
+            self.player.money = self.initMoney = initMoney
+            self.notice(f'Initial money: {initMoney}', False)
             if self.mode == 1:
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
 
         elif core_cmd == 'goods':                                       #goods (initGoods)
-            self.player.goods = self.initGoods = int(cmd[1])
-            self.notice('Initial goods: ' + cmd[1], False)
+            initGoods = int(cmd[1])
+            self.player.goods = self.initGoods = initGoods
+            self.notice('Initial goods: {initGoods}', False)
             if self.mode == 1:
                 self.window.freshStatusBar.emit()
 
         elif core_cmd == 'sellok':                                      #sellok (num) (price) (time)
-            #print('Server Instruction: '+' '.join(cmd))
             cmd[0] = 'sell'
             self.player.transaction[cmd[3]] = cmd
             self.player.goods -= int(cmd[1])
@@ -187,7 +189,6 @@ class Com:
                 self.window.freshStatusBar.emit()
 
         elif core_cmd == 'buyok':                                       #buyok (num) (price) (time)
-            #print('Server Instruction: '+' '.join(cmd))
             cmd[0] = 'buy'
             self.player.transaction[cmd[3]] = cmd
             self.player.money -= int(cmd[1])*int(cmd[2])
@@ -204,7 +205,6 @@ class Com:
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
-            #print('Server Instruction: '+' '.join(cmd))
 
         elif core_cmd == 'backbuyok':                                   #backbuyok (num) (price) (time)
             self.player.money += int(self.player.transaction[cmd[3]][1])*int(self.player.transaction[cmd[3]][2])
@@ -214,7 +214,6 @@ class Com:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
-            #print('Server Instruction: '+' '.join(cmd))
 
         elif core_cmd == 'buydealok':                                   #buydealok (num) (price) (time)
             #处理余额
