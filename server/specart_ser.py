@@ -35,4 +35,3 @@ server = thrd.Thread(target=init)
 server.start()
 print("Server is running...")
 controller()
-

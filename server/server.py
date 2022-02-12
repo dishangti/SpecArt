@@ -258,6 +258,7 @@ class NetHandler(sck.BaseRequestHandler):
                     and order.price == price and abs(order.time - time) < 1e-3:
                         Order.buy_queue.pop(i)
                         hp.heapify(Order.buy_queue)
+                        self.player.money += num * price
                 self.sock.sendall(self.command('backbuyok', num, price, time))
                 NetHandler.broadcast('backbuy', num, price)
 
@@ -272,6 +273,7 @@ class NetHandler(sck.BaseRequestHandler):
                     and order.price == price and abs(order.time - time) < 1e-3:
                         Order.sell_queue.pop(i)
                         hp.heapify(Order.sell_queue)
+                        self.player.goods += num
                 self.sock.sendall(self.command('backsellok', num, price, time))
                 NetHandler.broadcast('backsell', num, price)
 
