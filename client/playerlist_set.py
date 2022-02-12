@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QTableWidgetItem
+from PyQt5 import QtWidgets
 from playerlist import Ui_PlayerList_Dialog
  
 class mianWidget(QWidget, Ui_PlayerList_Dialog):
@@ -9,6 +10,7 @@ class mianWidget(QWidget, Ui_PlayerList_Dialog):
         self.close_pushButton.clicked.connect(self.close_pushButton_clicked)
 
         self.setFixedSize(self.width(), self.height())
+        self.playerlist_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
         table = self.playerList_tableWidget
         for player in playerList:

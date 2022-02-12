@@ -214,9 +214,9 @@ QProgressBar::chunk {
    <widget class="QTableWidget" name="deal_tableWidget">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>370</x>
       <y>270</y>
-      <width>271</width>
+      <width>281</width>
       <height>221</height>
      </rect>
     </property>
@@ -257,8 +257,14 @@ QProgressBar::chunk {
     <property name="lineWidth">
      <number>0</number>
     </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>true</bool>
+    </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>75</number>
+     <number>87</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
     </attribute>
     <column>
      <property name="text">
@@ -281,7 +287,10 @@ QProgressBar::chunk {
      </rect>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>75</number>
+     <number>87</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
     </attribute>
     <column>
      <property name="text">

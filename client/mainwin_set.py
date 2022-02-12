@@ -168,7 +168,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.setItem(row, 1, QTableWidgetItem(str(item[1])))
             table.item(row, 0).setForeground(QBrush(QColor(255, 0, 0)))     # Set red color
             table.item(row, 1).setForeground(QBrush(QColor(255, 0, 0)))
-        table.scrollToBottom()
+        table.scrollToTop()
 
     def __fresh_sellTableWidget(self):
         table = self.sell_tableWidget
@@ -181,7 +181,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             table.setItem(row, 1, QTableWidgetItem(str(item[1])))
             table.item(row, 0).setForeground(QBrush(QColor(0, 255, 0)))     # Set green color
             table.item(row, 1).setForeground(QBrush(QColor(0, 255, 0)))
-        table.scrollToTop()
+        table.scrollToBottom()
 
     def __fresh_transTableWidget(self):
         trans = list(self.com.player.transaction.values())
