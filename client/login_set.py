@@ -12,6 +12,8 @@ class mainWin(QMainWindow, Ui_MainWindow):
         self.pushButton_init()
         self.lineEdit.setFocus()
 
+        self.setFixedSize(self.width(), self.height())
+
     def lineEdit_init(self):
         '''
         将输入栏文本变化与self.check_input函数绑定

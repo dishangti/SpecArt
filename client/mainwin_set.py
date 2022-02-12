@@ -85,6 +85,9 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.freshLCD.connect(self.fresh_LCD)
         self.updatePlayer.connect(self.update_player)
 
+        # Fix the window size
+        self.setFixedSize(self.width(), self.height())
+
         self.com.notice('Success! Wait for the game beginning...')
 
     def buy_pushButton_clicked(self):

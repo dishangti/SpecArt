@@ -8,6 +8,8 @@ class mianWidget(QWidget, Ui_PlayerList_Dialog):
         self.setupUi(self)
         self.close_pushButton.clicked.connect(self.close_pushButton_clicked)
 
+        self.setFixedSize(self.width(), self.height())
+
         table = self.playerList_tableWidget
         for player in playerList:
             row = table.rowCount()
