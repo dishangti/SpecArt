@@ -50,6 +50,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
         self.sell_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.buy_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.deal_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.trans_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
         # Fix and set column widths in QTableWidget
         self.buy_tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
