@@ -17,12 +17,12 @@ def Mytransaction(player:Player):
     print(tuple(map(' '.join, player.transaction.values())))
 
 print('SpecArt ' + Com.VERSION + '.' + '\n' + 'See https://github.com/dishangti/SpecArt' + '\n')
-username = input('Hey! What\'s your name? ')
-host = input('host: ')
 
 com = Com(0)
 myself = com.player
 while True:
+    username = input('Hey! What\'s your name? ')
+    host = input('host: ')
     try:
         com.connect(username, host)
     except Exception:

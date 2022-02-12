@@ -55,6 +55,7 @@ class OrderQueue():
             ord_price_lst = list(map(lambda x: -x[0], self.ord_lst))
             ord_price_lst.reverse()
             pos = bisect.bisect_left(ord_price_lst, -order[0])
+            pos = len(ord_lst) - pos - 1
         elif self.dir == 1:
             ord_price_lst = list(map(lambda x: x[0], self.ord_lst))
             pos = bisect.bisect_left(ord_price_lst, order[0])
