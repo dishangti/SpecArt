@@ -53,6 +53,7 @@ class OrderQueue():
         
         if self.dir == 0:
             ord_price_lst = list(map(lambda x: -x[0], self.ord_lst))
+            ord_price_lst.reverse()
             pos = bisect.bisect_left(ord_price_lst, -order[0])
         elif self.dir == 1:
             ord_price_lst = list(map(lambda x: x[0], self.ord_lst))
@@ -142,7 +143,10 @@ class Com:
 
     def connect(self, username, host, port = 7733):
         self.player.username = username
-        self.soc.connect((host, port))
+        try:
+            self.soc.connect((host, port))
+        except Exception as e:
+            raise e
         thread = threading.Thread(target=self.soc_recv, name='socRecvThread')
         thread.start()
         self.soc.sendall(f'name {self.player.username}#'.encode('utf8'))
@@ -180,7 +184,6 @@ class Com:
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
-                self.window.freshTransTableWidget.emit()
 
         elif core_cmd == 'buyok':                                       #buyok (num) (price) (time)
             #print('Server Instruction: '+' '.join(cmd))
@@ -192,7 +195,6 @@ class Com:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
-                self.window.freshTransTableWidget.emit()
 
         elif core_cmd == 'backsellok':                                  #backsellok (num) (price) (time)
             self.player.goods += int(self.player.transaction[cmd[3]][1])
@@ -201,7 +203,6 @@ class Com:
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
-                self.window.freshTransTableWidget.emit()
             #print('Server Instruction: '+' '.join(cmd))
 
         elif core_cmd == 'backbuyok':                                   #backbuyok (num) (price) (time)
@@ -212,7 +213,6 @@ class Com:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
-                self.window.freshTransTableWidget.emit()
             #print('Server Instruction: '+' '.join(cmd))
 
         elif core_cmd == 'buydealok':                                   #buydealok (num) (price) (time)
@@ -238,7 +238,6 @@ class Com:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
-                self.window.freshTransTableWidget.emit()
             
         elif core_cmd == 'selldealok':                                  #selldealok (num) (price) (time)
             #处理余额
@@ -257,7 +256,6 @@ class Com:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
-                self.window.freshTransTableWidget.emit()
         
         #广播指令
         elif core_cmd == 'sell':                                        #sell (num) (price)

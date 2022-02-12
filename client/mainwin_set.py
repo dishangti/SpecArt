@@ -116,8 +116,8 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
             dir = 'sell'
         elif select_items[0].text() == "Buy":
             dir = 'buy'
-        num = int(select_items[1].text())
-        price = int(select_items[2].text())
+        price = int(select_items[1].text())
+        num = int(select_items[2].text())
         tran_time = select_items[3].text()
         for tran in trans.values():
             precise_tran_time = localtime(float(tran[3]))[3:6]

@@ -53,9 +53,9 @@ while True:
         elif cmd[0] == 'account':
             Myaccount(myself)
         elif cmd[0] == 'selling':
-            print(com.selling.get_order)
+            print(com.selling.get_order())
         elif cmd[0] == 'buying':
-            print(com.buying.get_order)
+            print(com.buying.get_order())
         else:
             print('Invalid command!')
     except Exception as e:
