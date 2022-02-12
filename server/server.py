@@ -299,6 +299,7 @@ class SpecArt:
     '''
     Save some game settings.
     '''
+    VERSION = "v0.2.0-beta"
     INIT_MONEY = 100000
     INIT_GOODS = 100000
     WIN_RATE = 0.6

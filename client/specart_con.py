@@ -16,7 +16,7 @@ def Mytransaction(player:Player):
     '''
     print(tuple(map(' '.join, player.transaction.values())))
 
-print('SpecArt ' + Com.VERSION + '.' + '\n' + 'See https://github.com/dishangti/SpecArt>https://github.com/dishangti/SpecArt' + '\n')
+print('SpecArt ' + Com.VERSION + '.' + '\n' + 'See https://github.com/dishangti/SpecArt' + '\n')
 username = input('Hey! What\'s your name? ')
 host = input('host: ')
 

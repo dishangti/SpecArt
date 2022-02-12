@@ -29,6 +29,7 @@ def controller():
             del ser.SpecArt.ser_sock
             exit(0)
 
+print('SpecArt ' + ser.SpecArt.VERSION + '.' + '\n' + 'See https://github.com/dishangti/SpecArt' + '\n')
 print("Welcome to SpecArt Server!")
 server = thrd.Thread(target=init)
 server.start()
