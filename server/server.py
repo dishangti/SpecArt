@@ -247,11 +247,11 @@ class NetHandler(sck.BaseRequestHandler):
             if Order.buy_queue == []: return
             num = int(command[1])
             price = int(command[2])
-            time = command[3]
+            time = float(command[3])
             with syn_lock:
                 for i, order in enumerate(Order.buy_queue):
                     if order.name == self.name and order.num == num\
-                    and order.price == -price and order.time == time:
+                    and order.price == -price and abs(order.time - time) < 1e-3:
                         Order.buy_queue.pop(i)
                         hp.heapify(Order.buy_queue)
                 self.sock.sendall(self.command('backbuyok', num, price, time))
@@ -261,11 +261,11 @@ class NetHandler(sck.BaseRequestHandler):
             if Order.sell_queue == []: return
             num = int(command[1])
             price = int(command[2])
-            time = command[3]
+            time = float(command[3])
             with syn_lock:
                 for i, order in enumerate(Order.sell_queue):
                     if order.name == self.name and order.num == num\
-                    and order.price == price and order.time == time:
+                    and order.price == price and abs(order.time - time) < 1e-3:
                         Order.sell_queue.pop(i)
                         hp.heapify(Order.sell_queue)
                 self.sock.sendall(self.command('backsellok', num, price, time))
