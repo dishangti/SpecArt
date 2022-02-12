@@ -186,6 +186,7 @@ class mainWin(Ui_SpecArt_MainWindow, QMainWindow):
     def fresh_transTableWidget(self):
         trans = list(self.com.player.transaction.values())
         trans.sort(key=lambda x: x[2])
+        trans.reverse()
         table = self.trans_tableWidget
         table.setRowCount(0)
         table.clearContents()

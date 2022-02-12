@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from welcome import Ui_Form
+from specart_com import Com
 import login_set
  
 class mainWin(QWidget, Ui_Form):
@@ -22,4 +23,5 @@ class mainWin(QWidget, Ui_Form):
         pass
 
     def about_pushButton_clicked(self):
-        pass
+        info = 'SpecArt ' + Com.VERSION + '.' + '<br>' + 'See <a href=https://github.com/dishangti/SpecArt>https://github.com/dishangti/SpecArt</a>.'
+        QMessageBox.information(self, 'About', info)

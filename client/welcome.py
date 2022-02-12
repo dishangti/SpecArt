@@ -19,6 +19,7 @@ class Ui_Form(object):
         self.lan_pushButton.setGeometry(QtCore.QRect(270, 150, 101, 31))
         self.lan_pushButton.setObjectName("lan_pushButton")
         self.teach_pushButton = QtWidgets.QPushButton(Form)
+        self.teach_pushButton.setEnabled(False)
         self.teach_pushButton.setGeometry(QtCore.QRect(270, 190, 101, 31))
         self.teach_pushButton.setObjectName("teach_pushButton")
         self.about_pushButton = QtWidgets.QPushButton(Form)

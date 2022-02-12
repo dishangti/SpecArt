@@ -118,6 +118,8 @@ class Player():
         self.transaction = {}       #keys:挂单时间 values:指令按空格切分后的列表
 
 class Com:
+    VERSION = "v0.2.0-beta"
+
     def __init__(self, mode):
         '''
         mode(integer): 0(consle), 1(GUI)
