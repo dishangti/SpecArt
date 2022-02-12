@@ -116,12 +116,13 @@ class NetHandler(sck.BaseRequestHandler):
     def winner(self, player):
         '''
         player:(Player)
-        Check whether player is a winner.
+        Check whether the player is a winner.
         '''
         WIN_MONEY = len(list(NetHandler.players.values())) * SpecArt.INIT_MONEY * SpecArt.WIN_RATE
         if player.money >= WIN_MONEY:
-            print('winner', player.name)
+            print(self.time_str(f"{player.name} wins the game."))
             NetHandler.broadcast('winner', player.name)
+            SpecArt.win_flag = True
 
     def buy_order(self, buy_order):
         '''
@@ -190,12 +191,12 @@ class NetHandler(sck.BaseRequestHandler):
             buy_player.sock.sendall(self.command('buydealok', deal_num, deal_price, top_buy.time))          # Sell initiatively
             NetHandler.broadcast('dealsell', deal_num, deal_price, tm.time())      # Have a deal
 
+            self.winner(sell_player)
             if sell_order.num == 0:
                 if top_buy.num != 0:
                     hp.heappush(Order.buy_queue, top_buy)
                 break
-
-            self.winner(sell_player)
+            
 
     def command_handle(self, command):
         '''
@@ -219,6 +220,9 @@ class NetHandler(sck.BaseRequestHandler):
             self.inuse = False
 
         if self.named == True and SpecArt.begin_flag == False and command[0] != 'name':
+            return
+
+        if SpecArt.win_flag:
             return
 
         if command[0] == 'sell':
@@ -270,10 +274,6 @@ class NetHandler(sck.BaseRequestHandler):
                         hp.heapify(Order.sell_queue)
                 self.sock.sendall(self.command('backsellok', num, price, time))
                 NetHandler.broadcast('backsell', num, price)
-
-        if SpecArt.win_flag and SpecArt.ser_sock:
-            del SpecArt.ser_sock
-            exit(0)
 
     def setup(self):
         '''

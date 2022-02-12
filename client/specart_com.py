@@ -140,6 +140,7 @@ class Com:
         self.selling = OrderQueue(0)
         self.deal = ""
         self.playerList = []
+        self.winner = ""
 
     def connect(self, username, host, port = 7733):
         self.player.username = username
@@ -319,6 +320,9 @@ class Com:
             self.notice('GAME START!')
             if self.mode == 1:
                 self.window.beginGame.emit()
+        elif core_cmd == 'winner':                                      #winner (name)
+            self.winner = cmd[1]
+            self.notice(f'{self.winner} wins the game!')
 
     def notice(self, content, on_GUI=True):  # Give a notice to the player
         if self.mode == 0:
