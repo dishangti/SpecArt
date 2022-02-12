@@ -31,7 +31,7 @@ sell (num) (price)
 buy (num) (price)
 backsell (num) (price) (time)
 backbuy (num) (price) (time)
-transaction
+trans
 account
 selling
 buying\n''')       #提示操作指令
@@ -47,14 +47,14 @@ while True:
             com.backsell(cmd[1], cmd[2], cmd[3])
         elif cmd[0] == 'backbuy':
             com.backbuy(cmd[1], cmd[2], cmd[3])
-        elif cmd[0] == 'transaction':
+        elif cmd[0] == 'trans':
             Mytransaction(myself)
         elif cmd[0] == 'account':
             Myaccount(myself)
         elif cmd[0] == 'selling':
-            print(com.selling)
+            print(com.selling.get_order)
         elif cmd[0] == 'buying':
-            print(com.buying)
+            print(com.buying.get_order)
         else:
             print('Invalid command!')
     except Exception as e:
