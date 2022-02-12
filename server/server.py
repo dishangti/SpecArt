@@ -145,10 +145,10 @@ class NetHandler(sck.BaseRequestHandler):
 
             deal_num = min(top_sell.num, buy_order.num)
             deal_price = top_sell.price
-            buy_order.num -= deal_num
             buy_player.money += deal_price * (buy_order.num - deal_num)           # Return redundant money
             buy_player.goods += deal_num
             top_sell.num -= deal_num
+            buy_order.num -= deal_num
             sell_player.money += deal_num * deal_price
             buy_player.sock.sendall(self.command('buydealok', deal_num, deal_price, buy_order.time))        # Buy initiatively
             sell_player.sock.sendall(self.command('selldealok', deal_num, deal_price, top_sell.time))       # Sell initiatively
@@ -182,8 +182,8 @@ class NetHandler(sck.BaseRequestHandler):
 
             deal_num = min(top_buy.num, sell_order.num)
             deal_price = top_buy.price
-            sell_order.num -= deal_num
             sell_player.money += deal_num * deal_price
+            sell_order.num -= deal_num
             top_buy.num -= deal_num
             buy_player.goods += deal_num
             sell_player.sock.sendall(self.command('selldealok', deal_num, deal_price, sell_order.time))     # Buy initiatively
