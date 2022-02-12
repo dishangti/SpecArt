@@ -251,7 +251,7 @@ class NetHandler(sck.BaseRequestHandler):
             with syn_lock:
                 for i, order in enumerate(Order.buy_queue):
                     if order.name == self.name and order.num == num\
-                    and order.price == -price and abs(order.time - time) < 1e-3:
+                    and order.price == price and abs(order.time - time) < 1e-3:
                         Order.buy_queue.pop(i)
                         hp.heapify(Order.buy_queue)
                 self.sock.sendall(self.command('backbuyok', num, price, time))
