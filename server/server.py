@@ -230,6 +230,7 @@ class NetHandler(sck.BaseRequestHandler):
         if command[0] == 'sell':
             num = int(command[1])
             price = int(command[2])
+            if num == 0: return
             with syn_lock:
                 if num > self.player.goods: return
                 self.player.goods -= num
@@ -242,6 +243,7 @@ class NetHandler(sck.BaseRequestHandler):
         if command[0] == 'buy':
             num = int(command[1])
             price = int(command[2])
+            if num == 0: return
             with syn_lock:
                 if price * num > self.player.money: return
                 self.player.money -= price * num
