@@ -5,7 +5,7 @@ A tactical game about transaction and speculation.
 In this game, players are connected by the central server, and allocated **equal money and goods**. The same as the **continuous auction transaction** rules of a stock market or a futures market, you can pend buying and selling orders on the server, and then the server will process the order queue and decide which pair to deal. Noticed that the number of your money and goods have changed, your goal is to gain **60% money of all** the players and win the game. 
 
 ## Requirements
-* 3.5 <= Python 3 <= 3.8.
+* 3.5 <= Python 3 <= 3.9.
 * A server with TCP/IP network.
 * Clients as players able to connect to the server.
 
@@ -44,7 +44,7 @@ In this game, players are connected by the central server, and allocated **equal
 在这个游戏里，玩家们通过一个中心服务器相连，被分配以**等量的钱和物资**。和股票以及期货市场里的**连续竞价**交易规则一样，你可以在服务器上挂买卖单，然后服务器将会处理订单队列并且决定那一对订单成交。注意到此时你的钱和物资数量将会发生变化，而你的目的则是得到**所有玩家60%的钱**来赢得这场游戏。
 
 ## 配置要求
-* 3.5 <= Python 3 <= 3.8。
+* 3.5 <= Python 3 <= 3.9。
 * 带有TCP/IP网络的服务器。
 * 能连接到服务器的玩家客户端。
 
