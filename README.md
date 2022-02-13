@@ -11,18 +11,18 @@ In this game, players are connected by the central server, and allocated **equal
 
 ## Server Operations
 * Allow the `7733` port on the firewall.
-* Run file `run_server.cmd`(Windows) or `run_server.sh`(Linux) and wait for connections from clients(players).
+* Run file `run_server.cmd`(Windows) or `run_server.sh`(Linux) and wait for connections from clients(players), for packaged version you can run `specart_ser.exe`.
 * After all the players in, type `b` and press Enter to begin the game.
 
 ## Client Operations (Console)
-* Run file `run_client_cli.cmd`(Windows) or `run_client_cli.sh`(Linux).
+* Run file `run_client_cli.cmd`(Windows) or `run_client_cli.sh`(Linux)，for packaged version you can run `specart_con.exe`.
 * Set a unique name for each player.
 * Type the address of the server.
 * Wait for the signal of beginning from the server.
 * Follow the hints and enjoy it!
 
 ## Client Operations (GUI)
-* Run file `run_client_gui.cmd`(Windows) or `run_client_gui.sh`(Linux).
+* Run file `run_client_gui.cmd`(Windows) or `run_client_gui.sh`(Linux), for packaged version you can run `specart_gui.exe`.
 * ~~Learn by "Local Teaching" method.~~
 * Choose "Online Play" to begin the game.
 * Set a unique name for each player, type the address of the server, click "Login" botton.
@@ -50,18 +50,18 @@ In this game, players are connected by the central server, and allocated **equal
 
 ## 服务器操作
 * 开放防火墙`7733`端口。
-* 运行文件`specart_ser.py`并等待客户端（玩家）连接。
+* 运行文件`specart_ser.py`并等待客户端（玩家）连接，对于打包版本可以运行`specart_ser.exe`。
 * 当所有玩家连接后，输入`b`并回车来开始游戏。
 
 ## 客户端操作（命令行）
-* 运行文件 `run_client_con.cmd`(Windows) 或者 `run_client_con.sh`(Linux).
+* 运行文件 `run_client_con.cmd`(Windows) 或者 `run_client_con.sh`(Linux)，对于打包版本可以运行`specart_gui.exe`.
 * 为玩家设置一个唯一的用户名。
 * 输入服务器地址。
 * 等待服务器的开始信号。
 * 根据提示游戏，玩得愉快！
 
 ## 客户端操作（图形界面）
-* 运行文件 `run_client_gui.cmd`(Windows) 或者 `run_client_gui.sh`(Linux).
+* 运行文件 `run_client_gui.cmd`(Windows) 或者 `run_client_gui.sh`(Linux)，对于打包版本可以运行`specart_con.exe`.
 * ~~通过“单机教学”模式进行学习。~~
 * 选择“局域网联机”模式开始游戏。
 * 为玩家设置一个唯一的用户名，输入服务器的地址，点击“登录”。
