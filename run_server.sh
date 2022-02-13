@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python ./server/specart_ser.py
+python3 ./server/specart_ser.py

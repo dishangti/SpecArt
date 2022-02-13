@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python ./client/specart_con.py
+python3 ./client/specart_con.py
