@@ -131,17 +131,19 @@ class NetHandler(sck.BaseRequestHandler):
         '''
         buy_player = NetHandler.players[buy_order.name]
 
+        sell_que = Order.sell_queue
+        buy_que = Order.buy_queue
         while True:
-            if Order.sell_queue == []:
+            if sell_que == []:
                 if buy_order.num != 0:
-                    hp.heappush(Order.buy_queue, buy_order)
+                    hp.heappush(buy_que, buy_order)
                 break
-            top_sell = hp.heappop(Order.sell_queue)
+            top_sell = hp.heappop(sell_que)
             sell_player = NetHandler.players[top_sell.name]
 
             if buy_order.price < top_sell.price:
-                hp.heappush(Order.buy_queue, buy_order)
-                hp.heappush(Order.sell_queue, top_sell)
+                hp.heappush(buy_que, buy_order)
+                hp.heappush(sell_que, top_sell)
                 break
 
             deal_num = min(top_sell.num, buy_order.num)
@@ -158,7 +160,7 @@ class NetHandler(sck.BaseRequestHandler):
 
             if buy_order.num == 0:
                 if top_sell.num != 0:
-                    hp.heappush(Order.sell_queue, top_sell)
+                    hp.heappush(sell_que, top_sell)
                 break
 
     def sell_order(self, sell_order):
@@ -168,17 +170,19 @@ class NetHandler(sck.BaseRequestHandler):
         '''
         sell_player = NetHandler.players[sell_order.name]
         
+        sell_que = Order.sell_queue
+        buy_que = Order.buy_queue
         while True:
-            if Order.buy_queue == []:
+            if buy_que == []:
                 if sell_order.num != 0:
-                    hp.heappush(Order.sell_queue, sell_order)
+                    hp.heappush(sell_que, sell_order)
                 break
-            top_buy = hp.heappop(Order.buy_queue)
+            top_buy = hp.heappop(buy_que)
             buy_player = NetHandler.players[top_buy.name]
 
             if sell_order.price > top_buy.price:
-                hp.heappush(Order.sell_queue, sell_order)
-                hp.heappush(Order.buy_queue, top_buy)
+                hp.heappush(sell_que, sell_order)
+                hp.heappush(buy_que, top_buy)
                 break
 
             deal_num = min(top_buy.num, sell_order.num)
@@ -194,7 +198,7 @@ class NetHandler(sck.BaseRequestHandler):
             self.winner(sell_player)
             if sell_order.num == 0:
                 if top_buy.num != 0:
-                    hp.heappush(Order.buy_queue, top_buy)
+                    hp.heappush(buy_que, top_buy)
                 break
             
     def player_info(self, opt):
@@ -240,7 +244,7 @@ class NetHandler(sck.BaseRequestHandler):
                 self.sell_order(sell_order)
             self.player_info(" ".join(command))
 
-        if command[0] == 'buy':
+        elif command[0] == 'buy':
             num = int(command[1])
             price = int(command[2])
             if num == 0: return
@@ -253,7 +257,7 @@ class NetHandler(sck.BaseRequestHandler):
                 self.buy_order(buy_order)
             self.player_info(" ".join(command))
 
-        if command[0] == 'backbuy':
+        elif command[0] == 'backbuy':
             if Order.buy_queue == []: return
             num = int(command[1])
             price = int(command[2])
@@ -269,7 +273,7 @@ class NetHandler(sck.BaseRequestHandler):
                 NetHandler.broadcast('backbuy', num, price)
             self.player_info(" ".join(command))
 
-        if command[0] == 'backsell':
+        elif command[0] == 'backsell':
             if Order.sell_queue == []: return
             num = int(command[1])
             price = int(command[2])

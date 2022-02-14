@@ -15,8 +15,8 @@ class OrderQueue():
         dir(int): 0(sell queue), 1(buy queue).
         """
 
-        self.ord_lst = []
-        self.dir = dir
+        self.__ord_lst = []
+        self.__dir = dir
 
     def add_order(self, order):
         """
@@ -26,12 +26,12 @@ class OrderQueue():
         # Bugs here
 
         price, num = order
-        ord_lst = self.ord_lst
+        ord_lst = self.__ord_lst
         if len(ord_lst) == 0:
             ord_lst.append(order)
             return
 
-        ord_price_lst = list(map(lambda x: x[0], self.ord_lst))
+        ord_price_lst = list(map(lambda x: x[0], self.__ord_lst))
         pos = bisect.bisect_left(ord_price_lst, order[0])
         if pos >= len(ord_lst):
             ord_lst.insert(pos, order)
@@ -47,17 +47,17 @@ class OrderQueue():
         """
 
         price, num = order
-        ord_lst = self.ord_lst
+        ord_lst = self.__ord_lst
         if len(ord_lst) == 0: return
 
         
-        if self.dir == 0:
-            ord_price_lst = list(map(lambda x: -x[0], self.ord_lst))
+        if self.__dir == 0:
+            ord_price_lst = list(map(lambda x: -x[0], self.__ord_lst))
             ord_price_lst.reverse()
             pos = bisect.bisect_left(ord_price_lst, -order[0])
             pos = len(ord_lst) - pos - 1
-        elif self.dir == 1:
-            ord_price_lst = list(map(lambda x: x[0], self.ord_lst))
+        elif self.__dir == 1:
+            ord_price_lst = list(map(lambda x: x[0], self.__ord_lst))
             pos = bisect.bisect_left(ord_price_lst, order[0])
         if order[0] == ord_lst[pos][0]:
             num = ord_lst[pos][1] - num
@@ -69,38 +69,25 @@ class OrderQueue():
         """
         Match and delete all the orders in the queue.
         """
-        ord_lst = self.ord_lst.copy()
+        ord_lst = self.__ord_lst.copy()
         price = order[0]
         num = order[1]
-        if self.dir == 0:
-            for sell in ord_lst:
-                if num == 0: break
-                sell_price = sell[0]
-                sell_num = sell[1]
-                if sell_price > price: break
-                if sell_num <= num:
-                    num -= sell_num
-                    self.del_order((sell_price, sell_num))
-                else:
-                    self.del_order((sell_price, num))
-                    num = 0
-
-        elif self.dir == 1:
+        if self.__dir == 1:
             ord_lst.reverse()
-            for buy in ord_lst:
-                if num == 0: break
-                buy_price = buy[0]
-                buy_num = buy[1]
-                if buy_price < price: break
-                if buy_num <= num:
-                    num -= buy_num
-                    self.del_order((buy_price, buy_num))
-                else:
-                    self.del_order((buy_price, num))
-                    num = 0
+        for order in ord_lst:
+            if num == 0: break
+            ord_price = order[0]
+            ord_num = order[1]
+            if ord_price != price and (self.__dir ^ (ord_price > price)): break   # Absolutely greater for selling and less for buying
+            if ord_num <= num:
+                num -= ord_num
+                self.del_order((ord_price, ord_num))
+            else:
+                self.del_order((ord_price, num))
+                num = 0
 
     def get_order(self):
-        rev = self.ord_lst.copy()
+        rev = self.__ord_lst.copy()
         rev.reverse()
         return rev
 
@@ -161,11 +148,15 @@ class Com:
         core_cmd = cmd[0]
         
         # Private commands
-        if core_cmd == 'nameok':                                        #nameok (name)
+        if core_cmd == 'nameok':
+            #nameok (name)
+            # Successfully set usernamename as (name) 
             name = cmd[1]
             self.notice(f'Successfully set your name as {name}.')
 
-        elif core_cmd == 'money':                                       #money (initMoney)
+        elif core_cmd == 'money':
+            #money (initMoney)
+            # Set initial money (initMoney)
             initMoney = int(cmd[1])
             self.player.money = self.initMoney = initMoney
             self.notice(f'Initial money: {initMoney}', False)
@@ -173,14 +164,18 @@ class Com:
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
 
-        elif core_cmd == 'goods':                                       #goods (initGoods)
+        elif core_cmd == 'goods':
+            #goods (initGoods)
+            # Set initial goods (initGoods)
             initGoods = int(cmd[1])
             self.player.goods = self.initGoods = initGoods
             self.notice(f'Initial goods: {initGoods}', False)
             if self.mode == 1:
                 self.window.freshStatusBar.emit()
 
-        elif core_cmd == 'sellok':                                      #sellok (num) (price) (time)
+        elif core_cmd == 'sellok':
+            #sellok (num) (price) (time)
+            # Successfully sold (num) goods at the price of (price) at (time)
             cmd[0] = 'sell'
             self.player.transaction[cmd[3]] = cmd
             self.player.goods -= int(cmd[1])
@@ -190,7 +185,9 @@ class Com:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
 
-        elif core_cmd == 'buyok':                                       #buyok (num) (price) (time)
+        elif core_cmd == 'buyok':
+            #buyok (num) (price) (time)
+            # Successfully bought (num) goods at the price of (price) at (time)
             cmd[0] = 'buy'
             self.player.transaction[cmd[3]] = cmd
             self.player.money -= int(cmd[1])*int(cmd[2])
@@ -200,7 +197,9 @@ class Com:
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
 
-        elif core_cmd == 'backsellok':                                  #backsellok (num) (price) (time)
+        elif core_cmd == 'backsellok':
+            #backsellok (num) (price) (time)
+            # Successfully withdrawing a selling order (num) goods at the price of (price) at (time)
             self.player.goods += int(self.player.transaction[cmd[3]][1])
             del self.player.transaction[cmd[3]]
             self.notice("Managed to withdraw the selling order.", False)
@@ -208,7 +207,9 @@ class Com:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
 
-        elif core_cmd == 'backbuyok':                                   #backbuyok (num) (price) (time)
+        elif core_cmd == 'backbuyok':
+            #backbuyok (num) (price) (time)
+            # Successfully withdrawing a buying order (num) goods at the price of (price) at (time)
             self.player.money += int(self.player.transaction[cmd[3]][1])*int(self.player.transaction[cmd[3]][2])
             del self.player.transaction[cmd[3]]
             self.notice("Managed to withdraw the buying order.", False)
@@ -217,67 +218,88 @@ class Com:
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
 
-        elif core_cmd == 'buydealok':                                   #buydealok (num) (price) (time)
+        elif core_cmd == 'buydealok':
+            #buydealok (num) (price) (time)
+            # Deal a buying order of (num) goods at the price of (price) at (time)
+            num = int(cmd[1])
+            price = int(cmd[2])
+            time = cmd[3]
+
             #处理余额
-            if cmd[2] == self.player.transaction[cmd[3]][2]:
+            if price == self.player.transaction[time][2]:
                 pass
-            elif int(cmd[2]) < int(self.player.transaction[cmd[3]][2]):
-                self.player.money += (int(self.player.transaction[cmd[3]][2]) - int(cmd[2])) * int(cmd[1])
+            elif price < int(self.player.transaction[time][2]):
+                self.player.money += (int(self.player.transaction[time][2]) - price) * num
             else:
-                self.player.money -= (int(cmd[2]) - int(self.player.transaction[cmd[3]][2])) * int(cmd[1])
+                self.player.money -= (price - int(self.player.transaction[cmd[3]][2])) * num
             
             #处理物资
-            self.player.goods += int(cmd[1])
-            num_ordered = int(self.player.transaction[cmd[3]][1])
-            num_ordered -= int(cmd[1])
+            self.player.goods += num
+            num_ordered = int(self.player.transaction[time][1])
+            num_ordered -= num
             if num_ordered == 0:
-                del self.player.transaction[cmd[3]]
+                del self.player.transaction[time]
             else:
-                self.player.transaction[cmd[3]][1] = str(num_ordered)
+                self.player.transaction[time][1] = str(num_ordered)
             
-            self.notice(f"Made a buying deal of {cmd[1]} goods at the price {cmd[2]}.", False)
+            self.notice(f"Made a buying deal of {num} goods at the price {price}.", False)
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
             
-        elif core_cmd == 'selldealok':                                  #selldealok (num) (price) (time)
+        elif core_cmd == 'selldealok':
+            #selldealok (num) (price) (time)
+            # Deal a selling order of (num) goods at the price of (price) at (time)
+            num = int(cmd[1])
+            price = int(cmd[2])
+            time = cmd[3]
+
             #处理余额
-            self.player.money += int(cmd[2]) * int(cmd[1])
+            self.player.money += price * num
             
             #处理物资
-            num_ordered = int(self.player.transaction[cmd[3]][1])
-            num_ordered -= int(cmd[1])
+            num_ordered = int(self.player.transaction[time][1])
+            num_ordered -= num
             if num_ordered == 0:
-                del self.player.transaction[cmd[3]]
+                del self.player.transaction[time]
             else:
-                self.player.transaction[cmd[3]][1] = str(num_ordered)
+                self.player.transaction[time][1] = str(num_ordered)
             
-            self.notice(f"Made a selling deal of {cmd[1]} goods at the price {cmd[2]}.", False)
+            self.notice(f"Made a selling deal of {num} goods at the price {price}.", False)
             if self.mode == 1:
                 self.window.freshTransTableWidget.emit()
                 self.window.freshStatusBar.emit()
                 self.window.freshWinProcessBar.emit()
         
         #广播指令
-        elif core_cmd == 'sell':                                        #sell (num) (price)
+        elif core_cmd == 'sell':
+            #sell (num) (price)
+            # Someone is selling (num) goods at the price of (price)
             self.selling.add_order((int(cmd[2]), int(cmd[1])))
             if self.mode == 1:
                 self.window.freshSellTableWidget.emit()
-        elif core_cmd == 'buy':                                         #buy (num) (price)
+        elif core_cmd == 'buy':
+            #buy (num) (price)
+            # Someone is buying (num) goods at the price of (price)
             self.buying.add_order((int(cmd[2]), int(cmd[1])))
             if self.mode == 1:
                 self.window.freshBuyTableWidget.emit()   
-        elif core_cmd == 'backsell':                                    #backsell (num) (price)
+        elif core_cmd == 'backsell':
+            #backsell (num) (price)
+            # Someone withdrawed a selling order of (num) goods at the price of (price)
             self.selling.del_order((int(cmd[2]), int(cmd[1])))
             if self.mode == 1:
                 self.window.freshSellTableWidget.emit()
-        elif core_cmd == 'backbuy':                                     #backbuy (num) (price)
+        elif core_cmd == 'backbuy':
+            #backbuy (num) (price)
+            # Someone withdrawed a buying order of (num) goods at the price of (price)
             self.buying.del_order((int(cmd[2]), int(cmd[1])))
             if self.mode == 1:
                 self.window.freshBuyTableWidget.emit()
-        elif core_cmd == 'dealsell':                                    #dealsell (num) (price) (dealtime)
-            # print('News: '+' '.join(cmd))
+        elif core_cmd == 'dealsell':
+            #dealsell (num) (price) (dealtime)
+            # Someone deal a selling order of (num) goods at the price of (price)
             price = int(cmd[2])
             num = int(cmd[1])
             deal_time = localtime(float(cmd[3]))[3:6]
@@ -293,8 +315,9 @@ class Com:
                 self.window.freshBuyTableWidget.emit()
                 self.window.freshSellTableWidget.emit()
                 self.window.freshLCD.emit()
-        elif core_cmd == 'dealbuy':                                     #dealbuy (num) (price) (dealtime)
-            # print('News: '+' '.join(cmd))
+        elif core_cmd == 'dealbuy':
+            #dealbuy (num) (price) (dealtime)
+            # Someone deal a buying order of (num) goods at the price of (price)
             price = int(cmd[2])
             num = int(cmd[1])
             deal_time = localtime(float(cmd[3]))[3:6]
@@ -310,18 +333,24 @@ class Com:
                 self.window.freshBuyTableWidget.emit()
                 self.window.freshSellTableWidget.emit()
                 self.window.freshLCD.emit()
-        elif core_cmd == 'name':                                        #name (IP):(port) (name)
+        elif core_cmd == 'name':
+            #name (IP):(port) (name)
+            # A new player named (name) at (IP):(port)
             self.notice(f'Players: {cmd[2]} {cmd[1]}', False)
             self.playerList.append((cmd[1], cmd[2]))
             if self.mode == 1:
                 self.window.updatePlayer.emit()
                 self.window.freshWinProcessBar.emit()
-        elif core_cmd == 'begin':                                       #begin (time)
+        elif core_cmd == 'begin':
+            #begin (time)
+            # Game began at (time)
             self.beginTime = cmd[1]
             self.notice('GAME START!')
             if self.mode == 1:
                 self.window.beginGame.emit()
-        elif core_cmd == 'winner':                                      #winner (name)
+        elif core_cmd == 'winner':
+            #winner (name)
+            # (name) is the winner
             self.winner = cmd[1]
             self.notice(f'{self.winner} wins the game!')
 

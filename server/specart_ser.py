@@ -1,9 +1,9 @@
-import server as ser
+from server import SpecArt, NetHandler, syn_lock
 import time as tm
 import threading as thrd
 
 def init():
-    ser.SpecArt('0.0.0.0', 7733)
+    SpecArt('0.0.0.0', 7733)
 
 def controller():
     '''
@@ -14,22 +14,22 @@ def controller():
 
     while True:
         cmd = input('')
-        if ser.SpecArt.stop_flag or ser.SpecArt.win_flag:
+        if SpecArt.stop_flag or SpecArt.win_flag:
             break
-        if cmd == 'b' and ser.SpecArt.begin_flag == False:
-            ser.SpecArt.begin_flag = True
+        if cmd == 'b' and SpecArt.begin_flag == False:
+            SpecArt.begin_flag = True
             time = tm.time()
             begin_info = 'SpecArt Begins at ' + tm.ctime(time)
             print(begin_info)
-            with ser.syn_lock:
-                ser.NetHandler.broadcast('begin', time)
-                for player in ser.NetHandler.players.values():
-                    ser.NetHandler.broadcast('name', player.addr, player.name)
+            with syn_lock:
+                NetHandler.broadcast('begin', time)
+                for player in NetHandler.players.values():
+                    NetHandler.broadcast('name', player.addr, player.name)
 
         if cmd == 'q':
             break
 
-print('SpecArt ' + ser.SpecArt.VERSION + '.' + '\n' + 'See https://github.com/dishangti/SpecArt' + '\n')
+print('SpecArt ' + SpecArt.VERSION + '.' + '\n' + 'See https://github.com/dishangti/SpecArt' + '\n')
 print("Welcome to SpecArt Server!")
 server = thrd.Thread(target=init)
 server.start()
