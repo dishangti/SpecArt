@@ -2,7 +2,7 @@ import socket
 import threading
 import bisect
 from abc import abstractmethod
-from time import localtime
+from time import localtime, ctime
 
 class OrderQueue():
     """
@@ -121,6 +121,7 @@ class Com:
         self.initMoney = 0
         self.beginTime = ""
         self.totalPlayerMoney = 0      # Total money of all the players
+        self.logFile = open("client", "w")
 
         # Here are varieties for GUI to fresh
         self.price = 0
@@ -450,6 +451,12 @@ class Com:
 
     def CON_fresh(self, content):
         self.recv_cmd_handle(content)
+
+    def write_log(self, log):
+        log = ctime() + " " + log
+        print(log)
+        self.logFile.write(log + '\n')
+        self.logFile.flush()
 
     @abstractmethod
     def GUI_msgbox(self, content):

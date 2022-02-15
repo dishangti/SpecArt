@@ -19,7 +19,7 @@ def controller():
         if cmd == 'b' and SpecArt.begin_flag == False:
             SpecArt.begin_flag = True
             time = tm.time()
-            SpecArt.write_log('SpecArt Begins at ' + tm.ctime(tm.time()))
+            SpecArt.write_log('SpecArt Begins at ' + tm.ctime(time))
             with syn_lock:
                 NetHandler.broadcast('begin', time)
                 for player in NetHandler.players.values():
