@@ -232,6 +232,8 @@ class NetHandler(sck.BaseRequestHandler):
             return
 
         if command[0] == 'sell':
+            #sell (num) (price)
+            # Player tries to sell (num) goods at the price (price)
             num = int(command[1])
             price = int(command[2])
             if num == 0: return
@@ -245,6 +247,8 @@ class NetHandler(sck.BaseRequestHandler):
             self.player_info(" ".join(command))
 
         elif command[0] == 'buy':
+            #buy (num) (price)
+            # Player tries to sell (num) goods at the price (price)
             num = int(command[1])
             price = int(command[2])
             if num == 0: return
@@ -258,6 +262,8 @@ class NetHandler(sck.BaseRequestHandler):
             self.player_info(" ".join(command))
 
         elif command[0] == 'backbuy':
+            #backbuy (num) (price) (time)
+            # Player tries to withdraw a buying order of (num) goods at the price (price) at (time)
             if Order.buy_queue == []: return
             num = int(command[1])
             price = int(command[2])
@@ -274,6 +280,8 @@ class NetHandler(sck.BaseRequestHandler):
             self.player_info(" ".join(command))
 
         elif command[0] == 'backsell':
+            #backsell (num) (price) (time)
+            # Player tries to withdraw a selling order of (num) goods at the price (price)
             if Order.sell_queue == []: return
             num = int(command[1])
             price = int(command[2])
