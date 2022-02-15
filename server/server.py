@@ -81,13 +81,6 @@ class NetHandler(sck.BaseRequestHandler):
     pause = False
     players = {}
 
-    def time_str(self, string):
-        '''
-        string:(str) The string to process.
-        Return a new string by adding a time information on the string.
-        '''
-        return tm.ctime() + " " + string
-
     def command(self, *strs):
         '''
         Wrap strs and encode it by UTF-8.
@@ -120,7 +113,7 @@ class NetHandler(sck.BaseRequestHandler):
         '''
         WIN_MONEY = len(list(NetHandler.players.values())) * SpecArt.INIT_MONEY * SpecArt.WIN_RATE
         if player.money >= WIN_MONEY:
-            print(self.time_str(f"{player.name} wins the game."))
+            SpecArt.write_log(f"{player.name} wins the game.")
             NetHandler.broadcast('winner', player.name)
             SpecArt.win_flag = True
 
@@ -201,8 +194,8 @@ class NetHandler(sck.BaseRequestHandler):
                     hp.heappush(buy_que, top_buy)
                 break
             
-    def player_info(self, opt):
-        print(self.time_str(f"Player {self.player.name} does {opt} and remains money {self.player.money} and goods {self.player.goods}."))
+    def player_action(self, opt):
+        SpecArt.write_log(f"Player {self.player.name} does {opt} and remains money {self.player.money} and goods {self.player.goods}.")
 
     def command_handle(self, command):
         '''
@@ -219,7 +212,7 @@ class NetHandler(sck.BaseRequestHandler):
                 self.sock.sendall(self.command('nameok', self.name))
                 self.sock.sendall(self.command('money', SpecArt.INIT_MONEY))        # Set money for a player
                 self.sock.sendall(self.command('goods', SpecArt.INIT_GOODS))        # Set goods for a player
-            print(self.time_str(f"{self.addr} set name as {self.name}."))
+            SpecArt.write_log(f"{self.addr} set name as {self.name}.")
 
         if self.named == False and SpecArt.begin_flag == True:
             self.sock.close()
@@ -244,7 +237,7 @@ class NetHandler(sck.BaseRequestHandler):
                 self.sock.sendall(self.command('sellok', num, price, sell_order.time))
                 NetHandler.broadcast('sell', num, price)
                 self.sell_order(sell_order)
-            self.player_info(" ".join(command))
+            self.player_action(" ".join(command))
 
         elif command[0] == 'buy':
             #buy (num) (price)
@@ -259,7 +252,7 @@ class NetHandler(sck.BaseRequestHandler):
                 self.sock.sendall(self.command('buyok', num, price, buy_order.time))
                 NetHandler.broadcast('buy', num, price)
                 self.buy_order(buy_order)
-            self.player_info(" ".join(command))
+            self.player_action(" ".join(command))
 
         elif command[0] == 'backbuy':
             #backbuy (num) (price) (time)
@@ -277,7 +270,7 @@ class NetHandler(sck.BaseRequestHandler):
                         self.player.money += num * price
                 self.sock.sendall(self.command('backbuyok', num, price, time))
                 NetHandler.broadcast('backbuy', num, price)
-            self.player_info(" ".join(command))
+            self.player_action(" ".join(command))
 
         elif command[0] == 'backsell':
             #backsell (num) (price) (time)
@@ -295,7 +288,7 @@ class NetHandler(sck.BaseRequestHandler):
                         self.player.goods += num
                 self.sock.sendall(self.command('backsellok', num, price, time))
                 NetHandler.broadcast('backsell', num, price)
-            self.player_info(" ".join(command))
+            self.player_action(" ".join(command))
 
     def setup(self):
         '''
@@ -305,7 +298,7 @@ class NetHandler(sck.BaseRequestHandler):
         self.inuse = True
         self.addr = self.client_address[0] + ':' + str(self.client_address[1])
         self.sock = self.request
-        print(self.time_str(f'Connetion from: {self.addr}.'))
+        SpecArt.write_log(f'Connetion from: {self.addr}.')
 
     def handle(self):
         '''
@@ -315,7 +308,7 @@ class NetHandler(sck.BaseRequestHandler):
             try:
                 buff = self.request.recv(1024).decode(SpecArt.CODE)
             except Exception:
-                print('Network error, game forcely stopped...')
+                SpecArt.write_log('Network error, game forcely stopped...')
                 SpecArt.stop_flag = True
                 break
             commands = buff.split('#')
@@ -336,9 +329,11 @@ class SpecArt:
     win_flag = False
     begin_flag = False
     stop_flag = False
+    log_file = None
     ser_sock = None
 
     def __init__(self, host, port):
+        SpecArt.log_file = open("server.log", "w")
         self.host = host
         self.port = port
         SpecArt.ser_sock = TCPServer((host, port), NetHandler)
@@ -351,3 +346,11 @@ class SpecArt:
             player.sock.close()
         SpecArt.ser_sock.shutdown()
         SpecArt.ser_sock.server_close()
+        SpecArt.log_file.close()
+
+    @classmethod
+    def write_log(self, log):
+        log = tm.ctime() + " " + log
+        print(log)
+        SpecArt.log_file.write(log + '\n')
+        SpecArt.log_file.flush()
