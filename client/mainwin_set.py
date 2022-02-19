@@ -1,5 +1,3 @@
-from re import X
-from select import select
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QAbstractItemView, QHeaderView
 from PyQt5.QtGui import QColor, QBrush
 from PyQt5.QtCore import pyqtSignal

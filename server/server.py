@@ -319,7 +319,7 @@ class SpecArt:
     '''
     Save some game settings.
     '''
-    VERSION = "v0.2.0-beta"
+    VERSION = "v0.3.0-alpha"
     INIT_MONEY = 100000
     INIT_GOODS = 100000
     WIN_RATE = 0.6
@@ -350,7 +350,8 @@ class SpecArt:
 
     @classmethod
     def write_log(self, log):
-        log = tm.ctime() + " " + log
-        print(log)
-        SpecArt.log_file.write(log + '\n')
-        SpecArt.log_file.flush()
+        with syn_lock:
+            log = tm.ctime() + " " + log
+            print(log)
+            SpecArt.log_file.write(log + '\n')
+            SpecArt.log_file.flush()

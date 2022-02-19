@@ -107,12 +107,13 @@ class Player():
         self.transaction = {}       #keys:挂单时间 values:指令按空格切分后的列表
 
 class Com:
-    VERSION = "v0.2.0-beta"
+    VERSION = "v0.3.0-alpha"
 
     def __init__(self, mode):
         '''
         mode(integer): 0(consle), 1(GUI)
         '''
+        self.syn_lock = threading.Lock()
         self.mode = mode
         self.window = None
         self.soc = socket.socket()
@@ -373,7 +374,7 @@ class Com:
             # Game began at (time)
             self.beginTime = cmd[1]
             self.notice('GAME START!')
-            self.write_log(f"Game starts at {time}.")
+            self.write_log(f"Game starts at {self.beginTime}.")
             if self.mode == 1:
                 self.window.beginGame.emit()
         elif core_cmd == 'winner':
@@ -386,7 +387,8 @@ class Com:
     def notice(self, content, on_GUI=True):  # Give a notice to the player
         if self.mode == 0:
             # Console mode
-            print(content, sep='')
+            with self.syn_lock:
+                print(content, sep='')
         elif self.mode == 1:    # Display by a messagebox
             # GUI mode
             if on_GUI:
@@ -400,11 +402,12 @@ class Com:
         """
         if self.mode == 0:
             # Console mode
-            if dir == 0:
-                print("Positive Buy: ", end='')
-            elif dir == 1:
-                print("Positive Sell: ", end='')
-            print(f"num {num}, price {price}.")
+            with self.syn_lock():
+                if dir == 0:
+                    print("Positive Buy: ", end='')
+                elif dir == 1:
+                    print("Positive Sell: ", end='')
+                print(f"num {num}, price {price}.")
         elif self.mode == 1:
             # GUI mode
             # Handle commands from server and then fresh the GUI
@@ -475,16 +478,18 @@ class Com:
         '''
 
         command = f'backbuy {num} {price} {time}#'
-        self.soc.sendall(command.encode('utf8'))
+        with self.syn_lock:
+            self.soc.sendall(command.encode('utf8'))
 
     def CON_fresh(self, content):
         self.recv_cmd_handle(content)
 
     def write_log(self, log):
-        log = ctime() + " " + log
-        print(log)
-        self.logFile.write(log + '\n')
-        self.logFile.flush()
+        with self.syn_lock:
+            log = ctime() + " " + log
+            print(log)
+            self.logFile.write(log + '\n')
+            self.logFile.flush()
 
     @abstractmethod
     def GUI_msgbox(self, content):
